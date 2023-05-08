@@ -65,7 +65,67 @@
 					}
 				}
 			});
-		});	
+		});
+		
+		
+		$('input[class=order]').click(function(){
+			
+			// 서버로 데이터 전송
+			let uid 	 = $('input[name=uid]').val();
+			let proNo 	 = $('input[name=proNo]').val(); // 상품번호
+			let price 	 = $('input[name=price]').val(); // 원가
+			let discount = $('input[name=discount]').val(); // 할인율
+			let count 	 = $(".quantity").val(); // 수량
+			let disPrice = $('input[name=disPrice]').val(); // 할인된 가격
+			let delivery = $('input[name=delivery]').val() // 택배비
+			let point 	 = $('input[name=point]').val(); // 포인트
+			let total 	 = disPrice * count;
+			
+			
+			let jsonData = {
+					'uid'  : uid,
+					'proNo': proNo,
+					'price': price,
+					'ordPrice': price,
+					'discount': discount,
+					'ordDiscount': discount,
+					'count': count,
+					'ordCount': count,
+					'disPrice':disPrice,
+					'delivery': delivery,
+					'ordDelivery': delivery,
+					'point': point,
+					'total': total,
+					'ordTotPrice': total
+				}
+			
+			console.log(jsonData);
+			
+			$.ajax({
+				url : '/Kmarket/product/cart/direct',
+				type : 'post',
+				data : jsonData,
+				dataType : 'json',
+				success : function(data){
+					alert('성공');
+					//location.href="/Kmarket/product/order"
+				}
+			});
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	});
 
 
@@ -133,8 +193,8 @@
 	                <em>총 상품금액</em>
 	            </div>
 	            <div class="button">
-	                <input type="text" class="cart" value="장바구니">
-	                <input type="text" class="order" value="구매하기" >
+	                <input type="button" class="cart" value="장바구니">
+	                <input type="button" class="order" value="구매하기" >
 	            </div>
 	        
 	        </div>

@@ -29,9 +29,9 @@ public class ProductController {
 	private ProductService service;
 	
 	@GetMapping("product/list")
-	public String list(Model model) {
+	public String list(Model model, int cate1, int cate2) {
 		
-		List<ProductVO> articles = service.selectProductArticles();
+		List<ProductVO> articles = service.selectProductArticles(cate1, cate2);
 		
 		model.addAttribute("articles", articles);
 		
@@ -68,6 +68,7 @@ public class ProductController {
 	@ResponseBody
 	public String addCart(CartVO cart) {
 		
+		System.out.println("addCar : " + cart);
 		//장바구니 추가
 		int result = service.addCart(cart);
 		return result+"";
@@ -127,6 +128,8 @@ public class ProductController {
 	@PostMapping("product/order/add")
 	public int order(Authentication authentication,@RequestBody OrderVO vo) {
 		
+		
+		
 		String uid = authentication.getName();
 		
 		vo.setUid(uid);
@@ -137,6 +140,12 @@ public class ProductController {
 			vo.setOrdComplete(0);
 		}else{
 			vo.setOrdComplete(1);
+		}
+		
+		int point = vo.getUsedPoint();
+		
+		if(point > 0) {
+			service.insertPoint(vo);
 		}
 		
 		int no = vo.getNo();
@@ -169,5 +178,35 @@ public class ProductController {
 		}
 		
 		return ordNo;
+	}
+	
+	@ResponseBody
+	@PostMapping("product/cart/direct")
+	public int directOrder(OrderVO vo) {
+		
+		int ordNo = service.insertOrder(vo);
+		
+		vo.setOrdNo(ordNo);
+		
+		service.insertOrderItemDirect(vo);
+		
+		System.out.println("진입확인");
+		
+		return ordNo;
+	}
+	
+	
+	@GetMapping("product/complete")
+	public String complete(Model model, Authentication authentication, int ordNo) {
+		
+		String uid = authentication.getName();
+		
+		OrderVO complete = service.selectOrdComplete(ordNo, uid);
+		List<Order_ItemVO> lists = service.selectOrdCompleteList(ordNo);
+		
+		model.addAttribute("complete", complete);
+		model.addAttribute("lists", lists);
+		
+		return "product/complete";
 	}
 }

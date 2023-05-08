@@ -1070,6 +1070,7 @@ main > aside > .category > li > ol > li > a{
 }
 
 #product > .complete > .info > table tr > td {
+	width : 200px;
     text-align: center;
 }
 

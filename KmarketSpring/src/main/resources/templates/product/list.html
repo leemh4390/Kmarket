@@ -32,7 +32,12 @@
 
      <!-- 상품목록 -->
      <table>
-         <tr th:each="article : ${articles}">
+     	 <tr th:if="${articles.size() == 0}">
+     	 	<td style="width: 100%; text-align: center; padding: 30px; margin-bottom: 30px;">
+     	 		등록된 상품이 없습니다.
+     	 	</td>
+     	 </tr>
+         <tr th:unless="${articles.size() == 0}" th:each="article : ${articles}">
              <td><a href="#" class="thumb"><img th:src="@{/file/} +${article.thumb1}" alt="상품이미지"></a></td>
              <td style="width: 450px;">
                  <h3 class="name"><a class="productName" th:href="@{/product/view(proNo=${article.proNo})}">[[${article.proName}]]</a></h3>

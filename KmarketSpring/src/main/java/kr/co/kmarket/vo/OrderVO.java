@@ -37,6 +37,8 @@ public class OrderVO {
 	private int point;
 	private int delivery;
 	private int total;
+	private int disPrice;
+	
 	
 	private String proName;
 	private String descript;

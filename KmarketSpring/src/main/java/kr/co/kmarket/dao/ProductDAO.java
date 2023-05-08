@@ -21,13 +21,19 @@ public interface ProductDAO {
 	public MemberVO selectMember(String uid);
 	
 	// 상품 list 조회
-	public List<ProductVO> selectProductArticles();
+	public List<ProductVO> selectProductArticles(int cate1, int cate2);
 	
 	// 상품 view
 	public ProductVO selectProductArticle(int proNo);
 	
 	// order 조회
 	public List<OrderVO> selectOrderProducts(String uid, int no);
+	
+	// complete
+	public OrderVO selectOrdComplete(int ordNo, String uid);
+	
+	// complete list
+	public List<Order_ItemVO> selectOrdCompleteList(int ordNo);
 	
 	// 장바구니 추가
 	public int addCart(CartVO cart);
@@ -43,6 +49,11 @@ public interface ProductDAO {
 	
 	// 주문하기 상품 추가
 	public void insertOrderItem(@RequestBody Order_ItemVO item);
+	
+	public void insertOrderItemDirect(OrderVO vo);
+	
+	// 주문하기 포인트 
+	public void insertPoint(@RequestBody OrderVO vo);
 	
 	// 주문하기
 	public int updateOrder(OrderVO vo);

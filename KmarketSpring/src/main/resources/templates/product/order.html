@@ -198,6 +198,7 @@
 					contentType: 'application/json',
 					success : function(data){
 						alert('주문이 완료되었습니다.');
+						location.href="/Kmarket/product/complete?ordNo="+no;
 					}
 				});
 				

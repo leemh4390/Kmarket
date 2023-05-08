@@ -20,5 +20,7 @@ public class Order_ItemVO {
 	
 	// 추가 필드
 	private String proName;
+	private String descript;
+	private String thumb1;
 	
 }

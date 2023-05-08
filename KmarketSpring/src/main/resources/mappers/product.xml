@@ -10,7 +10,7 @@
 	</select>
 
 	<select id="selectProductArticles" resultType="kr.co.kmarket.vo.ProductVO">
-		select * from `km_product`;
+		select * from `km_product` where `cate1` = #{cate1} and `cate2` = #{cate2};
 	</select>
 	
 	<select id="selectProductArticle" resultType="kr.co.kmarket.vo.ProductVO">
@@ -70,6 +70,26 @@
 		JOIN km_product_order AS c ON a.ordNo = c.ordNo;
 	</select>
 	
+	<!-- 주문완료 -->
+	<select id="selectOrdComplete" resultType="kr.co.kmarket.vo.OrderVO">
+		SELECT * FROM `km_product_order` AS a left JOIN `km_product_order_item` AS b
+			ON a.ordNo = b.ordNo 
+		WHERE 
+			a.`ordNo` = #{ordNo} and `uid` = #{uid} 
+		GROUP BY a.ordNo;
+	</select>
+	
+	<select id="selectOrdCompleteList" resultType="kr.co.kmarket.vo.Order_ItemVO">
+		SELECT 
+			*
+		FROM `km_product_order_item` AS a JOIN `km_product` AS b
+			ON a.proNo = b.proNo
+		where 
+			a.ordNo = #{ordNo}
+	</select>
+
+	
+	
 	<!-- 장바구니 삭제 -->
 	<delete id="deleteCart">
 		delete from `km_product_cart` where `proNo`=#{no} AND `uid` = #{uid};
@@ -98,6 +118,27 @@
 		`point` = #{point},
 		`delivery` = #{delivery},
 		`total` = #{total};
+	</insert>
+	
+	<!-- 주문하기 상품 추가 -->
+	<insert id="insertOrderItemDirect">
+		INSERT INTO `km_product_order_item` SET
+		`ordNo` = #{ordNo},
+		`proNo` = #{proNo},
+		`count` = #{count},
+		`price` = #{price},
+		`discount` = #{discount},
+		`point` = #{point},
+		`delivery` = #{delivery},
+		`total` = #{total};
+	</insert>
+	
+	<insert id="insertPoint">
+		INSERT INTO `km_member_point` set
+			`uid` = #{uid},
+			`ordNo` = #{no},
+			`point` = #{usedPoint},
+			`pointDate` = NOW();
 	</insert>
 	
 	<!-- 주문하기  -->

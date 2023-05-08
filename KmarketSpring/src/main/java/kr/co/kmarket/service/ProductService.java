@@ -23,8 +23,8 @@ public class ProductService {
 		return dao.selectMember(uid);
 	}
 	
-	public List<ProductVO> selectProductArticles(){
-		return dao.selectProductArticles();
+	public List<ProductVO> selectProductArticles(int cate1, int cate2){
+		return dao.selectProductArticles(cate1, cate2);
 	}
 	
 	public ProductVO selectProductArticle(int proNo) {
@@ -37,6 +37,14 @@ public class ProductService {
 	
 	public List<OrderVO> selectOrderProducts(String uid, int no){
 		return dao.selectOrderProducts(uid, no);
+	}
+	
+	public OrderVO selectOrdComplete(int ordNo, String uid) {
+		return dao.selectOrdComplete(ordNo, uid);
+	}
+	
+	public List<Order_ItemVO> selectOrdCompleteList(int ordNo){
+		return dao.selectOrdCompleteList(ordNo);
 	}
 	
 	// 장바구니 추가
@@ -60,6 +68,11 @@ public class ProductService {
 		return vo.getOrdNo();
 	}
 	
+	// 주문하기 포인트
+	public void insertPoint(OrderVO vo) {
+		dao.insertPoint(vo);
+	}
+	
 	public int updateOrder(OrderVO vo) {
 		return dao.updateOrder(vo);
 	}
@@ -72,6 +85,10 @@ public class ProductService {
 	
 	public void insertOrderItem(Order_ItemVO item) {
 		dao.insertOrderItem(item);
+	}
+	
+	public void insertOrderItemDirect(OrderVO vo) {
+		dao.insertOrderItemDirect(vo);
 	}
 	
 	public void deleteOrderToComplete(int no, List<Integer> proNo) {
