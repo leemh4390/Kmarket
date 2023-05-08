@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>상품평 작성하기</title>
+    <link rel="stylesheet" th:href="@{/css/popup_style.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/star-rating-svg.css">
+	<script type="text/javascript">
+		$(function(){
+			$('#star1').click(function(){
+				$('.on').attr('class', 'star off');
+				$('#star1').attr('class','star on');
+			});
+			$('#star2').click(function(){
+				$('.on').attr('class', 'star off');
+				$('#star1').attr('class','star on');
+				$('#star2').attr('class','star on');
+			});
+			$('#star3').click(function(){
+				$('.on').attr('class', 'star off');
+				$('#star1').attr('class','star on');
+				$('#star2').attr('class','star on');
+				$('#star3').attr('class','star on');
+			});
+			$('#star4').click(function(){
+				$('.on').attr('class', 'star off');
+				$('#star1').attr('class','star on');
+				$('#star2').attr('class','star on');
+				$('#star3').attr('class','star on');
+				$('#star4').attr('class','star on');
+			});
+			$('#star5').click(function(){
+				$('.on').attr('class', 'star off');
+				$('#star1').attr('class','star on');
+				$('#star2').attr('class','star on');
+				$('#star3').attr('class','star on');
+				$('#star4').attr('class','star on');
+				$('#star5').attr('class','star on');
+			});
+			
+			$('.btnPositive').click(function(){
+				let prodNo = $('input[name=prodNo]').val();
+				let uid = $('input[name=uid]').val();
+				let content = $('textarea[name=review]').val();
+				let rating = '';
+				
+				if($('#star5').hasClass('on') === true){
+					rating = '5';
+				}else if($('#star4').hasClass('on') === true){
+					rating = '4';
+				}else if($('#star3').hasClass('on') === true){
+					rating = '3';
+				}else if($('#star2').hasClass('on') === true){
+					rating = '2';
+				}else{
+					rating = '1';
+				}
+				
+				let jsonData = {
+					'prodNo' : prodNo,
+					'content' : content,
+					'uid' : uid,
+					'rating' : rating
+				}
+				
+				$.ajax({
+					url : '/Kmarket/my/review',
+					method : 'POST',
+					data : jsonData,
+					dataType : 'JSON',
+					success : function(data){
+						alert('상품리뷰가 작성되었습니다.');
+						opener.location.reload();
+						window.close();
+					}
+				});
+			});
+			
+			$('form').submit(function(){
+				return false;
+			});
+			
+			$('.btnCancel').click(function(){
+				window.close();
+			});
+		});
+	</script>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 상품평쓰기 팝업 -->
+        <div id="popReview" class="popup">
+            <div>
+                <nav>
+                    <h1>상품평 작성하기</h1>
+                    <button class="btnClose">X</button>
+                </nav>
+                <section>
+                    <form action="#">
+                        <table border="0">
+                            <tr>
+                                <th>상품명</th>
+                                <td class="productName">[[${prodName}]]</td>
+                                <input type="hidden" name="uid" th:value="${uid}"/>
+                                <input type="hidden" name="prodNo" th:value="${prodNo}"/>
+                            </tr>
+                            <tr>
+                                <th>만족도</th>
+                                <td class="rating">
+                                    <div class="my-rating">
+                                    	<a href="#" id="star1" class="star on"></a>
+                                        <a href="#" id="star2" class="star on"></a>
+                                        <a href="#" id="star3" class="star on"></a>
+                                        <a href="#" id="star4" class="star on"></a>
+                                        <a href="#" id="star5" class="star on"></a>
+                                    </div>
+                                </td>
+                            </tr>                            
+                            <tr>
+                                <th>내용</th>
+                                <td class="review">
+                                    <textarea name="review" placeholder="내용입력"></textarea>
+                                </td>
+                            </tr>                        
+                        </table>
+                        <p>
+                            ※ 상품평을 작성하시면 구매확정 포인트와 더불어 추가 포인트를 지급합니다.
+                        </p>
+
+                        <div>
+                            <input type="submit" class="btnPositive" value="작성완료"/>
+                            <button class="btnNegative btnCancel">취소</button>
+                        </div>
+                    </form>
+                </section>                    
+            </div>
+        </div>
+        <!-- 상품평쓰기 팝업 끝 -->
+    </div>
+
+</body>
+</html>

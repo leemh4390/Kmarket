@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = mapper파일의 아이디 값 -->
+<mapper namespace="kr.co.kmarket.dao.AdminProductDAO">
+	
+	<insert id="insertAdminProductRegister">
+		INSERT INTO `km_product` set
+										`cate1` 	= #{cate1},
+										`cate2` 	= #{cate2},
+										`proName` 	= #{proName},
+										`descript` 	= #{descript},
+										`company` 	= #{company},
+										`seller` 	= '판매자',
+										`price` 	= #{price},
+										`discount`	= #{discount},
+										`point` 	= #{point},
+										`stock` 	= #{stock},
+										`delivery` 	= #{delivery},
+										`thumb1` 	= #{thumb1},
+										`thumb2` 	= #{thumb2},
+										`thumb3` 	= #{thumb3},
+										`detail` 	= #{detail},
+										`status` 	= #{status},
+										`duty` 		= #{duty},
+										`receipt` 	= #{receipt},
+										`bizType` 	= #{bizType},
+										`origin` 	= #{origin},
+										`ip` 		= #{ip},
+										`rdate` 	= NOW();
+	</insert>
+
+
+	<select id="selectProductCate1" resultType="kr.co.kmarket.vo.Product_Cate1VO">
+		SELECT * FROM `km_product_cate1`;
+	</select>
+	
+	<select id="selectProductCate2" resultType="kr.co.kmarket.vo.Product_Cate2VO">
+		SELECT * FROM `km_product_cate2` WHERE `cate1` = #{cate1};
+	</select>
+	
+	<select id="selectProductArticles" resultType="kr.co.kmarket.vo.ProductVO">
+		SELECT * FROM `km_product` order by `proNo` desc limit #{start},10;
+	</select>
+	
+	<select id="selectCountTotal" resultType="int">
+		SELECT COUNT(`proNo`) FROM `km_product`;
+	</select>
+	
+	<delete id="deleteAdminProductArticles">
+		DELETE FROM `km_product` WHERE `proNo` = #{proNo};
+	</delete>
+
+
+</mapper>

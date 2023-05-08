@@ -1,0 +1,53 @@
+<th:block th:include="@{admin/_header.html}"/>
+<article class="article_modify">
+    <nav>
+        <h3>
+            공지사항 수정
+        </h3>
+        <p>
+            HOME > 고객센터 > <Strong> 공지사항 </Strong>
+        </p>
+    </nav>
+    <section>
+        <form th:action="@{/admin/faq_modify}" method="post">
+            <table>
+                <tr>
+                    <td>유형</td>
+                    <td>
+                        <select>
+                            <option value="">유형선택</option>
+                            <option value="" selected>회원</option>
+                            <option value="">유형선택113</option>
+                            <option value="">유형선택23232323</option>
+                        </select>
+                        <select>
+                            <option value="">유형선택</option>
+                            <option value="" selected>가입</option>
+                            <option value="">유형선택113</option>
+                            <option value="">유형선택23232323</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>제목</td>
+                    <td>
+                        <input type="text" name="title" placeholder="제목을 입력합니다." th:value="${view.title}">
+                        <input type="hidden" name="no" th:value="${view.no}"> 
+                    </td>
+                </tr>
+                <tr>
+                    <td>내용</td>
+                    <td>
+                        <textarea cols="30" rows="10" name="content" placeholder="내용을 입력합니다.">[[${view.content}]]</textarea>
+                    </td>
+                </tr>
+            </table>
+            <div class="modify_button">
+                <a th:href="@{/admin/faq_list}"><input type="button" value="취소하기"></a>
+                <a href="#"><input type="submit" value="수정하기"></a>
+            </div>
+        </form>
+    </section>
+</article>
+</main>
+<th:block th:include="@{admin/_footer.html}"/>

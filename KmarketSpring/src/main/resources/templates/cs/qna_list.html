@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓</title>
+    <link rel="stylesheet" th:href="@{/css/cs_style.css}">
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="cs/_header.html  :: cs_header"></th:block>
+        <main>
+            <div class="list_nav">
+                <div>
+                    <p>홈 > 문의하기</p>
+                </div>
+            </div>
+            <div class="list">
+                <th:block th:replace="cs/_cate.html  :: cs_qnaGroup"></th:block>
+                <div>
+                    <th:block th:replace="cs/_cate.html  :: cs_qnaCate"></th:block>
+                    <table>
+                    	<tr th:if="${#lists.size(articles) == 0}">
+                    		<th colspan="5" style="padding: 16px">등록된 문의사항이 없습니다.</th>
+                    	</tr>
+                        <tr th:each="article : ${articles}">
+                            <td><a th:href="@{/cs/qna/view(group=${group}, no=${article.no}, pg=${pg})}">&#91;[[${article.cate}]]&#93; [[${article.title}]]</a></td>
+                            <td class="que ok" th:if="${article.comment > 0}">답변완료</td>
+                            <td class="que wait" th:unless="${article.comment > 0}">검토중</td>
+                            <td class="id">[[${article.uidMask}]]</td>
+                            <td>[[${article.rdate}]]</td>
+                        </tr>
+                    </table>
+                    <div class="page" th:if="${page[1] > 0}">
+                    	<th:block th:if="${page[0] > 1}">
+                        	<a th:href="@{/cs/qna/list(group=${group}, pg=${page[0]-1})}" class="prev"></a>
+                        </th:block>
+                        <th:block th:each="cnt:${#numbers.sequence(page[0], page[1])}">
+                        	<a th:href="@{/cs/qna/list(group=${group}, pg=${cnt})}" th:class="${cnt} == ${pg} ? 'num current' : 'num off'">[[${cnt}]]</a>
+                        </th:block>
+                        <th:block th:if="${page[1] < page[2]}">
+                        	<a th:href="@{/cs/qna/list(group=${group}, pg=${page[1]+1})}" class="next"></a>
+                        </th:block>
+                        <a th:href="@{/cs/qna/write(group=${group}, pg=${pg})}" class="write_button">문의하기</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <th:block th:replace="cs/_footer.html :: cs_footer"></th:block>
+    </div>
+</body>
+</html>

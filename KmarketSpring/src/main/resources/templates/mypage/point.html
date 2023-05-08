@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/mypage_style.css}">
+    <script th:src="@{/js/date.js}"></script>
+    <script th:inline="javascript">
+    	$(function(){
+    		let lastPage = 1;
+    		
+    		let now = new Date();
+    		$('.month1').text(now.getMonth()+1);
+    		now.setMonth(now.getMonth() -1);
+    		$('.month2').text(now.getMonth()+1);
+    		now.setMonth(now.getMonth() -1);
+    		$('.month3').text(now.getMonth()+1);
+    		now.setMonth(now.getMonth() -1);
+    		$('.month4').text(now.getMonth()+1);
+    		now.setMonth(now.getMonth() -1);
+    		$('.month5').text(now.getMonth()+1);
+
+    		$('.off').on('click', function(){
+    			$('.on').attr('class','off');
+    			$(this).attr('class','on');
+    		});
+
+    		//오늘
+    		let today = new Date();
+    		let lastDay = dateFormat(today);
+
+    		//시작시 호출
+    		today = new Date();
+    		let firstDay = new Date(today.setDate(today.getDate()-15));
+    		firstDay = dateFormat(firstDay);
+    		let pg = 1;
+			list(firstDay, lastDay, pg);
+			page(firstDay, lastDay);
+			lastPage = page(firstDay, lastDay);
+
+    		//7일전
+    		$('#1week').click(function(){
+    			today = new Date();
+    			let firstDay = new Date(today.setDate(today.getDate()-7));
+    			firstDay = dateFormat(firstDay);
+    			pg = 1;
+				list(firstDay, lastDay, pg);
+				page(firstDay, lastDay);
+				lastPage = page(firstDay, lastDay);
+    		});
+    		//15일전
+    		$('#15day').click(function(){
+    			today = new Date();
+    			let firstDay = new Date(today.setDate(today.getDate()-15));
+    			firstDay = dateFormat(firstDay);
+    			pg = 1;
+				list(firstDay, lastDay, pg);
+				page(firstDay, lastDay);
+				lastPage = page(firstDay, lastDay);
+    		});
+    		//30일전
+    		$('#1month').click(function(){
+    			today = new Date();
+    			let firstDay = new Date(today.setDate(today.getDate()-30));
+    			firstDay = dateFormat(firstDay);
+    			pg = 1;
+				list(firstDay, lastDay, pg);
+				page(firstDay, lastDay);
+				lastPage = page(firstDay, lastDay);
+    		});
+    		//당월
+    		$('#month1').click(function(){
+    			today = new Date();	
+    			let firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    			let lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    			firstDay = dateFormat(firstDay);
+    			lastDay = dateFormat(lastDay);
+    			pg = 1;
+				list(firstDay, lastDay, pg);
+				page(firstDay, lastDay);
+				lastPage = page(firstDay, lastDay);
+    		});
+    		//1달전
+    		$('#month2').click(function(){
+    			today = new Date();	
+    			let firstDay = new Date(today.getFullYear(), today.getMonth()-1, 1);
+    			let lastDay = new Date(today.getFullYear(), today.getMonth(), 0);
+    			firstDay = dateFormat(firstDay);
+    			lastDay = dateFormat(lastDay);
+    			pg = 1;
+				list(firstDay, lastDay, pg);
+				page(firstDay, lastDay);
+				lastPage = page(firstDay, lastDay);
+    		});
+    		//2달전
+    		$('#month3').click(function(){
+    			today = new Date();	
+    			let firstDay = new Date(today.getFullYear(), today.getMonth()-2, 1);
+    			let lastDay = new Date(today.getFullYear(), today.getMonth()-1, 0);
+    			firstDay = dateFormat(firstDay);
+    			lastDay = dateFormat(lastDay);
+    			pg = 1;
+				list(firstDay, lastDay, pg);
+				page(firstDay, lastDay);
+				lastPage = page(firstDay, lastDay);
+    		});
+    		//3달전
+    		$('#month4').click(function(){
+    			today = new Date();	
+    			let firstDay = new Date(today.getFullYear(), today.getMonth()-3, 1);
+    			let lastDay = new Date(today.getFullYear(), today.getMonth()-2, 0);
+    			firstDay = dateFormat(firstDay);
+    			lastDay = dateFormat(lastDay);
+    			pg = 1;
+				list(firstDay, lastDay, pg);
+				page(firstDay, lastDay);
+				lastPage = page(firstDay, lastDay);
+    		});
+    		//4달전
+    		$('#month5').click(function(){
+    			today = new Date();	
+    			let firstDay = new Date(today.getFullYear(), today.getMonth()-4, 1);
+    			let lastDay = new Date(today.getFullYear(), today.getMonth()-3, 0);
+    			firstDay = dateFormat(firstDay);
+    			lastDay = dateFormat(lastDay);
+    			pg = 1;
+				list(firstDay, lastDay, pg);
+				page(firstDay, lastDay);
+				lastPage = page(firstDay, lastDay);
+    		});
+    		//사용자 지정
+    		$('.search').click(function(){
+    			let start = $('input[name=start]').val();
+    			let end = $('input[name=end]').val();
+    			if(start == "" || end == ""){
+    				alert('날짜를 선택해주세요.');
+    				return false;
+    			}
+    			
+    			today = new Date();	
+    			let firstDay = new Date(today.setFullYear(today.getFullYear() - 1));
+    			firstDay = dateFormat(firstDay);
+    			if(start < firstDay){
+    				alert('전체주문내역의 최대 1년치까지만 조회가능합니다.');
+    				start = firstDay;
+    			}
+    			pg = 1;
+    			list(start, end, pg);
+    			page(start, end);
+    			lastPage = page(start, end);
+    			$('.on').attr('class','off');
+    		});
+    		
+    		function list(start, end, pg){
+    			let jsonData = {
+    					'start' : start,
+    					'end' : end,
+    					'pg' : pg-1
+    			}
+    			console.log(jsonData);
+    			$.ajax({
+    				url : '/Kmarket/mypage/pointList/',
+    				method : 'POST',
+    				data : jsonData,
+    				dataType : 'JSON',
+    				success : function(data){
+    					$('.po').remove();
+    					if(data.result.length == 0){
+    						let tag = "<tr class='po'>";
+                           		tag += "<td colspan='6' align='center'>적립된 내역이 없습니다.</td>";
+                           		tag += '</tr>';
+                          		$('.lastPoint').append(tag);
+    					}else{
+	    					for(let i of data.result){
+		   						let	tag = "<tr class='po'>";
+		   							tag += "<td>"+i.pointDate+"</td>";
+		   							tag += "<td>적립</td>";
+		   							tag += "<td>"+i.ordNo+"</td>";
+		   							tag += "<td>"+i.point+"점</td>";
+		   							tag += "<td>상품 구매확정</td>";
+		   							tag += "<td>"+i.pointDateEnd+"</td>";
+		   							tag += "</tr>"
+	   							$('.lastPoint').append(tag);
+    						}
+    					}
+    				}
+    			});
+    		}
+    		
+    		function page(start, end){
+    			let lastPage ="0";
+    			
+    			let jsonData = {
+    					'start' : start,
+    					'end' : end
+    			}
+    			
+    			console.log(jsonData);
+    			$.ajax({
+    				url : '/Kmarket/mypage/pointCount/',
+    				method : 'POST',
+    				async:false,
+    				data : jsonData,
+    				dataType : 'JSON',
+    				success : function(data){
+    					lastPage = data.result;
+    					$('.page').empty();
+    					let tag = "<a href='#num' class='prev'></a>";
+    					$('.page').append(tag);
+    					for(let i=1; i<=data.result; i++){
+    						let num = pg == i ? 'num current' : 'num off';
+    						let tag = "<a href='#num' class='"+num+"' data-value='"+i+"'>"+i+"</a>";
+    						$('.page').append(tag);
+    					}
+    					tag = "<a href='#num' class='next'></a>";
+    					$('.page').append(tag);
+    				}
+    			});
+    			return lastPage;
+    		}
+    		
+    		$(document).on('click','.num',function(){
+    			let pg = $(this).data('value');
+    			list(firstDay, lastDay, pg);
+    			$('.current').attr('class','num off');
+    			$(this).attr('class','num current');
+    		});
+    		
+    		$(document).on('click','.prev',function(){
+    			if(pg==1){
+    				alert('첫 페이지입니다.');
+    				return false;
+    			}else{
+    				pg -= 1;
+    				list(firstDay, lastDay, pg);
+    				newCurrent();
+    			}
+    		});
+    		$(document).on('click','.next',function(){
+    			if(pg == lastPage){
+    				alert('마지막 페이지입니다.');
+    				return false;
+    			}else{
+    				pg += 1;
+    				list(firstDay, lastDay, pg);
+    				newCurrent();
+    			}
+    		});
+    		
+    		function newCurrent(){
+    			$('a.num').attr('class','num off');
+    			$('a.num').eq(pg-1).attr('class','num current');
+    		}
+    	});
+    	</script>
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="mypage/_header.html  :: mypage_header"></th:block>
+                    <img th:src="@{/img/myPage/my_banner2.png}" alt="배너">
+                    <div>
+                        <p>포인트내역</p>
+                        <div class="day">
+                            <span></span>
+                            <ul>
+                                <li><a href="#" class="off" id="1week"><span>1</span>주일</a></li>
+                                <li><a href="#" class="on off" id="15day"><span>15</span>일</a></li>
+                                <li><a href="#" class="off" id="1month"><span>1</span>개월</a></li>
+                            </ul>
+                            <ul>
+                                <li><a href="#" class="off" id="month1"><span class="month1"></span>월</a></li>
+                                <li><a href="#" class="off" id="month2"><span class="month2"></span>월</a></li>
+                                <li><a href="#" class="off" id="month3"><span class="month3"></span>월</a></li>
+                                <li><a href="#" class="off" id="month4"><span class="month4"></span>월</a></li>
+                                <li><a href="#" class="off" id="month5"><span class="month5"></span>월</a></li>
+                            </ul>
+                            <p>
+                                <input type="date" name="start">~<input type="date" name="end">
+                            </p>
+                            <button class="search">조회하기</button>
+                        </div>
+                        <table class="lastPoint">
+                        	<tr class="tit">
+                                <th>날짜</th>
+                                <th>구분</th>
+                                <th>주문번호</th>
+                                <th>적립금액</th>
+                                <th>비고</th>
+                                <th>유효기간</th>
+                            </tr>
+                        	<!--/*
+                            <tr th:if="${#lists.size(vo) == 0}">
+                            	<td colspan="6" align="center">최근 적립된 내역이 없습니다.</td>
+                            </tr>
+                            <tr th:each = "point : ${vo}">
+                                <td>[[${point.pointDate}]]</td>
+                                <td>적립</td>
+                                <td>[[${point.ordNo}]]</td>
+                                <td>[[${point.point}]]</td>
+                                <td>상품 구매확정</td>
+                                <td>[[${point.pointDateEnd}]]</td>
+                            </tr>
+                            */-->
+                        </table>
+                        <div class="page">
+                       		<!--/*
+                            <a href="#" class="prev"></a>
+                            <a href="#" class="num current">1</a>
+                            <a href="#" class="num">2</a>
+                            <a href="#" class="num">3</a>
+                            <a href="#" class="next"></a>
+                            */-->
+                        </div>
+                    </div>
+            </section>
+        </main>
+        <th:block th:replace="mypage/_header.html  :: mypage_footer"></th:block>
+    </div>
+</body>
+</html>

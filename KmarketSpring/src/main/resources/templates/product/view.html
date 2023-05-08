@@ -1,0 +1,280 @@
+<th:block th:include="@{product/_header.html}"/>
+<th:block th:include="@{product/_aside.html}"/>
+<script>
+	$(document).ready(function(){
+		
+		let quantity = $(".quantity").val();
+		let finalPrice = $('input[name=disPrice]').val();
+		let formattedFinalPrice = parseInt(finalPrice).toLocaleString() + '원';
+		let disPrice = $('input[name=disPrice]').val();
+		let total = $(".totalPrice").text(formattedFinalPrice);
+		
+		//수량버튼 조작
+		$(".increase").on("click",function(){
+			$(".quantity").val(++quantity);
+			total = $(".totalPrice").text((finalPrice * quantity).toLocaleString() + '원') ;
+		})
+		$(".decrease").on("click",function(){
+			if(quantity > 1){
+				$(".quantity").val(--quantity);
+				total = $(".totalPrice").text((finalPrice * quantity).toLocaleString() + '원');
+			}
+		});
+		
+		//장바구니 버튼
+		$(".cart").on("click",function(){
+			
+			// 서버로 데이터 전송
+			let uid 	 = $('input[name=uid]').val();
+			let proNo 	 = $('input[name=proNo]').val(); // 상품번호
+			let price 	 = $('input[name=price]').val(); // 원가
+			let discount = $('input[name=discount]').val(); // 할인율
+			let count 	 = $(".quantity").val(); // 수량
+			let disPrice = $('input[name=disPrice]').val(); // 할인된 가격
+			let delivery = $('input[name=delivery]').val() // 택배비
+			let point 	 = $('input[name=point]').val(); // 포인트
+			let total 	 = disPrice * count;
+			
+			
+			const form = {
+					'uid'  : uid,
+					'proNo': proNo,
+					'price': price,
+					'discount': discount,
+					'count': count,
+					'disPrice':disPrice,
+					'delivery': delivery,
+					'point': point,
+					'total': total
+				}
+			
+
+			// 장바구니 추가
+			$.ajax({
+				url : '/Kmarket/product/cart/add',
+				type : 'POST',
+				data : form,
+				success : function(data){
+					let answer = confirm("장바구니에 상품이 등록되었습니다.\n장바구니로 이동하시겠습니까?");
+					
+					if(answer){
+						//장바구니로 이동
+						location.href="/Kmarket/product/cart";
+					}else{
+						return false;
+					}
+				}
+			});
+		});	
+	});
+
+
+</script>
+	<!-- 상품 상세페이지 시작 -->
+	<section class="view">
+	    <!-- 제목, 페이지 네비게이션-->
+        <nav>
+            <h1>상품목록</h1>
+            <p>HOME > 
+            	<span>패션·의류·뷰티</span>
+            </p>
+        </nav>
+	    <!-- 상품 전체 정보 내용-->
+	    <article class="info">
+	        <div class="image">
+	            <img th:src="@{/file/} + ${article.thumb2}" alt="상품이미지" width="480px;" style="box-sizing: border-box;">
+	        </div>
+	        <div class="summary">
+	            <nav>
+	                <h1>(주)123]</h1>
+	                <h2>상품번호&nbsp;:&nbsp;<span>[[${article.proNo}]]</span></h2>
+	                <input type="hidden" name="proNo" th:value="${article.proNo}">
+	            </nav>
+	            <nav>
+	                <h3>[[${article.proName}]]</h3>
+	                <p>[[${article.descript}]]</p>
+	                <h5 class="rating star4"><a href="#">상품평보기</a></h5>
+	            </nav>
+	            <nav>
+	                <div class="org_price" th:if="${article.discount} != 0">
+	                    <del>[[${article.price}]]원</del>
+	                    <span>[[${article.discount}]]%</span>
+	                    <input type="hidden" name="uid" th:value="${uid}">
+	                    <input type="hidden" name="discount" th:value="${article.discount}">
+	                    <input type="hidden" name="price" th:value="${article.price}">
+	                    <input type="hidden" name="delivery" th:value="${article.delivery}">
+	                    <input type="hidden" name="point" th:value="${article.point}">
+	                </div>
+   	                <div class="dis_price" data-th-text="${#numbers.formatInteger(roundPrice , 3, 'COMMA')} + ' 원'" style="font-weight: bold;"></div>
+   	                <input type="hidden" name="disPrice" th:value="${roundPrice}">
+	            </nav>
+	            <nav with="">
+	                <span class="delivery" th:if="${article.delivery} != 0">[[${article.delivery}]]</span>
+	                <span class="delivery" th:if="${article.delivery} == 0">무료배송</span>
+	                <span class="arrival"></span>
+	                <span class="desc">본 상품은 국내배송만 가능합니다.</span>
+	            </nav>
+	            <nav>
+	                <span class="card cardfree"><i>아이콘</i>무이자할부</span>&nbsp;&nbsp;
+	                <span class="card cardadd"><i>아이콘</i>카드추가혜택</span>
+	            </nav>
+	            <nav>
+	                <span class="origin">원산지-상세설명 참조</span>
+	            </nav>
+	            <img th:src="@{/img/main/vip_plcc_banner.png}" alt="100원만 결제해도 1만원 적립!" class="banner">
+	            
+	            <div class="count">
+	                <button class="decrease">-</button>
+	                <input type="text" name="num" value="1" class="quantity" readonly>
+	                <button class="increase">+</button>
+	            </div>
+	            <div class="total">
+	                <span class="totalPrice"></span>
+	                <em>총 상품금액</em>
+	            </div>
+	            <div class="button">
+	                <input type="text" class="cart" value="장바구니">
+	                <input type="text" class="order" value="구매하기" >
+	            </div>
+	        
+	        </div>
+	    </article>
+	
+	    <!-- 상품 정보 내용-->
+	    <article class="detail">
+	        <nav>
+	            <h1>상품정보</h1>
+	        </nav>
+	        <!-- 상품 상세페이지 이미지 -->
+	        <img alt="상세페이지1" th:src="@{/file/} + ${article.detail}">
+	    </article>
+	
+	    <!-- 상품 정보 제공 고시 내용 -->
+	    <article class="notice">
+	        <nav>
+	            <h1>상품 정보 제공 고시</h1>
+	            <p>[전자상거래에 관한 상품정보 제공에 관한 고시] 항목에 의거 등록된 정보입니다.</p>
+	        </nav>
+	        <table border="0">
+	            <tr>
+	                <td>상품번호</td>
+	                <td>[[${article.proNo}]]</td>
+	            </tr>
+	            <tr>
+	                <td>상품상태</td>
+	                <td>[[${article.status}]]</td>
+	            </tr>
+	            <tr>
+	                <td>부가세 면세여부</td>
+	                <td>[[${article.duty}]]</td>
+	            </tr>
+	            <tr>
+	                <td>영수증발행</td>
+	                <td>[[${article.receipt}]]</td>
+	            </tr>
+	            <tr>
+	                <td>사업자구분</td>
+	                <td>[[${article.bizType}]]</td>
+	            </tr>
+	            <tr>
+	                <td>브랜드</td>
+	                <td>[[${article.company}]]</td>
+	            </tr>
+	            <tr>
+	                <td>원산지</td>
+	                <td>[[${article.origin}]]</td>
+	            </tr>
+	        </table>
+	        <table border="0">
+	            <tr>
+	                <td>제품소재</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td>색상</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td>치수</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td>제조자/수입국</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td>제조국</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td>취급시 주의사항</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td>제조연월</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td>품질보증기준</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td>A/S 책임자와 전화번호</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td>주문후 예상 배송기간</td>
+	                <td>상세정보 직접입력</td>
+	            </tr>
+	            <tr>
+	                <td colspan="2">구매, 교환, 반품, 배송, 설치 등과 관련하여 추가비용, 제한조건 등의 특이사항이 있는 경우</td>
+	            </tr>
+	        </table>
+	        <p class="notice">
+	            소비자가 전자상거래등에서 소비자 보호에 관한 법률 제 17조 제1항 또는 제3항에 따라 청약철회를 하고
+	            동법 제 18조 제1항 에 따라 청약철회한 물품을 판매자에게 반환하였음에도 불구 하고 결제 대금의
+	            환급이 3영업일을 넘게 지연된 경우, 소비자 는 전자상거래등에서 소비자보호에 관한 법률 제18조
+	            제2항 및 동법 시행령 제21조 2에 따라 지연일수에 대하여 전상법 시행령으로 정하는 이율을 곱하여
+	            산정한 지연이자(“지연배상금”)를 신청할 수 있습니다. 아울러, 교환∙반품∙보증 및 결제대금의
+	            환급신청은 [나의쇼핑정보]에서 하실 수 있으며, 자세한 문의는 개별 판매자에게 연락하여 주시기 바랍니다.
+	        </p>
+	    </article>
+	
+	    <!-- 상품 리뷰 내용-->
+	    <article class="review">
+	        <nav>
+	            <h1>상품리뷰</h1>
+	        </nav>
+	        <ul>
+	            <li>
+	                <div>
+	                    <h5 class="rating star4">상품평</h5>
+	                    <span></span>
+	                </div>
+	                <h3></h3>
+	                <p></p>
+	            </li>
+	        </ul>
+	        <div class="paging">
+	            <span class="prev">
+	                <a href="#">< &nbsp;이전</a>
+	            </span>
+	            <span class="num">
+	                <a href="#" class="on">1</a>
+	                <a href="#">2</a>
+	                <a href="#">3</a>
+	                <a href="#">4</a>
+	                <a href="#">5</a>
+	                <a href="#">6</a>
+	                <a href="#">7</a>
+	            </span>
+	            <span class="next">
+	                <a href="#">다음 &nbsp;></a>
+	            </span>
+	        </div>
+	    </article>
+	</section>
+	<!-- 상품 상세페이지 끝-->
+	
+</main>
+<th:block th:include="@{product/_footer.html}"/>

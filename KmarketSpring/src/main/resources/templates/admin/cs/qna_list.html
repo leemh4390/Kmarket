@@ -1,0 +1,162 @@
+<th:block th:include="@{admin/_header.html}"/>
+<script>
+	
+	$(document).ready(function(){
+		
+		$('input[name=all]').click(function(){
+			if($('input[name=all]').is(':checked')) $('input[type=checkbox]').prop("checked",true);
+			else $('input[type=checkbox]').prop('checked',false) ;
+		});
+		
+		$('input[name=check1]').click(function(){
+			let total = $('input:checkbox[name=check1]').length;
+			let length = $('input:checkbox[name=check1]:checked').length;
+			
+			if(total != length){
+				$('input[name=all]').prop('checked',false);
+			}else{
+				$('input[name=all]').prop('checked',true);
+			}
+		});
+		
+		$('input[name=btnQnaArticleDelete]').click(function(){
+			let arr = [];
+			let check = $('input[name=check1]:checked');
+			let length = $('input:checkbox[name=check1]:checked').length;
+			
+			$(check).each(function(){
+				arr.push($(this).val());
+			});						
+			
+			let jsonData = {'arr' : arr};
+			
+			if(length == 0) {
+				alert('체크 확인');
+			}else{
+				let answer = confirm('삭제 ? ');
+				
+				if(answer){
+					$.ajax({
+						url : '/Kmarket/admin/deleteQnaArticle',
+						method : 'GET',
+						traditional : true,
+						data : jsonData,
+						dataType : 'json',
+						success : function(data){
+							if(data.result > 0){
+								alert(data.result + "건 삭제되었습니다."); //왜 2개 체크하면 alert 가 안 뜰까?
+								location.href="/Kmarket/admin/qna_list";
+							};
+						}
+					});
+				}
+			}
+		});
+		
+		$('select[name=cate1]').change(function(){
+			let cate1 = $('select[name=cate1]').val();
+			
+			let jsonData = {'cate1' : cate1};
+			
+			$.ajax({
+				url : '/Kmarket/admin/select_Bd_Cate2',
+				method : 'GET',
+				data : jsonData,
+				dataType : 'json',
+				success : function(data){
+					$('select[name=cate2]').show();
+					$('select[name=cate2]').empty();
+					let tags  = "<option>2차 선택</option>";
+					$('select[name=cate2]').append(tags);
+					//data.result[0].c2Name
+					data.result.forEach(function(item){
+						let	tags = "<option value='"+item.cate2+"'>"+item.c2Name+"</option>";
+						$('select[name=cate2]').append(tags);
+						
+					});
+				}
+			});
+		});
+		
+		
+		$('select[name=cate2]').change(function(){
+			
+			let cate1 = $('select[name=cate1]').val();
+			let cate2 = $('select[name=cate2]').val();
+			
+			
+			
+			
+		});
+	});
+	
+</script>
+<article class="article_list">
+    <nav>
+        <h3>문의하기 목록</h3>
+        <p>
+            HOME > 고객센터 > <strong>문의하기</strong>
+        </p>
+    </nav>
+    <section>
+        <select name="cate1" style="margin-right: 5px;">
+            <option value="1">1차 선택</option>
+            <option th:each="cate1 : ${cate1s}" th:value="${cate1.cate1}">[[${cate1.c1Name}]]</option>
+        </select>
+        <select name="cate2" style="width: 150px; display: none;">
+			<option value="2">2차 선택</option>
+        </select>
+        <table border="0" class="table">
+            <tr class="qna">
+                <th><input type="checkbox" name="all"></th>
+                <th>번호</th>
+                <th>유형</th>
+                <th>제목</th>
+                <th>날짜</th>
+                <th>관리</th>
+            </tr>
+            <tr th:each="article,i:${articles}" class="qna_list">
+                <td><input type="checkbox" name="check1" th:value="${article.no}"></td>
+                <td>
+                	<input type="hidden" name="no" th:value="${article.no}">
+                	<span>[[${pageStartNum - i.index}]]</span>
+                </td>
+                <td>[[${article.c2Name}]]</td>
+                <td class="article_title">
+                	<p th:if="${article.status} == 1">
+						<a th:href="@{/admin/qna_view(no=${article.no})}">[[${article.title}]]</a>
+					</p>
+					<p th:if="${article.status} == 0">
+						<a th:href="@{/admin/qna_reply(no=${article.no})}">[[${article.title}]]</a>
+					</p>		
+                </td>
+                <td>[[${article.rdate}]]</td>
+                <td th:if="${article.status == 0}">
+                    검토중
+                </td>
+                <td th:if="${article.status == 1}" style="color: blue; font-weight: bold">
+                    답변완료
+                </td>
+            </tr>
+        </table>
+        <div class="button">
+            <a href=""><input type="button" name="btnQnaArticleDelete" value="선택삭제"></a>
+        </div>
+		<div class="list_page" style="margin-top: 50px;">
+    	    <span class="prev" th:if="${groups[0]>=1}">
+                <a th:href="@{/admin/qna_list(pg=${groups[0]-1})}">< 이전</a>
+            </span>			
+			<span class="num">
+				<th:block th:each="num:${#numbers.sequence(groups[0],groups[1])}">
+    				<a th:href="@{/admin/qna_list(pg=${num})}" 
+    					th:class="${num==currentPage ? 'on':'off'}"+"${num==currentPage?'num current':'num'}">[[${num}]]</a>
+				</th:block>
+			</span>
+			<span class="next" th:if="${groups[1] <= lastPageNum}">
+				<a th:href="@{/admin/qna_list(pg=${groups[1]+1})}">다음 ></a>
+            </span>
+		</div>
+    </section>
+</article>
+</main>
+<th:block th:include="@{admin/_footer.html}"/>

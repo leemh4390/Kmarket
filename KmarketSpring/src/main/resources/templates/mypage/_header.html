@@ -1,0 +1,98 @@
+<th:block th:fragment="mypage_header">
+	<header>
+            <div class="top">
+                <div>
+                    <th:block sec:authorize="!isAuthenticated()">
+	                    <a th:href="@{/member/login}">로그인</a>
+	                    <a th:href="@{/member/join}">회원가입</a>
+                	</th:block>
+                	<th:block sec:authorize="isAuthenticated()">
+                		<!-- <span sec:authentication="principal.name"><strong>님 환영합니다. |</strong></span> -->
+	                    <a th:href="@{/member/logout}">로그아웃</a>
+	                    <th:block sec:authorize="hasAnyRole('4','5')">
+	                    	<a th:href="@{/admin/index}">관리자</a>
+	                    </th:block>
+                	</th:block>
+                    <a th:href="@{/mypage/home}">마이페이지</a>
+                    <a th:href="@{/product/cart}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> &nbsp;장바구니</a>
+                </div>
+            </div>
+            
+            <div class="logo">
+                <div>
+                    <a th:href="@{/index}"><img th:src="@{/img/myPage/header_logo.png}" alt="로고"></a>
+                    <form action="#">
+                        <input type="text" name="keyword">
+                        <button><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="info">
+                <div>
+                    <a th:href="@{/mypage/home}">
+                        <img th:src="@{/img/myPage/my_logo.jpg}" alt="마이페이지">
+                    </a>
+                    <ul>
+                        <li>주문·배송
+                            <img class="deli" th:src="@{/img/myPage/ico_delivery.png}" alt="주문배송">
+                            <span>[[${ordCount}]]</span>
+                        </li>
+                        <li>할인쿠폰
+                            <img class="coupon" th:src="@{/img/myPage/ico_coupon.jpg}" alt="할인쿠폰">
+                            <span>[[${info.coupon}]]</span>
+                        </li>
+                        <li>포인트
+                            <img class="point" th:src="@{/img/myPage/ico_point.jpg}" alt="포인트">
+                            <span>[[${#numbers.formatInteger(info.point, 0, 'COMMA')}]]</span>
+                        </li>
+                        <li>문의내역
+                            <img class="qna" th:src="@{/img/myPage/ico_qna.png}" alt="문의내역">
+                            <span>[[${count}]]</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="home">
+                <article class="navi">
+                    <div class="sprite"></div>
+                    <ul>
+                        <li><a th:href="@{/mypage/order}">전체주문내역</a></li>
+                        <li><a th:href="@{/mypage/point}">포인트내역</a></li>
+                        <li><a th:href="@{/mypage/coupon}">쿠폰</a></li>
+                        <li><a th:href="@{/mypage/review}">나의리뷰</a></li>
+                        <li><a th:href="@{/mypage/qna}">문의하기</a></li>
+                        <li><a th:href="@{/mypage/info}">나의설정</a></li>
+                    </ul>
+                </article>
+            <section>
+</th:block>
+
+<th:block th:fragment="mypage_footer">
+	<footer>
+	    <div>
+	        <a th:href="@{/company/index}" target="_blank">| 회사소개 </a>
+            <a th:href="@{/termsPolicy/buyer}">| 서비스이용약관 </a>
+            <a th:href="@{/termsPolicy/privacy}">| 개인정보이용방침 </a>
+            <a th:href="@{/termsPolicy/finance}">| 전자금융거래약관 |</a>
+	    </div>
+	    <div class="footerlogo">
+	        <img th:src="@{/img/myPage/footer_logo.png}" alt="FooterLogo">
+	        <div>
+	            <span>(주)KMARKET</span>
+	            <p>부산시 강남구 테헤란로 152 (역삼동 강남파이낸스센터)</p><br/>
+	            <p>대표이사 : 홍길동</p><br/>
+	            <p>사업자등록번호 : 220-81-83676 사업자정보확인</p><br/>
+	            <p>통신판매업신고 : 강남 10620호 Fax : 02-589-8842</p><br/>
+	        </div>
+	        <div>
+	            <span>고객센터</span>
+	            <p>Tel : 1234-5678 (평일 09:00~18:00)</p><br/>
+	            <p>스마일클럽/SVIP 전용 : 1522-5700 (365일 09:00~18:00)</p><br/>
+	            <p>경기도 부천시 원미구 부일로 223(상동) 투나빌딩 6층</p><br/>
+	            <p>Fax : 051-123-4567 | Mail : Kamrket@Kmarket.co.kr</p><br/>
+	        </div>
+	    </div>
+	</footer>
+</th:block>

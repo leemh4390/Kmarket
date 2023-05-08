@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>주문상세</title>
+    <link rel="stylesheet" th:href="@{/css/popup_style.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="./css/star-rating-svg.css">
+
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 주문상세 팝업 -->
+        <div id="popOrder" class="popup">
+            <div>
+                <nav>
+                    <h1>주문상세</h1>
+                    <button class="btnClose">X</button>
+                </nav>
+                <section>
+                    <article class="order">
+                        <h3>주문정보</h3>
+                        <table border="0">
+                            <tr>
+                                <th>날짜</th>
+                                <th>상품정보</th>
+                                <th>결제금액</th>
+                                <th>상태</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="date">[[${vo.rdate}]]</p>
+                                    주문번호 : <span class="ordNo">[[${vo.ordNO}]]</span>
+                                </td>
+                                <td>
+                                    <img th:src="@{/image/}+${vo.thumb1}" style="width:80px; height:80px;" alt="썸네일">
+                                    <ul>
+                                        <li class="company">[[${vo.company}]]</li>
+                                        <li class="prodName">[[${vo.prodName}]]</li>
+                                        <li>수량 : <span class="prodCount">[[${vo.count}]]</span>개</li>
+                                        <li class="prodPrice">[[${vo.price}]]</li>
+                                    </ul>
+                                </td>
+                                <td class="payment">
+                                    <ol>
+                                        <li class="price">
+                                            <span>판매가</span>
+                                            <span>[[${vo.price}]]원</span>
+                                        </li>
+                                        <li class="discount">
+                                            <span>할인</span>
+                                            <span>[[${vo.discount}]]원</span>
+                                        </li>
+                                        <li class="total">
+                                            <span>결제금액</span>
+                                            <span>[[${vo.total}]]원</span>
+                                        </li>
+                                    </ol>
+                                </td>
+                                <td class="status" th:if="${vo.ordComplete == '0'}">결제대기</td>
+                                <td class="status" th:if="${vo.ordComplete == '1'}">결제완료</td>
+                                <td class="status" th:if="${vo.ordComplete == '2'}">주문완료</td>
+                                <td class="status" th:if="${vo.ordComplete == '3'}">배송준비</td>
+                                <td class="status" th:if="${vo.ordComplete == '4'}">배송완료</td>
+                                <td class="status" th:if="${vo.ordComplete == '5'}">수취확인</td>
+                            </tr>
+                        </table>
+                    </article>
+                    <article class="delivery">
+                        <h3>배송정보</h3>
+                        <table border="0">
+                            <tr>
+                                <th>주문자</th>
+                                <td class="name">[[${vo.recipname}]]</td>
+                            </tr>
+                            <tr>
+                                <th>연락처</th>
+                                <td class="hp">[[${vo.recipHp}]]</td>
+                            </tr>
+                            <tr>
+                                <th>배송지</th>
+                                <td class="address">[[${vo.recipZip}]] [[${vo.recipAddr1}]] [[${vo.recipAddr2}]]</td>
+                            </tr>
+                            <tr>
+                                <th>배송요청사항</th>
+                                <td class="request">없음</td>
+                            </tr>                        
+                        </table>
+                    </article>
+                </section>
+            </div>
+        </div>
+        <!-- 주문상세 팝업 끝 -->
+    </div>
+
+</body>
+</html>

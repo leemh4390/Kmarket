@@ -1,0 +1,105 @@
+<th:block th:include="@{product/_header.html}"/>
+<th:block th:include="@{product/_aside.html}"/>
+
+    <section class="list">
+        <!-- 제목, 페이지 네비게이션 -->
+        <nav>
+            <h1>상품목록</h1>
+            <p>HOME > 
+            	<span th:if="${arg0} == '11'">패션·의류·뷰티</span>
+	            <span th:if="${arg0} == '15'">가전·디지털</span>
+	            <span th:if="${arg0} == '13'">식품·생필품</span>
+	            <span th:if="${arg0} == '14'">홈·문구·취미</span> > 
+
+	            <strong th:if="${arg0} == '11' and ${arg1} == '11'">남성의류</strong>
+	            <strong th:if="${arg0} == '11' and ${arg1} == '10'">여성의류</strong>
+	            <strong th:if="${arg0} == '11' and ${arg1} == '14'">잡화</strong>
+	            <strong th:if="${arg0} == '11' and ${arg1} == '16'">뷰티</strong>
+
+	            <strong th:if="${arg0} == '15' and ${arg1} == '10'">노트북</strong>
+	            <strong th:if="${arg0} == '15' and ${arg1} == '16'">가전</strong>
+	            <strong th:if="${arg0} == '15' and ${arg1} == '13'">휴대폰</strong>
+	            <strong th:if="${arg0} == '15' and ${arg1} == '11'">기타</strong>
+
+	            <strong th:if="${arg0} == '13' and ${arg1} == '10'">신선식품</strong>
+	            <strong th:if="${arg0} == '13' and ${arg1} == '11'">가공식품</strong>
+	            <strong th:if="${arg0} == '13' and ${arg1} == '12'">건강식품</strong>
+	            <strong th:if="${arg0} == '13' and ${arg1} == '14'">생필품</strong>
+
+	            <strong th:if="${arg0} == '14' and ${arg1} == '10'">가구</strong>
+	            <strong th:if="${arg0} == '14' and ${arg1} == '11'">침구·커튼</strong>
+	            <strong th:if="${arg0} == '14' and ${arg1} == '13'">생활용품</strong>
+            </p>
+        </nav>
+		<table border="1" class="searchTable">
+            <tr>
+                <td>
+                	<h3 class="keyword">[[${keyword}]] 검색결과 </h3>
+                	<span>(총 : [[${total}]] 건)</span>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"></td>
+                <td><input type="button" value="검색" class="search"></td>
+                <td>
+                    <input type="checkbox">
+                    <label for="">상품명</label>
+                    
+                </td>
+                <td>
+                    <input type="checkbox">
+                    <label for="">설명</label>
+                </td>
+                <td>
+                    <input type="checkbox">
+                    <label for="">가격</label>
+                </td>
+                <td>
+                    <input type="text">~
+                    <input type="text">
+                </td>
+            </tr>
+        </table>
+        <!-- 정렬메뉴-->
+        <ul class="sort">
+            <li><a th:href="@{/product/list(arg0=${arg0},arg1=${arg1},arg2=sold,pg=1)}" class="on">판매많은순</a></li>
+            <li><a th:href="@{/product/list(arg0=${arg0},arg1=${arg1},pg=1)}">낮은가격순</a></li>
+            <li><a th:href="@{/product/list(arg0=${arg0},arg1=${arg1},arg2=price,pg=1)}">높은가격순</a></li>
+            <li><a th:href="@{/product/list(arg0=${arg0},arg1=${arg1},arg2=score,pg=1)}">평점높은순</a></li>
+            <li><a th:href="@{/product/list(arg0=${arg0},arg1=${arg1},arg2=review,pg=1)}">후기많은순</a></li>
+            <li><a th:href="@{/product/list(arg0=${arg0},arg1=${arg1},arg2=rdate,pg=1)}">최근등록순</a></li>
+        </ul>
+
+        <!-- 상품목록 -->
+        <table>
+            <tr th:each="product:${list}">
+                <td><a href="#" class="thumb"><img th:src="@{/image/}+${product.thumb1}" alt="상품이미지"></a></td>
+                <td>
+                    <h3 class="name">[[${product.prodName}]]</h3>
+                    <a th:href="@{view(arg0=${arg0},arg1=${arg1},arg2=${arg2},pg=${pg},param1=${product.prodNo})}" class="desc">[[${product.descript}]]</a>
+                </td>
+                <td>
+                    <ul>
+                        <li><ins class="dis-price" th:with="price=${product.price *(100-product.discount)/100}" data-th-text="${#numbers.formatInteger(price, 3, 'COMMA') + '원'}"></ins></li>
+                        <li th:if="${product.discount} != null">
+                            <del class="org-price" th:text=${product.price}></del>
+                            <span class="discount">[[${product.discount}]]%</span>
+                        </li>
+                        <li>
+                        	<span th:if="${product.delivery} != '0'" data-th-text="${'배송비 ' + #numbers.formatInteger(product.delivery, 3, 'COMMA')}"></span>
+                        	<span th:unless="${product.delivery} != '0'" class="free-delivery">무료배송</span>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <h4 class="seller"><i class="fas fa-home"></i>&nbsp;[[${product.seller}]]</h4>
+                    <h5 class="badge power">판매자등급</h5>
+                    <h6 class="rating star1">상품평</h6>
+                </td>
+            </tr>
+        </table>
+
+    </section>
+</main>
+<th:block th:include="@{product/_footer.html}"/>
+        

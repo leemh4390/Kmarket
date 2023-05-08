@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓</title>
+    <link rel="stylesheet" th:href="@{/css/cs_style.css}">
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="cs/_header.html  :: cs_header"></th:block>
+        <main>
+            <div class="list_nav">
+                <div>
+                    <p>홈 > 문의하기</p>
+                </div>
+            </div>
+            <div class="list">
+                <th:block th:replace="cs/_cate.html  :: cs_qnaGroup"></th:block>
+                <div>
+                    <div class="title">
+                        <p>&#91;[[${vo.cate}]]&#93; [[${vo.title}]]</p>
+                        <span>[[${vo.uid}]] [[${vo.rdate}]]</span>
+                    </div>
+                    <div class="content">
+                        <p>
+                        	[[${vo.content}]]
+                        </p>
+                    </div>
+                    <div class="content comment" th:if="${vo.comment > 0}">
+                        <span>☞[답변] [[${vo.title}]]</span>
+                        <p>
+                        	[[${vo.reply}]]
+                        </p>
+                    </div>
+                    <a th:href="@{/cs/qna/list(group=${group}, pg=${pg})}" class="goList">목록보기</a>
+                </div>
+            </div>
+        </main>
+        <th:block th:replace="cs/_footer.html :: cs_footer"></th:block>
+    </div>
+</body>
+</html>

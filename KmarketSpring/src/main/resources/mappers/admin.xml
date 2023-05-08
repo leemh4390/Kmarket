@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = mapper파일의 아이디 값 -->
+<mapper namespace="kr.co.kmarket.dao.AdminDAO">
+
+	<insert id="insertAdminFaq">
+		insert into `bd_faq` set 
+								 `cate1`   = #{cate1},
+								 `cate2`   = #{cate2},
+								 `title`   = #{title},
+								 `content` = #{content},
+								 `uid`	   = 'user',
+								 `rdate`   = now();
+	</insert>
+	
+	<insert id="insertAdminNotice">
+		insert into `bd_notice` set 
+								 `cate1`   = #{cate1},
+								 `cate2`   = #{cate2},
+								 `title`   = #{title},
+								 `content` = #{content},
+								 `uid`	   = 'user',
+								 `rdate`   = now();
+	</insert>
+	
+	
+	<insert id="insertAdminQnaReply">
+		INSERT INTO `bd_qna` SET
+									`parent` = #{no},
+									`comment` = 1,
+									`content` = #{content},
+									`uid` = 'user',
+									`rdate` = NOW();
+	</insert>
+	
+	<select id="selectAdminNoticeCate" resultType="String">
+		SELECT c1Name FROM `bd_notice_cate` WHERE `cate1` = #{cate1};
+	</select>
+	
+	
+	<select id="selectFaqLists" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT a.*,b.c2Name 
+							FROM `bd_faq` 
+								AS a JOIN `bd_cate2` 
+									AS b ON a.cate1 = b.cate1 
+										AND a.cate2 = b.cate2 
+											WHERE `parent` = 0 order by `no` desc limit #{start}, 10 ;
+	</select>
+	
+	<select id="selectNoticeLists" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_notice` AS a 
+			JOIN `bd_notice_cate` AS b 
+				ON a.cate1 = b.cate1
+					WHERE a.parent = 0 order by a.`no` desc limit #{start}, 10 ;
+	</select>
+	
+	<select id="selectQnaLists" resultType="kr.co.kmarket.vo.QnaVO">
+		SELECT * FROM `bd_qna` AS a 
+			JOIN `bd_cate2` AS b 
+				ON a.cate1 = b.cate1 AND a.cate2 = b.cate2
+					WHERE a.parent = 0 order by a.`no` desc limit #{start}, 10 ;
+	</select>	
+
+	
+	<select id="selectCountFaqTotal" resultType="int">
+		SELECT COUNT(`no`) FROM `bd_faq`;
+	</select>
+	
+	<select id="selectCountNoticeTotal" resultType="int">
+		SELECT COUNT(`no`) FROM `bd_notice`;
+	</select>
+	
+	<select id="selectCountQnaTotal" resultType="int">
+		SELECT COUNT(`no`) FROM `bd_qna`;
+	</select>
+						
+	<select id="selectFaqView" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT a.*,b.c2Name FROM `bd_faq` AS a JOIN `bd_cate2` AS b ON a.cate1 = b.cate1 AND a.cate2 = b.cate2 WHERE `no` = #{no};
+	</select>
+	
+	<select id="selectNoticeView" resultType="kr.co.kmarket.vo.NoticeVO">
+		select * from `bd_notice` where `no` = #{no};
+	</select>
+	
+	<select id="selectQnaView" resultType="kr.co.kmarket.vo.QnaVO">
+		
+		SELECT a.*, b.c2Name 
+			FROM 
+				`bd_qna` AS a 
+			JOIN 
+			`bd_cate2` AS b	ON a.cate1 = b.cate1 
+			AND 
+				a.cate2 = b.cate2 
+			WHERE 
+				`no` = #{no};
+		
+	</select>
+	
+	<select id="selectQnaReplyView" resultType="kr.co.kmarket.vo.QnaVO">
+		SELECT * FROM `bd_qna` WHERE `parent` = #{no};
+	</select>
+	
+	<select id="selectQnaReply" resultType="kr.co.kmarket.vo.QnaVO">
+		SELECT * FROM `bd_qna` AS a JOIN `bd_cate2` AS b ON a.cate1 = b.cate1 
+			AND a.cate2 = b.cate2 
+				WHERE `no` = #{no} AND `status` = 0;
+	</select>
+	
+	
+	<update id="updateFaqModify">
+		UPDATE `bd_faq` SET 
+							`title` =  #{title} , 
+							`content` = #{content} 
+						WHERE `no` = #{no};
+	</update>
+	
+	<update id="updateNoticeModify">
+		UPDATE `bd_notice` SET 
+							`cate1` = #{cate1},
+							`cate2` = #{cate2},
+							`title` =  #{title} , 
+							`content` = #{content} 
+						WHERE `no` = #{no};
+	</update>
+	
+	<update id="updateQnaStatus">
+		UPDATE `bd_qna` SET
+					`status` = 1
+				WHERE 
+					`no` = #{no};
+	</update>
+	
+	<select id="select_Bd_Cate1" resultType="kr.co.kmarket.vo.Bd_Cate1VO">
+		SELECT * FROM `bd_cate1`;
+	</select>
+	
+	<select id="select_Bd_Cate2" resultType="kr.co.kmarket.vo.Bd_Cate2VO">
+		SELECT * FROM `bd_cate2` WHERE `cate1` = #{cate1};
+	</select>
+	
+	<select id="select_Bd_Notice_Cate" resultType="kr.co.kmarket.vo.Bd_Notice_CateVO">
+		select * from `bd_notice_cate`;
+	</select>
+	
+	<select id="selectArticleLists" resultType="kr.co.kmarket.vo.CsVO">
+		  <![CDATA[
+		    SELECT a.*, b.c2Name
+		    FROM bd_faq AS a
+		    JOIN bd_cate2 AS b ON a.cate1 = b.cate1 AND a.cate2 = b.cate2
+		    WHERE a.cate1 = #{cate1} AND b.cate2 = #{cate2}
+		    order by `no` desc;
+		  ]]>
+	</select>
+	
+	<select id="selectNoticeArticleLists" resultType="kr.co.kmarket.vo.NoticeVO">
+		SELECT * FROM `bd_notice` WHERE `cate1` = #{cate1} order by `no` desc;
+	</select>
+	
+	
+	<select id="selectQnaSearch" resultType="kr.co.kmarket.vo.QnaVO">
+		SELECT * FROM `bd_qna` WHERE `cate1` = #{cate1} AND `cate2` = #{cate2};
+	</select>
+	
+	
+	<delete id="deleteFaqArticle">
+		delete from `bd_faq` where `no` = #{no};
+	</delete>
+	
+	<delete id="deleteNoticeArticle">
+		delete from `bd_notice` where `no` = #{no};
+	</delete>
+	
+	<delete id="deleteQnaReply">
+		DELETE FROM `bd_qna` WHERE `no` = #{no};
+	</delete>
+	
+	<delete id="deleteQnaReply2">
+		DELETE FROM `bd_qna` WHERE `parent` = #{no};
+	</delete>
+	
+	<select id="selectQnaStatus" resultType="int">
+		SELECT `status` FROM `bd_qna` WHERE `no` = #{no};
+	</select>
+
+
+</mapper>

@@ -1,0 +1,175 @@
+<th:block th:include="@{admin/_header.html}"/>
+<script>
+
+	$(document).ready(function(){
+		
+		$('input[name=check]').click(function(){
+			
+			let allCheck = $('input[name=allCheck]');
+			let length   = $('input:checkbox[name=check]').length;
+			let lengths  = $('input:checkbox[name=check]:checked').length;
+			
+		    if(length == lengths){
+		        allCheck.prop('checked', true);
+		    } else {
+		        allCheck.prop('checked', false);
+		    }			
+			
+		});
+		
+		
+		$('input[name=allCheck]').click(function(){
+			
+			let allCheck = $('input[name=allCheck]').prop('checked');
+			
+			if(allCheck){
+				$('input[name=check]').prop('checked',true);
+			}else{
+				$('input[name=check]').prop('checked',false);
+			}
+			
+		});
+		
+		$('input[name=NoticeDeleteArticles]').click(function(){
+			
+			let arr = [];
+			let check = $('input:checkbox[name=check]:checked');
+			let length = $('input:checkbox[name=check]:checked').length;
+			
+			$(check).each(function(){
+				arr.push($(this).val());
+			});
+			
+			//alert(arr);
+			
+			let jsonData = {'arr' : arr};
+			
+			if(length == 0) {
+				alert('체크 확인');
+			}else{
+				
+				let answer = confirm('삭제 ? ');
+				
+				$.ajax({
+					url : '/Kmarket/admin/NoticeDeleteArticles',
+					method : 'GET',
+					traditional : true,
+					data : jsonData,
+					dataType : 'json',
+					success : function(data){
+						alert(data.result + " 건 삭제되었습니다.");
+						location.href='/Kmarket/admin/notice_list';
+					}
+				});
+			}
+		});
+		
+		
+		$('select[name=cate1]').change(function(){
+			
+			let cate1 = $('select[name=cate1]').val();
+			
+			//alert(cate1  + ", " + cate2);
+			
+			let jsonData = {'cate1' : cate1};
+			
+			$.ajax({
+				url : '/Kmarket/admin/selectNoticeArticleLists',
+				method : 'GET',
+				data : jsonData,
+				dataType : 'json',
+				success : function(data){
+					$('tr[class=notice_list]').empty();
+					if(data.result.length == 0){
+						alert('일치하는 결과가 없습니다.')	
+					}else{
+						let i = 0;
+						for(let list of data.result){
+							i++;
+							let tags  = "<tr class='notice_list'>";
+								tags += "<td><input type='checkbox' name='check' value='"+list.no+"'></td>";
+								tags += "<td>"+( data.result.length - i + 1)+"</td>";
+								tags += "<td>"+list.cate2+"</td>";
+								tags += "<td>"+list.title+"</td>";
+								tags += "<td>"+list.hit+"</td>";
+								tags += "<td>"+list.rdate+"</td>";
+								tags += "<td>";
+								tags += "<a href='/Kmarket/admin/notice_modify?no="+list.no+"' style='display: block;'>[수정]</a>";
+								tags += "<a href='/Kmarket/admin/notice_delete?no="+list.no+"'>[삭제]</a>";
+								tags += "</td>";
+								tags += "</tr>";
+							$('table[class=notice_table]').append(tags);
+						}
+					}
+				}
+			});
+		});
+	});
+
+
+</script>
+<article class="article_list">
+    <nav>
+        <h3>공지사항 목록</h3>
+        <p>
+            HOME > 고객센터 > <strong>공지사항</strong>
+        </p>
+    </nav>
+    <section>
+        <select name="cate1">
+            <option value="0">유형선택</option>
+            <option th:each="cate1 : ${cate1s}" th:value="${cate1.cate1}">[[${cate1.c1Name}]]</option>
+        </select>
+        <table border="0" class="notice_table">
+            <tr>
+                <th><input type="checkbox" name="allCheck"></th>
+                <th>번호</th>
+                <th>유형</th>
+                <th>제목</th>
+                <th>조회</th>
+                <th>날짜</th>
+                <th>관리</th>
+            </tr>
+            <tr th:each="list,i : ${lists}" class="notice_list">
+                <td><input type="checkbox" name="check" th:value="${list.no}"></td>
+                <td>
+                	[[${pageStartNum - i.index}]]
+                </td>
+                <td>
+                	[[${list.c1Name}]]
+                </td>
+                <td class="article_title">
+                	<p>
+						 <a th:href="@{/admin/notice_view(no=${list.no})}" class="list" name="title">[[${list.title}]]</a>               	
+                	</p>			
+                </td>
+                <td>[[${list.hit}]]</td>
+                <td>[[${list.rdate}]]</td>
+                <td>
+                    <a th:href="@{/admin/notice_modify(no=${list.no})}" style="display: block;">[수정]</a>
+                    <a th:href="@{/admin/notice_delete(no=${list.no})}">[삭제]</a>
+                </td>
+           	</tr>
+        </table>
+        <div class="button">
+            <a href=""><input type="button" name="NoticeDeleteArticles" value="선택삭제"></a>
+            <a th:href="@{/admin/notice_write}"><input type="button" value="등록하기"></a>
+        </div>
+        <div class="list_page" style="margin-top: 50px;">
+        	    <span class="prev" th:if="${groups[0]> 1}">
+                    <a th:href="@{/admin/notice_list(pg=${groups[0]-1})}">< 이전</a>
+                </span>
+				<span class="num">
+					<th:block th:each="num:${#numbers.sequence(groups[0],groups[1])}">
+    					<a th:href="@{/admin/cs/qna/list(pg=${num})}" 
+    						th:class="${num==currentPage ? 'on':'off'}"+"${num==currentPage?'num current':'num'}">[[${num}]]</a>
+					</th:block>
+				</span>
+                <span class="next" th:if="${groups[1] < lastPageNum}">
+                    <a th:href="@{/admin/notice_list(pg=${groups[1]+1})}">다음 ></a>
+                </span>
+        </div>
+        </section>
+    </article>
+</main>
+<th:block th:include="@{admin/_footer.html}"/>

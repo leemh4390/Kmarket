@@ -1,0 +1,139 @@
+<th:block th:include="@{admin/_header.html}"/>
+<script>
+	$(document).ready(function(){
+		
+		$('input[name=check]').click(function(){
+			
+			let allCheck = $('input[name=allCheck]');
+			let length = $('input:checkbox[name=check]').length;
+			let lengths = $('input:checkbox[name=check]:checked').length;
+			
+		    if(length == lengths){
+		        allCheck.prop('checked', true);
+		    } else {
+		        allCheck.prop('checked', false);
+		    }			
+			
+		});
+		
+		
+		$('input[name=allCheck]').click(function(){
+			
+			let allCheck = $('input[name=allCheck]').prop('checked');
+			
+			if(allCheck){
+				$('input[name=check]').prop('checked',true);
+			}else{
+				$('input[name=check]').prop('checked',false);
+			}
+			
+		});
+		
+		$('input[name=btnAdminProductDelete]').click(function(){
+			
+			let arr = [];
+			let check = $('input:checkbox[name=check]:checked');
+			let length = $('input:checkbox[name=check]:checked').length;
+			
+			$(check).each(function(){
+				arr.push($(this).val());
+			});
+			
+			//alert(arr);
+			
+			let jsonData = {'arr' : arr};
+			
+			if(length == 0) {
+				alert('체크 확인');
+			}else{
+				
+				let answer = confirm('삭제 ? ');
+				
+				$.ajax({
+					url : '/Kmarket/admin/product/AdminProductDeleteArticles',
+					method : 'GET',
+					traditional : true,
+					data : jsonData,
+					dataType : 'json',
+					success : function(data){
+						alert(data.result + " 건 삭제되었습니다.");
+						location.href='/Kmarket/admin/product/list';
+					}
+				});
+			}
+		});
+	});
+</script>
+<article class="article_product_list">
+    <nav>
+        <h3>
+            상품현황
+        </h3>
+        <p>
+            HOME > 상품관리 > <strong> 상품목록 </strong> 
+        </p>
+    </nav>
+    <section>
+        <div class="search">
+            <span>검색 : </span>
+            <input type="text" placeholder="키워드 입력">
+            <input type="button" value="검색">
+        </div>
+        <table>
+            <tr>
+                <td><input type="checkbox" name="allCheck"></td>
+                <td>사진</td>
+                <td style="text-align: center;" width="200px">상품명</td>
+                <td>판매가격</td>
+                <td>할인율</td>
+                <td>포인트</td>
+                <td>재고</td>
+                <td>판매자</td>
+                <td>조회</td>
+                <td>관리</td>
+             </tr>
+             <tr th:each="article : ${articles}">
+                 <td>
+                 	<input type="checkbox" name="check" th:value="${article.proNo}">
+                 </td>
+                 <td><img th:src="@{/file/} + ${article.thumb1}"></td>
+                 <td>[[${article.proName}]]</td>
+                 <td>[[${article.price}]]</td>
+                 <td>[[${article.discount}]]</td>
+                 <td>[[${article.point}]]</td>
+                 <td>[[${article.stock}]]</td>
+                 <td>[[${article.seller}]]</td>
+                 <td>[[${article.hit}]]</td>
+                 <td>
+                     <a href="">|삭제|</a>
+                     <a href="">|수정|</a>
+                 </td>
+             </tr>
+            </table>
+            <div class="button">
+                <a href=""><input type="button" name="btnAdminProductDelete" value="선택삭제"></a>
+                <a th:href="@{/admin/product/register}"><input type="button" value="상품등록"></a>
+            </div>
+        	<div class="list_page" style="margin-top: 80px;">
+        	    <span class="prev" th:if="${groups[0]>=1}">
+                    <a th:href="@{/admin/product/list(pg=${groups[0]-1})}">< 이전</a>
+                </span>
+                <span class="num">
+                <th:block th:each="num:${#numbers.sequence(groups[0],groups[1])}">
+                    <a th:href="@{/admin/product/list(pg=${num})}" 
+                    	th:class="${num==currentPage ? 'on':'off'}"+"${num==currentPage?'num current':'num'}">[[${num}]]</a>
+                </th:block>
+                </span>
+                <span class="next" th:if="${groups[1] <= lastPageNum}">
+                    <a th:href="@{/admin/product/list(pg=${groups[1]+1})}">다음 ></a>
+                </span>
+        	</div>                        
+            <div class="tip" style="margin-top: 50px;">
+                <p>
+                    Tip! 전자상거래 등에서의 상품 등의 정보제공에 관한 고시에 따라 총 35개 상품군에 대해 상품 특성 등을 양식에 따라 입력할 수 있습니다.
+                </p>
+            </div>
+        </section>
+    </article>
+</main>
+<th:block th:include="@{admin/_footer.html}"/>

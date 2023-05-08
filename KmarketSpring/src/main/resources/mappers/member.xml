@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = mapper파일의 아이디 값 -->
+<mapper namespace="kr.co.kmarket.dao.MemberDAO">
+	
+	<!-- 약관 -->
+	<select id="selectTerms" resultType="kr.co.kmarket.vo.TermsVO">
+        SELECT * FROM `km_member_terms`;
+    </select>
+    
+	<select id="selectTermsSeller" resultType="kr.co.kmarket.vo.TermsVO">
+        SELECT * FROM `km_member_terms`;
+    </select>
+    
+    	<!-- 일반회원 가입 -->
+	<insert id="insertMember">
+		insert into `km_member` set
+		`uid`=#{uid},
+		`pass`=#{pass},
+		`name`=#{name},
+		`gender`=#{gender},
+		`email`=#{email},
+		`type`=1,
+		`point`=0,
+		`hp`=#{hp},
+		`zip`=#{zip},
+		`addr1`=#{addr1},
+		`addr2`=#{addr2},
+		`regip`=#{regip},
+		`level`=1,
+		`rdate`=NOW();
+	</insert>
+	
+	<!-- 판매자 가입 -->
+	<insert id="insertSeller">
+		insert into `km_member` set
+		`uid`=#{uid},
+		`pass`=#{pass},
+		`email`=#{email},
+		`type`=2,
+		`point`=0,
+		`level`=4,
+		`zip`=#{zip},
+		`addr1`=#{addr1},
+		`addr2`=#{addr2},
+		`company`=#{company},
+		`ceo`=#{ceo},
+		`bizRegNum`=#{bizRegNum},
+		`comRegNum`=#{comRegNum},
+		`tel`=#{tel},
+		`manager`=#{manager},
+		`managerHp`=#{managerHp},
+		`fax`=#{fax},
+		`regip`=#{regip},
+		`rdate`=NOW();
+	
+	</insert>
+	
+	<select id="selectUser" resultType="kr.co.kmarket.vo.MemberVO">
+		SELECT * FROM `km_member` WHERE `uid`=#{uid};
+	</select>
+
+
+</mapper>

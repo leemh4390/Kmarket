@@ -1,0 +1,193 @@
+/*기본설정*/
+* {
+    padding: 0px;
+    margin: 0px;
+    font-size: normal 12px '고딕';
+    outline: none;
+}
+ul, ol {list-style: none;}
+a {text-decoration: none;color: black;}
+.wrap {
+    width: 100%;
+    height: auto;
+}
+/*Header*/
+header {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #e1e1e1;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0px;
+    z-index: 100;
+    transition-duration: 0.5s;
+}
+#wrap > header {border-bottom: 1px solid rgb(255 255 255 / 10%);}
+header > div {
+    width: 1280px;
+    height: 80px;
+    margin: 0 auto;
+}
+header > div > a {
+    display: inline-block;
+    margin-top: 20px;
+}
+header a > img {
+    width: 200px;
+}
+header ul {
+    float: right;
+    line-height: 80px;
+}
+header ul > li {
+    float: left;
+    margin-left: 40px;
+}
+header ul > li > a {
+    font-size: 18px;
+}
+#wrap > header > div > ul > li > a {color: #fff;}
+/*메인화면*/
+.swiper-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+.swiper-wrapper {
+    width: 100%;
+    height: 100%;
+}
+.swiper-slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.swiper-slide video {width: 100%; min-width: 1600px; height: auto; display: block;}
+.slider2 {
+    background: url("../img/company/bg_system_sec.jpg") no-repeat; 
+    background-size: cover;
+    background-position-x: 65%;
+}
+.slider3 {background: url("../img/company/bg_product_sec.jpg") no-repeat; 
+    background-size: contain;
+    background-position: center;
+}
+.slider4 {background: url("../img/company/bg_service_sec.jpg") no-repeat;
+    background-size: 70%;
+    background-position-x: 60%;
+}
+article > h1 {font: 32px normal; color: #555; margin-bottom: 16px;}
+article h2 {font-size: 42px;}
+article p {
+    font-size: 18px;
+    color: #666;
+    line-height: 24px;
+    margin-top: 16px;
+}
+.swiper-slide > article {position: absolute;}
+.slider2 > article {top: 215px;left: 305px;}
+.slider3 > article {top: 125px;right: 370px;}
+.slider4 > article:nth-child(1) {top: 120px;left: 485px;}
+.slider4 > article:nth-child(2) {bottom: 120px;left: 485px;}
+/*회사소개*/
+.company {
+    width: 100%;
+    height: 590px;
+    position: relative;
+}
+.introduce {background: url("../img/company/bg_company_introduce.jpg") no-repeat; background-size: cover;}
+.notice {background: url("../img/company/bg_company_notice.jpg") no-repeat; background-size: cover;}
+.promote {background: url("../img/company/bg_company_promote.jpg") no-repeat; background-size: cover;}
+.manage {background: url("../img/company/bg_company_manage.jpg") no-repeat; background-size: cover;}
+.company > article {
+    width: 1280px;
+    min-height: 590px;
+    margin: 0 auto;
+}
+.company > article > h1 {
+    position: absolute;
+    top: 250px;
+    color: #fff;
+    font-size: 48px;
+    font-weight: bold;
+}
+.company > article > p {
+    position: absolute;
+    top: 325px;
+    color: #fff;
+    font-size: 20px;
+}
+main > section {
+    width: 1280px;
+    height: auto;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+main > section > div {
+    margin-bottom: 60px;
+}
+main > section h1 {
+    font-size: 28px;
+    color: #222;
+    margin-bottom: 30px;
+}
+main > section p {
+    font-size: 19px;
+}
+main > section img {
+    width: 80%;
+    display: block;
+    margin: auto;
+}
+/*홍보채널*/
+main > section > div {overflow: hidden;}
+main > section > div > iframe {
+    float: left;
+}
+main > section > div > div {
+    float: left;
+    margin-left: 10px;
+}
+/*투명경영*/
+section ul {
+    overflow: hidden;
+}
+section ul > li {
+    float: left;
+    width: 25%;
+    text-align: center;
+}
+section ul > li > img {
+    width: 150px;
+}
+section ul > li > h3 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+section ul > li > p {
+    font-size: 16px;
+}
+/*Footer*/
+footer {
+    width: 100%;
+    height: 100px;
+    background: #f9f9f9;
+    margin-top: 70px;
+}
+footer > div {
+    width: 1280px;
+    height: 100%;
+    margin: 0 auto;
+    padding-top: 30px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+footer > div > img {
+    float: left;
+    margin-right: 30px;
+}
+footer > div > p {
+    float: left;
+    font-size: 13px;
+    color: #555;
+}

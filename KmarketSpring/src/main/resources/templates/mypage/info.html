@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/mypage_style.css}">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/js/postcode.js}"></script>
+    <script>
+    	$(function(){
+    		const urlParams = new URL(location.href).searchParams;
+    		var success = urlParams.get('success');
+    		if(success == 101){
+    			alert('회원정보가 수정되었습니다.');
+    		}
+    		
+    		var regPhone= /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+    		var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    		
+    		$('button')
+    		
+    		$('#modifyEmail').on('click', function(e){
+    			e.preventDefault();
+    			$('input[name=mail1]').attr("readonly",false);
+    			$('input[name=mail2]').attr("readonly",false);
+    			$("#mail").prop('disabled',false);
+    			$('input[name=mail1]').focus();
+    		});
+    		$('#modifyHp').click(function(e){
+    			e.preventDefault();
+    			$('input[name=phone1]').attr("readonly",false);
+    			$('input[name=phone2]').attr("readonly",false);
+    			$('input[name=phone3]').attr("readonly",false);
+    			$('input[name=phone1]').focus();
+    		});
+    		$('select[name=mail3]').change(function(){
+    			let value = $(this).val();
+    			$('input[name=mail2]').val(value);
+    		});
+    		$('form').submit(function(){
+    			let e1 = $('input[name=mail1]').val();
+    			let e2 = $('input[name=mail2]').val();
+    			let h1 = $('input[name=phone1]').val();
+    			let h2 = $('input[name=phone2]').val();
+    			let h3 = $('input[name=phone3]').val();
+    			//공백검사
+    			if(e1=='' || e2==''){
+    				alert('이메일을 확인하세요.');
+    				return false;
+    			}
+    			if(h1=='' || h2=='' || h3==''){
+    				alert('휴대폰을 확인하세요.');
+    				return false;
+    			}
+    			//조립
+    			$('input[name=email]').val(e1+"@"+e2);
+    			$('input[name=hp]').val(h1+"-"+h2+"-"+h3);
+    			//정규표현식검사
+    			if(!$('input[name=email]').val().match(regExp)){
+    				alert('이메일 형식이 올바르지 않습니다.');
+    				return false;
+    			}
+    			if(!$('input[name=hp]').val().match(regPhone)){
+    				alert('휴대폰 형식이 올바르지 않습니다.');
+    				return false;
+    			}
+    			//통과
+    			let answer = confirm('회원정보를 수정하시겠습니까?')
+    			if(answer){
+    				return true;
+    			}else{
+        			return true;
+    			}
+    		});
+    		
+    		$('.delete').click(function(e){
+    			e.preventDefault();
+    			alert('회원탈퇴버튼');
+    		});
+    		$('.post').click(function(e){
+    			e.preventDefault();
+    		});
+    	});
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="mypage/_header.html  :: mypage_header"></th:block>
+                    <img th:src="@{/img/myPage/my_banner2.png}" alt="배너">
+                    <div>
+                        <p>회원정보 설정</p>
+                        <div class="settingInfo">
+                            <form th:action="@{/mypage/info}" method="post">
+                            <input type="hidden" name="uid" th:value="${info.uid}"/>
+                                <table>
+                                    <tr>
+                                        <td>사용자 ID</td>
+                                        <td>[[${info.uid}]]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>비밀번호</td>
+                                        <td><button style="width:90px;">비밀번호 수정</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>이름</td>
+                                        <td>[[${info.maskName}]]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>E-mail</td>
+                                        <td>
+                                            <input type="text" name="mail1" th:value="${info.email1}" readonly> @ 
+                                            <input type="text" name="mail2" th:value="${info.email2}" readonly>
+                                            <input type="hidden" name="email" th:value="${info.email}"/>
+                                            <select name="mail3" id="mail" disabled>
+                                                <option value="">직접입력</option>
+                                                <option value="naver.com">naver.com</option>
+                                                <option value="daum.net">daum.net</option>
+                                                <option value="gmail.com">gmail.com</option>
+                                                <option value="nate.com">nate.com</option>
+                                                <option value="outlook.com">outlook.com</option>
+                                            </select>
+                                            <button id="modifyEmail">수정하기</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>휴대폰</td>
+                                        <td>
+                                            <input type="text" name="phone1" th:value="${info.hp1}" readonly="readonly"> - 
+                                            <input type="text" name="phone2" th:value="${info.hp2}" readonly="readonly"> - 
+                                            <input type="text" name="phone3" th:value="${info.hp3}" readonly="readonly">
+                                            <input type="hidden" name="hp" th:value="${info.hp}"/> <button id="modifyHp">수정하기</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>주소</td>
+                                        <td>
+                                            <input type="text" name="zip" id="zip" th:value="${info.zip}" readonly="readonly"> <button class="post" onclick="postcode()">주소검색</button><br/>
+                                            <input type="text" name="addr1" id="addr1" th:value="${info.addr1}" readonly="readonly"><br/>
+                                            <input type="text" name="addr2" id="addr2" th:value="${info.addr2}">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>회원탈퇴</td>
+                                        <td>
+                                            <button class="delete">탈퇴하기</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div>
+                                    <input type="submit" value="수정하기">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </section>
+        </main>
+        <th:block th:replace="mypage/_header.html  :: mypage_footer"></th:block>
+    </div>
+</body>
+</html>

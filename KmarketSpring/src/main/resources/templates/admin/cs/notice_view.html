@@ -1,0 +1,38 @@
+<th:block th:include="@{admin/_header.html}"/>
+<article  class="article_view">
+    <nav>
+        <h3>
+            공지사항 보기
+        </h3>
+        <p>
+            HOME > 고객센터 > <Strong> 공지사항 </Strong>
+        </p>
+    </nav>
+    <section>
+        <table>
+            <tr>
+                <td>유형</td>
+                <td>[[${view.cate2}]]</td>
+            </tr>
+            <tr>
+                <td>제목</td>
+                <td>[[${view.title}]]</td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td>
+                    <p>
+						[[${view.content}]]
+					</p>
+                <td>
+            </tr>
+        </table>
+        <div class="view_button">
+            <a th:href="@{/admin/notice_delete(no=${view.no})}"><input type="button" value="삭제"></a>
+            <a th:href="@{/admin/notice_modify(no=${view.no})}"><input type="button" value="수정"></a>
+            <a th:href="@{/admin/notice_list}"><input type="button" value="목록"></a>
+        </div>
+    </section>
+</article>
+</main>
+<th:block th:include="@{admin/_footer.html}"/>

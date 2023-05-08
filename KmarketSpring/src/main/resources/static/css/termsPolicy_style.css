@@ -1,0 +1,57 @@
+main > div {
+    height: auto;
+    padding: 20px;
+    overflow: hidden;
+}
+main > div > h1 {
+    font-size: 20px;
+    font-weight: bold;
+    float: left;
+}
+main > div > ul {
+    overflow: hidden;
+    float: right;
+}
+main > div > ul > li {
+    float: left;
+    margin-left: 20px;
+    width: 112px;
+    height: 90px;
+    background: url('../img/termsPolicy/terms_sprites.png') no-repeat
+}
+main > div > ul > li:nth-child(1) {background-position: 0 -150px;}
+main > div > ul > li:nth-child(2) {background-position: -130px -150px;}
+main > div > ul > li:nth-child(3) {background-position: -260px -150px;}
+main > div > ul > li:nth-child(4) {background-position: -390px -150px;}
+main > div > ul > li:nth-child(5) {background-position: -520px -150px;}
+main > div > ul > li:nth-child(1).current {background-position: 0 -250px;}
+main > div > ul > li:nth-child(2).current {background-position: -130px -250px;}
+main > div > ul > li:nth-child(3).current {background-position: -260px -250px;}
+main > div > ul > li:nth-child(4).current {background-position: -390px -250px;}
+main > div > ul > li:nth-child(5).current {background-position: -520px -250px;}
+main > div > ul > li > a {
+    display: inline-block;
+    width: 85%;
+    height: 100%;
+}
+main > div > article {
+    clear: both;
+    padding-top: 30px;
+}
+main > div > article > h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+main > div > article > h4 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+main > div > article > p {
+    font: 12px normal '돋움';
+    color: #888;
+    white-space: pre-wrap;
+    margin-bottom: 30px;
+    
+}

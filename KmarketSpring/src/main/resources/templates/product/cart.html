@@ -1,0 +1,291 @@
+<th:block th:include="@{product/_header.html}"/>
+<th:block th:include="@{product/_aside.html}"/>
+<script>
+
+	$(document).ready(function(){
+		
+		$('input[name=check]').prop('checked', true);
+		
+		$('input[name=check]').click(function(){
+			
+			let allCheck = $('input[name=allCheck]');
+			let length = $('input:checkbox[name=check]').length;
+			let lengths = $('input:checkbox[name=check]:checked').length;
+			
+		    if(length == lengths){
+		        allCheck.prop('checked', true);
+		    } else {
+		        allCheck.prop('checked', false);
+		    }			
+			
+		});	
+		
+		$('input[name=allCheck]').click(function(){
+			
+			let allCheck = $('input[name=allCheck]').prop('checked');
+			
+			if(allCheck){
+				$('input[name=check]').prop('checked',true);
+			}else{
+				$('input[name=check]').prop('checked',false);
+			}
+		});
+		
+		let totalCount  	= 0; // 상품수
+		let totalPrice 		= 0; // 총금액
+		let totalDiscount 	= 0; // 할인된 금액
+		let totalDelivery 	= 0; // 총 배송비
+		let totalPoint 		= 0; // 적립포인트
+		let finalTotalPrice = 0; // 결제하는금액
+		
+		$('input:checkbox[name=check]:checked').each(function(){
+	        totalCount  		+= parseInt($(this).closest('.cartInfo').find('.totalCount').val());
+	        totalPrice  		+= parseInt($(this).closest('.cartInfo').find('.totalPrice').val());
+	        totalDiscount  		+= parseInt($(this).closest('.cartInfo').find('.totalDisPrice').val());
+	        totalDelivery  		+= parseInt($(this).closest('.cartInfo').find('.deliveryPrice').val());
+	        totalPoint  		+= parseInt($(this).closest('.cartInfo').find('.totalPoint').val());
+	        finalTotalPrice  	+= parseInt($(this).closest('.cartInfo').find('.finalTotalPrice').val());
+	    });
+		
+		//상품수
+	    $(".totalCount_td").text(totalCount);
+	    //상품금액
+	    $(".totalPrice_td").text(totalPrice.toLocaleString());
+	    //총 할인금액
+	    $(".totalDisPrice_td").text('- '+totalDiscount.toLocaleString()); 
+	    //적립 포인트
+	    $(".totalPoint_td").text(totalPoint);
+	    //배송비
+	    $(".deliveryPrice_td").text(totalDelivery.toLocaleString());
+	    //전체주문금액
+	    $(".finalTotalPrice_td").text(finalTotalPrice.toLocaleString()+'원');
+	    
+		
+		$('input[type=checkbox]').change(function(){
+			
+	        let totalCount  	= 0; // 상품수
+	        let totalPrice 		= 0; // 총금액
+	        let totalDiscount 	= 0; // 할인된 금액
+	        let totalDelivery 	= 0; // 총 배송비
+	        let totalPoint 		= 0; // 적립포인트
+	        let finalTotalPrice = 0; // 결제하는금액
+			
+			 $('input:checkbox[name=check]:checked').each(function(){
+			        totalCount  		+= parseInt($(this).closest('.cartInfo').find('.totalCount').val());
+			        totalPrice  		+= parseInt($(this).closest('.cartInfo').find('.totalPrice').val());
+			        totalDiscount  		+= parseInt($(this).closest('.cartInfo').find('.totalDisPrice').val());
+			        totalDelivery  		+= parseInt($(this).closest('.cartInfo').find('.deliveryPrice').val());
+			        totalPoint  		+= parseInt($(this).closest('.cartInfo').find('.totalPoint').val());
+			        finalTotalPrice  	+= parseInt($(this).closest('.cartInfo').find('.finalTotalPrice').val());
+			    });
+				
+			    //상품수
+			    $(".totalCount_td").text(totalCount);
+			    //상품금액
+			    $(".totalPrice_td").text(totalPrice.toLocaleString());
+			    //총 할인금액
+			    $(".totalDisPrice_td").text('- '+totalDiscount.toLocaleString()); 
+			    //적립 포인트
+			    $(".totalPoint_td").text(totalPoint);
+			    //배송비
+			    $(".deliveryPrice_td").text(totalDelivery.toLocaleString());
+			    //전체주문금액
+			    $(".finalTotalPrice_td").text(finalTotalPrice.toLocaleString()+'원');
+			    
+		});
+		
+		$('.order').click(function(e){
+			e.preventDefault();
+			
+			let totalCount 			= parseInt($('.totalCount_td').text());
+			let totalPrice 			= parseInt($(".totalPrice_td").text().replace(/,/g, ''));
+			let totalDisPrice		= parseInt($(".totalDisPrice_td").text().replace(/[^\d]/g, ""));
+			let totalDeliveryPrice 	= parseInt($(".deliveryPrice_td").text());
+			let finalTotalPrice 	= parseInt($(".finalTotalPrice_td").text().replace(/,/g, ''));
+		
+			let arr 	 = [];
+			
+			let check = $('input:checkbox[name=check]:checked');
+			let length = $('input:checkbox[name=check]:checked').length;
+			
+			$(check).each(function() {
+				  let parent = $(this).closest('tr');
+				  let item = {
+				    'proNo': parent.find('input[name=proNo]').val(),
+				    'count': parent.find('.totalCount').val(),
+				    'price': parent.find('input[name=price]').val(),
+				    'discount': parent.find('input[name=discount]').val(),
+				    'point': parseInt(parent.find('input[name=point]').val()),
+				    'delivery': parent.find('input[name=delivery]').val(),
+				    'total': parent.find('input[name=ordTotPrice]').val()
+				  };
+				  
+				  arr.push(item);
+				});
+			
+			const jsonData = {
+					"items": arr,
+					"ordCount" : totalCount,
+					"ordPrice" : totalPrice,
+					"ordDiscount" : totalDisPrice,
+					"ordDelivery" : totalDeliveryPrice,
+					"ordTotPrice" : finalTotalPrice
+			}
+			
+			console.log(jsonData);
+			
+			$.ajax({
+				url : '/Kmarket/product/cart',
+				method : 'post',
+				data : JSON.stringify(jsonData),
+				traditional : true,
+				contentType: 'application/json',
+				success : function(data){
+					location.href="/Kmarket/product/order?no="+data;
+				}
+			});
+		});
+		
+		
+		$('input[name=del]').click(function(){
+			
+			let arr = [];
+			
+			 $('input:checkbox[name=check]:checked').each(function(){
+				    let proNo  = $(this).closest('.cartInfo').find('input[name=proNo]').val();
+			       arr.push(proNo);  // cartNo를 배열에 추가
+			    });
+			 
+			 let jsonData = {'arr' : arr};
+			
+			 let length = $('input[name=check]:checked').length;
+			 
+			 alert(arr);
+			 
+			 if(length == 0){
+				 alert('삭제할 상품을 선택해주세요.');
+			 }else{
+				 
+				 $.ajax({
+					 url : '/Kmarket/product/cart/delete',
+					 method : 'GET',
+					 data : jsonData,
+					 dataType : 'json',
+					 traditional : true,
+					 success : function(data){
+						 alert(data.result + " 건 삭제되었습니다.")
+						 location.href="/Kmarket/product/cart";
+					 }
+				 });
+			 }
+		});
+	});
+	
+	
+</script>
+    <!-- 장바구니 페이지 시작 -->
+    <section class="cart">
+        <!-- 제목, 페이지 내비게이션-->
+        <nav>
+            <h1>장바구니</h1>
+            <p>
+                HOME > 
+                <span th:if="${arg0} == '11'">패션·의류·뷰티</span>
+	            <span th:if="${arg0} == '15'">가전·디지털</span>
+	            <span th:if="${arg0} == '13'">식품·생필품</span>
+	            <span th:if="${arg0} == '14'">홈·문구·취미</span>
+                 > <strong>장바구니</strong>
+            </p>
+        </nav>
+        	<form action="#" method="post">
+            <!-- 장바구니 목록 -->
+            <table>
+                <tr>
+                    <th><input type="checkbox" class="allCheck" name="allCheck" checked="checked"></th>
+                    <th>상품명</th>
+                    <th>총수량</th>
+                    <th>판매가</th>
+                    <th>할인</th>
+                    <th>포인트</th>
+                    <th>배송비</th>
+                    <th>소계</th>
+                </tr>
+                <tr class="empty" th:if="${carts} == null">
+                    <td colspan="7">장바구니에 상품이 없습니다.</td>
+                </tr>
+                <tr th:each="cart:${carts}">
+                    <td class="cartInfo">
+                    	<input type="checkbox" class="cartCheck" name="check" th:value="${cart.proNo}">
+                    	<input type="hidden" name="proNo" th:value="${cart.proNo}">
+                    	<input type="hidden" name="cartNo" th:value="${cart.cartNo}">
+                    	<input type="hidden" class="totalCount" name="ordCount" th:value="${cart.sum}">
+                    	<input type="hidden" name="point" th:value="${cart.disPrice} * (${cart.point} / 100)">
+                    	<input type="hidden" class="totalPoint" th:value="${cart.disPrice} * ${cart.sum} * (${cart.point} / 100)">
+                    	<input type="hidden" name="price" th:value="${cart.price}">
+                    	<input type="hidden" class="totalPrice" name="ordPrice" th:value="${cart.price} * ${cart.sum}">
+                    	<input type="hidden" name="discount" th:value="${cart.discount}">
+                    	<input type="hidden" class="totalDiscount" name="ordDiscount" th:value="(${cart.price} - ${cart.disPrice}) * ${cart.sum}">
+                    	<input type="hidden" class="totalDisPrice" th:value="${cart.disPrice} * ${cart.sum}">
+                    	<input type="hidden" name="delivery" th:value="${cart.delivery}">
+                    	<input type="hidden" class="deliveryPrice" name="ordDelivery" th:value="${cart.delivery}">
+                    	<input type="hidden" class="finalTotalPrice" name="ordTotPrice" th:value="${cart.disPrice} * ${cart.sum} + ${cart.delivery}">
+                    </td>
+                    <td>
+                        <article>
+                            <a href="#"><img th:src="@{/file/} + ${cart.thumb1}"></a>
+                            <div>
+                                <h2><a href="">[[${cart.proName}]]</a></h2>
+                                <p>[[${cart.descript}]]</p>
+                            </div>
+                        </article>
+                    </td>
+                    <td>
+                    	[[${cart.sum}]]
+                    	<input type="hidden" name="sum" th:value="${cart.sum}">
+                    </td>
+                    <td data-th-text="${#numbers.formatInteger(cart.price, 3, 'COMMA')}"></td>
+                    <td>[[${cart.discount}]]%</td>
+                    <td>[[${cart.point}]]</td>
+                    <td th:if="${cart.delivery} != '0'" th:text="${cart.delivery}">무료배송</td>
+                    <td th:unless="${cart.delivery} != '0'">무료배송</td>
+                    <td data-th-text="${#numbers.formatInteger(cart.multiply, 3, 'COMMA')}+원"></td>
+                </tr>
+            </table>
+            <input type="button" name="del" value="선택삭제" class="cartDelete">
+
+            <!-- 장바구니 전체합계-->
+            <div class="total">
+                <h2>전체합계</h2>
+                <table border="0">
+                    <tr>
+                        <td>상품수</td>
+                        <td class="totalCount_td"></td>
+                    </tr>
+                    <tr>
+                        <td>상품금액</td>
+                        <td  class="totalPrice_td"><span></span></td>
+                    </tr>
+                    <tr>
+                        <td>할인금액</td>
+                        <td class="totalDisPrice_td"></td>
+                    </tr>
+                    <tr>
+                        <td>배송비</td>
+                        <td class="deliveryPrice_td">0</td>
+                    </tr>
+                    <tr>
+                        <td>포인트</td>
+                        <td class="totalPoint_td">260</td>
+                    </tr>
+                    <tr>
+                        <td>전체주문금액</td>
+                        <td class="finalTotalPrice_td"></td>
+                    </tr>
+                </table>
+                <input type="submit" class="order" value="주문하기">
+            </div>
+            </form>
+    </section>
+    <!-- 장바구니 페이지 끝-->
+</main>
+<th:block th:include="@{product/_footer.html}"/>

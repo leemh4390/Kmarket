@@ -1,0 +1,48 @@
+<th:block th:include="@{admin/_header.html}"/>
+<article class="article_modify">
+    <nav>
+        <h3>
+            공지사항 수정
+        </h3>
+        <p>
+            HOME > 고객센터 > <Strong> 공지사항 </Strong>
+        </p>
+    </nav>
+    <section>
+        <form th:action="@{/admin/notice_modify}" method="post">
+			<input type="hidden" name="no" th:value="${view.no}">
+            <table>
+				<tr>
+				    <td>유형</td>
+				    <td>
+				        <select name="cate1">
+				            <option value="">유형선택</option>
+				            <option th:each="cate1 : ${cate1s}" 
+				            		th:value="${cate1.cate1}" 
+				            		th:selected="${cate1.cate1} == ${view.cate1} ">[[${cate1.c1Name}]]</option>
+				        </select>
+				        <input type="hidden" th:value="${view.cate1}">
+				    </td>
+				</tr>
+                <tr>
+                    <td>제목</td>
+                    <td>
+                        <input type="text" name="title" th:value="${view.title}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>내용</td>
+                    <td>
+                        <textarea name="content" cols="30" rows="10" placeholder="내용을 입력합니다.">[[${view.content}]]</textarea>
+                    </td>
+                </tr>
+            </table>
+            <div class="modify_button">
+                <a th:href="@{/admin/notice_list}"><input type="button" value="취소하기"></a>
+                <a><input type="submit" value="수정하기"></a>
+            </div>
+        </form>
+    </section>
+    </article>
+</main>
+<th:block th:include="@{admin/_footer.html}"/>

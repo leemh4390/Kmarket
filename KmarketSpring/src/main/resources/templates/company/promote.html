@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓</title>
+    <link rel="stylesheet" th:href="@{/css/company_style.css}">
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script th:src="@{/js/company_navi.js}"></script>
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="company/_header.html  :: company_header"></th:block>
+        <main>
+            <div class="company promote">
+                <article>
+                    <h1>홍보채널</h1>
+                    <p>
+                        미디어 속 KMARKET의 영상을<br/>
+                        소개해드립니다.
+                    </p>
+                </article>
+            </div>
+            <section>
+                <div>
+                    <iframe width="720" height="360" src="https://www.youtube.com/embed/4poqZjNTZjI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <div>
+                        <h2>Motion Graphics Background Video2</h2>
+                        <p>유튜브 동영상 가져오기</p>
+                    </div>
+                </div>
+                <div>
+                    <iframe width="720" height="360" src="https://www.youtube.com/embed/zCN0V130PMg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><div>
+                        <h2>Motion Graphics Background Video1</h2>
+                        <p>유튜브 동영상 가져오기</p>
+                    </div>
+                </div>
+                <div>
+                    <iframe width="720" height="360" src="https://www.youtube.com/embed/cVbCCjvwvJM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><div>
+                        <h2>Abstract Golden Particles Bokeh Effect</h2>
+                        <p>유튜브 동영상 가져오기</p>
+                    </div>
+                </div>
+                <div>
+                    <iframe width="720" height="360" src="https://www.youtube.com/embed/30DzZhakukQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><div>
+                        <h2>Motion Graphics Background Loop</h2>
+                        <p>유튜브 동영상 가져오기</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <th:block th:replace="company/_header.html  :: company_footer"></th:block>
+    </div>
+</body>
+</html>

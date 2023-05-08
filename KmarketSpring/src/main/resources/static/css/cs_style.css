@@ -1,0 +1,507 @@
+/*기본 설정*/
+* {
+    padding: 0px;
+    margin: 0px;
+    font-size: normal 12px '고딕';
+    outline: none;
+}
+ul, ol {list-style: none;}
+a {text-decoration: none;color: black;}
+.wrap {
+    width: 100%;
+    height: auto;
+}
+/*Header*/
+header > .top{
+    height: 35px;
+    border-bottom: 1px solid #e9e9e9;
+}
+header > .top > div{
+    width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+    text-align: right;
+}
+header > .top > div > a {
+    display: inline-block;
+    height: 100%;
+    line-height: 35px;
+    border-left: 1px solid #e9e9e9;
+    padding: 0 10px;
+    color: #646464;
+    font-size: 12px;
+}
+header > .top > div > a:last-child{    border-right: 1px solid #e9e9e9;}
+header > .top > div > a:hover{
+    color: #333;
+    border-bottom: 1px solid #444;
+}
+.logo {
+    width: 100%;
+    height: 114px;
+    border-top: 1px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+}
+.logo > div {
+    width: 1200px;
+    height: auto;
+    margin: 0 auto;
+}
+.logo > div > a {
+    display: inline-block;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+.logo > div > a > img {
+    vertical-align: bottom;
+    margin-right: 10px;
+}
+/*고객센터 메인*/
+article {
+    width: 1200px;
+    height: auto;
+    margin: 0 auto;
+    box-sizing: border-box;
+    border-top: 1px solid #e9e9e9;
+    padding: 10px 0;
+}
+article:first-child{border-top: none;}
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+}
+.all {
+    font-size: 14px;
+    float: right;
+}
+.all > a {
+    display: inline;
+}
+.all > a::after{
+    content: '';
+    display: inline-block;
+    background: url('../img/cs/cs_sprites.png') no-repeat;
+    background-position: -230px -276px;;
+    background-size: 750px auto;
+    width: 18px;
+    height: 18px;
+    margin-left: 6px;
+    vertical-align: top;
+}
+.help {
+    height: 200px;
+    font-size: 60px;
+    text-align: center;
+}
+.help > p {line-height: 180px;}
+.help span {color: #45ad4a;}
+article > table {
+	width: 100%;
+    margin-top: 12px;
+    table-layout: fixed;
+}
+article > table  tr > td {
+	width: 80%;
+    font-size: 18px;
+    padding: 6px 4px;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+article > table  tr > td:nth-child(2) {
+    font-size: 18px;
+    padding: 6px 0;
+    box-sizing: border-box;
+}
+article > table  tr > td:last-child {
+	width: 5%;
+	text-align: right;
+    font-size: 12px;
+    color: #777777;
+    vertical-align: bottom;
+}
+article > table  tr.index > td:nth-child(2) {
+	width: 8%;
+	color: #000;
+    font-size: 12px;
+    vertical-align: bottom;
+   }
+.write {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #0078ff;
+    margin-top: 6px;
+    margin-bottom: 20px;
+}
+.nav {
+    margin: 10px 0;
+    padding: 50px;
+    overflow: hidden;
+    text-align: center;
+}
+.navi {
+    background: url('../img/cs/cs_sprites.png') no-repeat;
+    background-size: 750px auto;
+    width: 90px;
+    height: 90px;
+    margin: 0 30px;
+}
+.nav > a {
+    display: inline-block;
+}
+.navi1 {background-position: 0 0;}
+.navi2 {background-position: -184px 0;}
+.navi3 {background-position: -92px 0;}
+.navi4 {background-position: -276px 0;}
+.navi5 {background-position: -368px 0;}
+.navi6 {background-position: -92px -485px;}
+.navi7 {background-position: -644px 0;}
+
+.navi1:hover {background-position: 0 -92px;}
+.navi2:hover {background-position: -184px -92px;}
+.navi3:hover {background-position: -92px -92px;}
+.navi4:hover {background-position: -276px -92px;}
+.navi5:hover {background-position: -368px -92px;}
+.navi6:hover {background-position: -92px -577px;}
+.navi7:hover {background-position: -644px -92px;}
+
+article.consult > div {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+}
+div.consult{
+    float: left;
+    width: 50%;
+    padding: 16px;
+    box-sizing: border-box;
+}
+div.consult > div {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    height: 270px;
+    padding: 20px;
+    box-sizing: border-box;
+    line-height: 24px;
+}
+div.consult > div > h2 {font-size: 20px;margin-bottom: 14px;}
+div.consult > div > span {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 14px;
+    display: inline-block;
+}
+div.consult > div > p {font-size: 14px;display: inline-block;}
+div.consult > div > a {font-size: 24px;font-weight: bold;}
+/*고객센터 공지사항 리스트*/
+.list_nav {
+    border-bottom: 1px solid #e9e9e9;
+}
+.list_nav > div {
+    width: 1200px;
+    height: 60px;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+.list_nav > div > p {
+    line-height: 60px;
+}
+.list {
+    width: 1200px;
+    height: auto;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.list > article {
+    float: left;
+    width: 230px;
+    padding-top: 25px;
+    box-sizing: border-box;
+}
+.list > article > p {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+.list > article > ul > li {margin-bottom: 16px;}
+.list > article > ul > li > a {
+    font-weight: bold;
+    color: #9e9e9e;
+}
+.list > article > ul > li > a.list_current {
+    color: #111111;
+    text-decoration: underline;
+}
+.list > article > ul > li > a:hover {
+    color: #111111;
+    text-decoration: underline;
+}
+.list > div {
+    float: left;
+    min-height: 562px;
+    padding: 24px;
+    box-sizing: border-box;
+    border-left: 1px solid #e9e9e9;
+}
+.list > div > p {
+    font-size: 26px;
+    font-weight: bold;
+}
+.list > div > span {
+    display: inline-block;
+    font-size: 20px;
+    margin-top: 6px;
+    margin-bottom: 25px;
+}
+.list > div > table {
+    border-top: 2px solid black;
+    width: 920px;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    table-layout: fixed;
+}
+.list > div > table tr > th {font-weight:normal; border-bottom: 1px solid #cccccc;}
+.list > div > table tr > td {
+    padding: 16px;
+    border-bottom: 1px solid #cccccc;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.list > div > table tr:hover {background: #f8f8f8;}
+.list > div > table tr > td:first-child {width: 70%;}
+.list > div > table tr > td:last-child {width: 10%;text-align: right;font-size: 14px;}
+.page {
+    text-align: center;
+    padding-top: 20px;
+    position: relative;
+}
+.num {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 35px;
+    width: 35px;
+    height: 35px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.current {
+    color: #fff;
+    background: #0078ff;
+}
+.prev {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background: url('../img/cs/cs_sprites.png') no-repeat -706px -652px;
+    vertical-align: bottom;
+}
+.next {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background: url('../img/cs/cs_sprites.png') no-repeat -628px -652px;
+    vertical-align: bottom;
+}
+/*고객센터 공지사항 뷰*/
+div.title, .content {
+    width: 920px;
+    height: auto;
+    border-bottom: 1px solid #e9e9e9;
+    box-sizing: border-box;
+}
+div.title {
+    border-top: 2px solid black;
+    padding: 24px;
+    margin-bottom: 16px;
+}
+div.title > p {
+    font-size: 32px;
+}
+div.title > span {
+    font-size: 14px;
+    color: #777;
+    font-weight: normal;
+}
+.content {
+    padding: 20px;
+    line-height: 30px;
+    margin-bottom: 16px;
+}
+.noticeContent > p {
+    white-space: pre-wrap;
+}
+.goList {
+    display: inline-block;
+    width: 200px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+/*고객센터 문의사항 리스트*/
+.id {width: 20%; font-size: 14px;}
+.que {width: 15%; text-align: center; font-weight: bold;}
+.ok {color: #067dfd;}
+.wait {color: #9e9e9e;}
+.write_button{
+    position: absolute;
+    top: 12px;
+    right: 7px;
+    display: inline-block;
+    width: 140px;
+    height: 50px;
+    border: 1px solid #0063ce;
+    background: #067dfd;
+    color: #fff;
+    font: 20px normal;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 50px;
+}
+/*고객센터 문의사항 뷰*/
+.comment > span {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+/*고객센터 문의사항 글쓰기*/
+.qna_write {
+    width: 920px;
+    border-top: 2px solid black;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+.qna_write tr > td {
+    border-bottom: 1px solid #cccccc;
+    padding: 24px 16px;
+}
+.qna_write tr > td:first-child {
+    width: 15%;
+}
+.qna_write tr > td > select {
+	min-width: 100px;
+    width: auto;
+    height: 40px;
+    font-size: 16px;
+}
+.qna_write tr > td > input {
+    width: 100%;
+    height: 40px;
+    font-size: 16px;
+    padding-left: 6px;
+}
+.qna_write tr > td > textarea {
+    width: 100%;
+    height: 360px;
+    font-size: 16px;
+    padding: 6px;
+    resize: none;
+}
+.writeForm {
+    display: inline-block;
+    width: 200px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    background: #0678f2;
+    border: 1px solid #0472eb;
+    color: #fff;
+    border-radius: 30px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+/*고객센터 자주묻는질문 리스트*/
+h4 {
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+.faq_list {
+    width: 920px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+}
+.faq_list > li {
+    border-bottom: 1px solid #ccc;
+    padding: 16px;
+}
+.faq_list > li:hover {
+    background: #f8f8f8;
+}
+.faq_list > li > a {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+}
+.faq_list > li > a > span {
+    color: #006cff;
+    font-weight: bold;
+    font-size: 18px;
+}
+.faq_list > li:last-child {
+    border-bottom: none;
+}
+.more {
+    text-align: center;
+}
+/*고객센터 자주묻는질문 뷰*/
+.title > p > span {color: #006cff;}
+/*Footer*/
+footer {
+    width: 100%;
+    height: auto;
+    background-color: #f8f8f8;
+    border-top: 1px solid #e9e9e9;
+    margin-bottom: 20px;
+}
+footer > div {
+    width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+footer > div:first-child {
+    text-align: center;
+    padding: 10px 0;
+}
+footer > div:first-child > a {
+    display: inline-block;
+    text-align: center;
+    font-size: 12px;
+}
+.footerlogo {
+    overflow: hidden;
+    border-top: 1px solid #e9e9e9;
+    padding-top: 25px;
+}
+.footerlogo > img {
+    float: left;
+    margin-right: 14px;
+}
+.footerlogo > div {
+    float: left;
+    font-size: 12px;
+    line-height: 10px;
+    width: 26%;
+    margin-left: 20px;
+}
+.footerlogo > div > span {
+    display: inline-block;
+    color: #464646;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+.footerlogo > div > p {color: #676767;}

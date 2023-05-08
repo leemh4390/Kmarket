@@ -1,0 +1,43 @@
+<th:block th:include="/admin/_header.html"/>
+<article  class="article_reply">
+    <nav>
+        <h3>
+            자주묻는질문 보기
+        </h3>
+        <p>
+            HOME > 고객센터 > <Strong> 자주묻는질문 </Strong>
+        </p>
+    </nav>
+    <section>
+        <form th:action="@{/admin/qna_reply}" method="post">
+        <input type="hidden" name="no" th:value="${reply.no}">
+            <table>
+                <tr>
+                    <td>유형</td>
+                    <td>[[${reply.c2Name}]]</td>
+                </tr>
+                <tr>
+                    <td>제목</td>
+                    <td>[[${reply.title}]]</td>
+                </tr>
+                <tr>
+                    <td>내용</td>
+                    <td>[[${reply.content}]]<td>
+                </tr>
+                <tr>
+                    <td>답변</td>
+                    <td>
+                        <textarea cols="30" rows="10" name="content" placeholder="답변이 아직 없습니다."></textarea>
+                    </td>
+                </tr>
+            </table>
+            <div class="reply_button">
+                <a th:href="@{/admin/qna_delete(no=${reply.no})}"><input type="button" value="삭제"></a>
+                <a href=""><input type="submit" value="답변등록"></a>
+                <a th:href="@{/admin/qna_list}"><input type="button" value="목록"></a>
+            </div>
+        </form>
+    </section>
+</article>
+ </main>
+<th:block th:include="/admin/_footer.html"/>

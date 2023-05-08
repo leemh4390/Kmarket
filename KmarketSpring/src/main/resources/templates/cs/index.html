@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓</title>
+    <link rel="stylesheet" th:href="@{/css/cs_style.css}">
+</head>
+<body>
+    <div id="wrap">
+    	<th:block th:replace="cs/_header.html  :: cs_header"></th:block>
+        <main>
+            <article class="help">
+                <p><span>케이마켓</span>이 도와드릴게요!</p>
+            </article>
+            <article class="notice">
+                <p class="title">공지사항</p><p class="all"><a th:href="@{/cs/notice/list(group=all, pg=1)}">전체보기</a></p>
+                <table>
+                    <tr th:each="article : ${vo1}">
+                        <td><a th:href="@{/cs/notice/view(group=${article.group}, no=${article.no}, pg=1)}">[[${article.title}]]</a></td>
+                        <td>[[${article.rdate}]]</td>
+                    </tr>
+                </table>
+            </article>
+            <article class="faq">
+                <p class="title">자주묻는질문</p>
+                <div class="nav">
+                    <a th:href="@{/cs/faq/list(group=회원)}"> <div class="navi navi1"></div><span>회원</span></a>
+                    <a th:href="@{/cs/faq/list(group='쿠폰/이벤트')}"><div class="navi navi2"></div><span>쿠폰/이벤트</span></a>
+                    <a th:href="@{/cs/faq/list(group='주문/결제')}"><div class="navi navi3"></div><span>주문/결제</span></a>
+                    <a th:href="@{/cs/faq/list(group='배송')}"><div class="navi navi4"></div><span>배송</span></a>
+                    <a th:href="@{/cs/faq/list(group='취소/반품/교환')}"><div class="navi navi5"></div><span>취소/반품/교환</span></a>
+                    <a th:href="@{/cs/faq/list(group='여행/숙박/항공')}"><div class="navi navi6"></div><span>여행/숙박/항공</span></a>
+                    <a th:href="@{/cs/faq/list(group='안전거래')}"><div class="navi navi7"></div><span>안전거래</span></a>
+                </div>
+            </article>
+            <article class="qna">
+                <p class="title">문의하기</p><p class="all"><a th:href="@{/cs/qna/list(group=all, pg=1)}">전체보기</a></p>
+                <table>
+                    <tr th:each="article : ${vo2}" class="index">
+                        <td><a th:href="@{/cs/qna/view(group=${article.group}, no=${article.no}, pg=1)}">&#91;[[${article.cate}]]&#93; [[${article.title}]]</a></td>
+                        <td>[[${article.uidMask}]]</td>
+                        <td>[[${article.rdate}]]</td>
+                    </tr>
+                </table>
+                <div>
+                    <a th:href="@{/cs/qna/write(group=all, pg=1)}" class="write">문의글 작성 ></a>
+                </div>
+            </article>
+            <article class="consult">
+                <p class="title">1:1 상담이 필요하신가요?</p>
+                <div>
+                    <div class="consult">
+                        <div>
+                            <h2>고객센터 이용안내</h2>
+                            <p>일반회원/비회원</p><br/>
+                            <span>1566-0001 </span><p>(평일 09:00 ~ 18:00)</p><br/>
+                            <p>스마일클럽 전용</p><br/>
+                            <span>1566-0002 </span><p>(365일 09:00 ~ 18:00)</p>
+                        </div>
+                    </div>
+                    <div class="consult">
+                        <div>
+                            <h2>판매상담 이용안내</h2>
+                            <p>판매고객</p><br/>
+                            <span>1566-5700 </span><p>(평일 09:00 ~ 18:00)</p><br/><br/>
+                            <a href="#">판매자 가입 및 서류 접수 안내 ></a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </main>
+        <th:block th:replace="cs/_footer.html :: cs_footer"></th:block>
+    </div>
+</body>
+</html>

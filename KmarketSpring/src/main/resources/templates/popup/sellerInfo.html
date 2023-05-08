@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>판매자 정보</title>
+    <link rel="stylesheet" th:href="@{/css/popup_style.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/star-rating-svg.css">
+	<script type="text/javascript">
+		$(function(){
+			opener.location.reload();
+			$('.btnQuestion').click(function(e){
+    			e.preventDefault;
+    			//창 사이즈
+    			let width = 632;
+    			let height = 505;
+    			//현재 창의 가운데
+    			var left = (window.screen.width / 2) - (width/2);
+    			var top = (window.screen.height / 4);
+    			
+    			let company = $('.company').text();
+    			
+    			window.open("/Kmarket/my/qna/"+company, "문의하기", "width = "+width+", height = "+height+", top = "+top+", left = "+left);
+    			window.close();
+    		});
+		});
+	</script>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 판매자정보 팝업 -->
+        <div id="popSeller" class="popup">
+            <div>
+                <nav>
+                    <h1>판매자 정보</h1>
+                    <button class="btnClose">X</button>
+                </nav>
+                <section>
+                    <table border="0">
+                        <tr>
+                            <th>판매자 등급</th>
+                            <td class="level">파워딜러</td>
+                        </tr>
+                        <tr>
+                            <th>상호</th>
+                            <td class="company">[[${vo.company}]]</td>
+                        </tr>
+                        <tr>
+                            <th>대표자</th>
+                            <td class="ceo">[[${vo.ceo}]]</td>
+                        </tr>
+                        <tr>
+                            <th>전화번호</th>
+                            <td class="tel">[[${vo.tel}]]</td>
+                        </tr>
+                        <tr>
+                            <th>FAX</th>
+                            <td class="fax">[[${vo.fax}]]</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td class="email">[[${vo.email}]]</td>
+                        </tr>
+                        <tr>
+                            <th>사업자번호</th>
+                            <td class="bizNum">[[${vo.bizRegNum}]]</td>
+                        </tr>
+                        <tr>
+                            <th>영업소재지</th>
+                            <td class="address">
+                                [[${vo.zip}]] [[${vo.addr1}]] [[${vo.company}]]
+                            </td>
+                        </tr>
+                    </table>
+                    <p>
+                        ※ 위 정보는 전자상거래법 제 20조 제 2항 및 동법 시행령 제 25조 제 2항에 의거하여<br>
+                        소비자보호에 의거 공개합니다.
+                    </p>
+
+                    <div>
+                        <button class="btnPositive btnQuestion">문의하기</button>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+        <!-- 판매자정보 팝업 끝 -->
+    </div>
+
+</body>
+</html>

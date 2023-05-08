@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = mapper파일의 아이디 값 -->
+<mapper namespace="kr.co.kmarket.dao.ProductDAO">
+
+	<select id="selectMember" resultType="kr.co.kmarket.vo.MemberVO">
+		select * from `km_member` where `uid` = #{uid};
+	</select>
+
+	<select id="selectProductArticles" resultType="kr.co.kmarket.vo.ProductVO">
+		select * from `km_product`;
+	</select>
+	
+	<select id="selectProductArticle" resultType="kr.co.kmarket.vo.ProductVO">
+		SELECT * FROM `km_product` WHERE `proNo` = #{proNo};
+	</select>
+	
+	<select id="selectOrderProducts" resultType="kr.co.kmarket.vo.OrderVO">
+		SELECT 
+			a.ordNo, a.uid, a.ordCount, a.ordPrice, a.ordDiscount, a.ordDelivery, a.savePoint, a.usedPoint,a.ordTotPrice,  
+			b.proNo, b.count, b.price, b.discount, b.point, b.delivery, b.total,
+			c.proName, c.descript, c.thumb1
+			FROM `km_product_order` AS a JOIN `km_product_order_item` AS b
+				ON a.ordNo = b.ordNo JOIN `km_product` AS c
+				ON b.proNo = c.proNo
+			WHERE 
+				a.uid = #{uid} AND a.ordNo = #{no};
+	</select>
+	
+	
+	<!-- 장바구니 추가-->
+	<insert id="addCart">
+		insert into `km_product_cart` set
+		`uid`   	= #{uid},
+		`proNo`		= #{proNo},
+		`count`		= #{count},
+		`price`		= #{price},
+		`discount`	= #{discount},
+		`disPrice`	= #{disPrice},
+		`point`		= #{point},
+		`delivery`	= #{delivery},
+		`total`		= #{total},
+		`rdate`		= now();
+	</insert>
+
+	<!-- 장바구니 목록 -->
+	<select id="selectCarts" resultType="kr.co.kmarket.vo.CartVO">
+	  SELECT 
+	    SUM(a.count) AS `sum`, 
+	    SUM(a.count) * a.disPrice AS `multiply`, 
+	    a.* ,b.proName,b.descript,b.thumb1
+	  FROM 
+	    `km_product_cart` AS a 
+	    JOIN `km_product` AS b ON a.proNo = b.proNo 
+	  WHERE 
+	    `uid` = #{uid}
+	  GROUP BY 
+	    a.proNo 
+	  ORDER BY 
+	    `cartNo`;
+	</select>
+	
+	<!-- 주문하기 목록 -->
+	<select id="selectOrderItems" resultType="kr.co.kmarket.vo.Order_ItemVO">
+		SELECT b.proName, a.*
+		FROM km_product_order_item AS a
+		JOIN km_product AS b ON a.proNo = b.proNo
+		JOIN km_product_order AS c ON a.ordNo = c.ordNo;
+	</select>
+	
+	<!-- 장바구니 삭제 -->
+	<delete id="deleteCart">
+		delete from `km_product_cart` where `proNo`=#{no} AND `uid` = #{uid};
+	</delete>
+	
+	<!-- 주문하기 추가 -->
+	<insert id="insertOrder" useGeneratedKeys="true" keyProperty="ordNo">
+		insert into `km_product_order` set
+		`uid` = #{uid},
+		`ordCount` = #{ordCount},
+		`ordPrice` = #{ordPrice},
+		`ordDiscount` = #{ordDiscount},
+		`ordDelivery` = #{ordDelivery},
+		`ordTotPrice` = #{ordTotPrice},
+		`ordDate` = NOW();
+	</insert>
+	
+	<!-- 주문하기 상품 추가 -->
+	<insert id="insertOrderItem">
+		INSERT INTO `km_product_order_item` SET
+		`ordNo` = #{ordNo},
+		`proNo` = #{proNo},
+		`count` = #{count},
+		`price` = #{price},
+		`discount` = #{discount},
+		`point` = #{point},
+		`delivery` = #{delivery},
+		`total` = #{total};
+	</insert>
+	
+	<!-- 주문하기  -->
+	<update id="updateOrder">
+		UPDATE `km_product_order` SET
+			`ordCount` 		= #{ordCount},
+			`ordPrice` 		= #{ordPrice},
+			`ordDiscount` 	= #{ordDiscount},
+			`ordDelivery` 	= #{ordDelivery},
+			`savePoint` 	= #{savePoint},
+			`usedPoint` 	= #{usedPoint},
+			`ordTotPrice` 	= #{ordTotPrice},
+			`recipName` 	= #{recipName},
+			`recipHp`  		= #{recipHp},
+			`recipZip` 		= #{recipZip},
+			`recipAddr1` 	= #{recipAddr1},
+			`recipAddr2` 	= #{recipAddr2},
+			`ordPayment` 	= #{ordPayment},
+			`ordComplete`	= #{ordComplete}
+		WHERE 
+			`uid` = #{uid} and `ordNo` = #{no};
+	
+	</update>
+	
+	<delete id="deleteOrder">
+		delete from `km_product_cart` where `uid`=#{uid};
+	</delete>
+	
+	<delete id="deleteOrderToComplete">
+	    DELETE FROM `km_product_order_item`
+	    WHERE `ordNo` = #{no}
+	    AND `proNo` NOT IN 
+	    <foreach collection="proNo" item="item" separator="," open="(" close=")">
+	        #{item}
+	    </foreach>
+	</delete>
+	
+</mapper>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/mypage_style.css}">
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="mypage/_header.html  :: mypage_header"></th:block>
+                    <img th:src="@{/img/myPage/my_banner2.png}" alt="배너">
+                    <div>
+                        <p>문의하기</p>
+                        <table class="lastQna">
+                        	<colgroup> 
+								<col width="10%">
+								<col width="15%">
+								<col width="15%">
+								<col width="50%">
+								<col width="10%">
+								<col width="10%">
+							</colgroup>  
+                            <tr>
+                                <th>번호</th>
+                                <th>문의채널</th>
+                                <th>문의유형</th>
+                                <th>제목</th>
+                                <th>작성일</th>
+                                <th>상태</th>
+                            </tr>
+                            <tr th:if="${#lists.size(vo) == 0}">
+                            	<td colspan="6" align="center">최근 문의한 내역이 없습니다.</td>
+                            </tr>
+                            <tr th:each="qna : ${vo}">
+                                <td th:text="${qnaStat.count}"></td>
+                                <td th:if="${qna.group == '판매자 게시판'}">판매자 게시판</td>
+                                <td th:unless="${qna.group == '판매자 게시판'}">고객센터</td>
+                                <td>[[${qna.cate}]]</td>
+                                <td class="title"><a th:href="@{/cs/qna/view(group=${qna.group}, no=${qna.no}, pg=1)}">[[${qna.title}]]</a></td>
+                                <td>[[${qna.rdate}]]</td>
+                                <td th:if="${qna.comment == 0}" class="wait">검토중</td>
+                                <td th:unless="${qna.comment == 0}" class="ok">답변완료</td>
+                            </tr>
+                        </table>
+                        <div class="page">
+                            <a href="#" class="prev"></a>
+                            <a href="#" class="num current">1</a>
+                            <a href="#" class="next"></a>
+                        </div>
+                    </div>
+            </section>
+        </main>
+        <th:block th:replace="mypage/_header.html  :: mypage_footer"></th:block>
+    </div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓</title>
+    <link rel="stylesheet" th:href="@{/css/cs_style.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script type="text/javascript">
+    	$(function(){
+    		$("select[name=group]").change(function(){
+    			itemChange();
+    		});
+    		
+    		function itemChange(){
+    			let item1 = ["카테고리선택", "가입", "탈퇴", "회원정보", "로그인"];
+        		let item2 = ["카테고리선택", "쿠폰/할인혜택", "포인트", "제휴", "이벤트"];
+        		let item3 = ["카테고리선택", "상품", "결제", "구매내역", "영수증/증빙"];
+        		let item4 = ["카테고리선택", "배송상태/기간", "배송정보확인/변경", "해외배송", "당일배송", "해외직구"];
+        		let item5 = ["카테고리선택", "반품신청/철회", "반품정보확인/변경", "교환 AS신청/철회", "교환정보확인/변경", "취소신청/철회", "취소확인/환불정보"];
+        		let item6 = ["카테고리선택", "여행/숙박", "항공"];
+        		let item7 = ["카테고리선택", "서비스 이용규칙 위반", "지식재산권침해", "법령 및 정책위반 상품", "게시물 정책위반", "직거래/외부거래유도", "표시광고", "청소년 위해상품/이미지"];
+        		
+    			let selectItem = $('select[name=group]').val();
+    			let changeItem;
+    			
+    			if(selectItem == "회원"){
+    				changeItem = item1;
+    			}else if(selectItem == "쿠폰/이벤트") {
+    				changeItem = item2;
+    			}else if(selectItem == "주문/결제") {
+    				changeItem = item3;
+    			}else if(selectItem == "배송") {
+    				changeItem = item4;
+    			}else if(selectItem == "취소/반품/교환") {
+    				changeItem = item5;
+    			}else if(selectItem == "여행/숙박/항공") {
+    				changeItem = item6;
+    			}else if(selectItem == "안전거래") {
+    				changeItem = item7;
+    			}
+    			console.log(changeItem, changeItem.length);
+    			$('select[name=cate]').empty();
+    			for(let i=0; i<changeItem.length; i++){
+    				let tag = "<option value='"+changeItem[i]+"'>"+changeItem[i]+"</option>";
+    				$('select[name=cate]').append(tag);
+    			}
+    		}
+    		
+    		$('form').submit(function(){
+    			if($('select[name=group]').val() == '그룹선택'){
+    				alert('그룹을 선택하십시요.');
+    				return false;
+    			}
+    			if($('select[name=cate]').val() == '카테고리선택'){
+    				alert('카테고리를 선택하십시요.');
+    				return false;
+    			}
+    			if($('input[name=title]').val() == ''){
+    				alert('제목을 입력하십시요.');
+    				return false;
+    			}
+    			if($('textarea[name=content]').val() == ''){
+    				alert('내용을 입력하십시요.');
+    				return false;
+    			}
+    			return true;
+    		});
+    		
+    	});
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="cs/_header.html  :: cs_header"></th:block>
+        <main>
+            <div class="list_nav">
+                <div>
+                    <p>홈 > 문의하기</p>
+                </div>
+            </div>
+            <div class="list">
+                <th:block th:replace="cs/_cate.html  :: cs_qnaGroup"></th:block>
+                <div>
+                    <form th:action="@{/cs/qna/write}" method="post">
+                    <input type="hidden" name="uid" th:value="${#authentication.name}"/>
+                        <table class="qna_write">
+                            <tr>
+                                <td>문의유형</td>
+                                <td>
+                                    <select name="group" id="csType">
+                                        <option value="0">그룹선택</option>
+                                        <option value="회원">회원</option>
+                                        <option value="쿠폰/이벤트">쿠폰/이벤트</option>
+                                        <option value="주문/결제">주문/결제</option>
+                                        <option value="배송">배송</option>
+                                        <option value="취소/반품/교환">취소/반품/교환</option>
+                                        <option value="여행/숙박/항공">여행/숙박/항공</option>
+	                                    <option value="안전거래">안전거래</option>
+                                    </select>
+                                    <select name="cate" id="csType">
+                                        <option value="카테고리선택">카테고리선택</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>문의제목</td>
+                                <td>
+                                    <input type="text" name="title" placeholder="제목을 입력하세요.">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>문의내용</td>
+                                <td>
+                                    <textarea name="content" id="content" placeholder="내용을 입력하세요."></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    <a th:href="@{/cs/qna/list(group=${group}, pg=${pg})}" class="goList">목록보기</a>
+                    <input type="submit" class="writeForm" value="등록하기"/>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <th:block th:replace="cs/_footer.html :: cs_footer"></th:block>
+    </div>
+</body>
+</html>

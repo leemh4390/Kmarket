@@ -1,0 +1,121 @@
+<th:block th:fragment="cs_noticeGroup">
+	<article>
+		<p>공지사항</p>
+		<ul>
+			<li><a th:href="@{/cs/notice/list(group=all, pg=1)}"
+				th:class="${group == 'all'? 'list_current' : 'off'}">전체</a></li>
+			<li><a th:href="@{/cs/notice/list(group=service, pg=1)}"
+				th:class="${group == 'service'? 'list_current' : 'off'}">고객서비스</a></li>
+			<li><a th:href="@{/cs/notice/list(group=safe, pg=1)}"
+				th:class="${group == 'safe'? 'list_current' : 'off'}">안전거래</a></li>
+			<li><a th:href="@{/cs/notice/list(group=danger, pg=1)}"
+				th:class="${group == 'danger'? 'list_current' : 'off'}">위해상품</a></li>
+			<li><a th:href="@{/cs/notice/list(group=event, pg=1)}"
+				th:class="${group == 'event'? 'list_current' : 'off'}">이벤트당첨</a></li>
+		</ul>
+	</article>
+</th:block>
+
+<th:block th:fragment="cs_noticeCate">
+   	<th:block th:if="${group == 'all'}">
+   		<p>전체</p>
+       	<span>공지사항 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == 'service'}">
+   		<p>고객서비스</p>
+       	<span>고객서비스 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == 'safe'}">
+   		<p>안전거래</p>
+       	<span>안전거래 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == 'danger'}">
+   		<p>위해상품</p>
+       	<span>위해상품 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == 'event'}">
+   		<p>이벤트당첨</p>
+       	<span>이벤트당첨 전체 내용입니다.</span>
+   	</th:block>
+</th:block>
+
+<th:block th:fragment="cs_qnaGroup">
+	<article>
+		<p>문의하기</p>
+		<ul>
+			<li><a th:href="@{/cs/qna/list(group=all, pg=1)}"
+				th:class="${group == 'all'? 'list_current' : 'off'}">전체</a></li>
+			<li><a th:href="@{/cs/qna/list(group='회원', pg=1)}"
+				th:class="${group == '회원'? 'list_current' : 'off'}">회원</a></li>
+			<li><a th:href="@{/cs/qna/list(group='쿠폰/이벤트', pg=1)}"
+				th:class="${group == '쿠폰/이벤트'? 'list_current' : 'off'}">쿠폰/이벤트</a></li>
+			<li><a th:href="@{/cs/qna/list(group='주문/결제', pg=1)}"
+				th:class="${group == '주문/결제'? 'list_current' : 'off'}">주문/결제</a></li>
+			<li><a th:href="@{/cs/qna/list(group='배송', pg=1)}"
+				th:class="${group == '배송'? 'list_current' : 'off'}">배송</a></li>
+			<li><a th:href="@{/cs/qna/list(group='취소/반품/교환', pg=1)}"
+				th:class="${group == '취소/반품/교환'? 'list_current' : 'off'}">취소/반품/교환</a></li>
+			<li><a th:href="@{/cs/qna/list(group='여행/숙박/항공', pg=1)}"
+				th:class="${group == '여행/숙박/항공'? 'list_current' : 'off'}">여행/숙박/항공</a></li>
+			<li><a th:href="@{/cs/qna/list(group='안전거래', pg=1)}"
+				th:class="${group == '안전거래'? 'list_current' : 'off'}">안전거래</a></li>
+		</ul>
+	</article>
+</th:block>
+
+<th:block th:fragment="cs_qnaCate">
+   	<th:block th:if="${group == 'all'}">
+   		<p>전체</p>
+       	<span>문의사항 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == '회원'}">
+   		<p>회원</p>
+       	<span>회원 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == '쿠폰/이벤트'}">
+   		<p>쿠폰/이벤트</p>
+       	<span>쿠폰/이벤트 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == '주문/결제'}">
+   		<p>주문/결제</p>
+       	<span>주문/결제 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == '배송'}">
+   		<p>배송</p>
+       	<span>배송 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == '취소/반품/교환'}">
+   		<p>취소/반품/교환</p>
+       	<span>취소/반품/교환 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == '여행/숙박/항공'}">
+   		<p>여행/숙박/항공</p>
+       	<span>여행/숙박/항공 전체 내용입니다.</span>
+   	</th:block>
+   	<th:block th:if="${group == '안전거래'}">
+   		<p>안전거래</p>
+       	<span>안전거래 전체 내용입니다.</span>
+   	</th:block>
+</th:block>
+
+<th:block th:fragment="cs_faqGroup">
+	<article>
+		<p>자주묻는질문</p>
+		<ul>
+			<li><a th:href="@{/cs/faq/list(group='회원')}"
+				th:class="${group == '회원'? 'list_current' : 'off'}">회원</a></li>
+			<li><a th:href="@{/cs/faq/list(group='쿠폰/이벤트')}"
+				th:class="${group == '쿠폰/이벤트'? 'list_current' : 'off'}">쿠폰/이벤트</a></li>
+			<li><a th:href="@{/cs/faq/list(group='주문/결제')}"
+				th:class="${group == '주문/결제'? 'list_current' : 'off'}">주문/결제</a></li>
+			<li><a th:href="@{/cs/faq/list(group='배송')}"
+				th:class="${group == '배송'? 'list_current' : 'off'}">배송</a></li>
+			<li><a th:href="@{/cs/faq/list(group='취소/반품/교환')}"
+				th:class="${group == '취소/반품/교환'? 'list_current' : 'off'}">취소/반품/교환</a></li>
+			<li><a th:href="@{/cs/faq/list(group='여행/숙박/항공')}"
+				th:class="${group == '여행/숙박/항공'? 'list_current' : 'off'}">여행/숙박/항공</a></li>
+			<li><a th:href="@{/cs/faq/list(group='안전거래')}"
+				th:class="${group == '안전거래'? 'list_current' : 'off'}">안전거래</a></li>
+		</ul>
+	</article>
+</th:block>

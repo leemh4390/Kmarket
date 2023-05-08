@@ -1,0 +1,41 @@
+<th:block th:include="@{admin/_header.html}"/>
+<article  class="article_view">
+    <nav>
+        <h3>
+            자주묻는질문 보기
+        </h3>
+        <p>
+            HOME > 고객센터 > <Strong> 자주묻는질문 </Strong>
+        </p>
+    </nav>
+    <section>
+        <table>
+            <tr>
+                <td>유형</td>
+                <td>
+                	[[${view.c2Name}]]
+                	<input type="hidden" name="no" th:value="${view.no}">
+               	</td>
+            </tr>
+            <tr>
+                <td>제목</td>
+                <td>[[${view.title}]]</td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td>
+                    <span>
+                        [[${view.content}]]<br/>
+                    </span>
+                <td>
+            </tr>
+        </table>
+        <div class="view_button">
+            <a th:href="@{/admin/faq_delete(no=${view.no})}"><input type="button" value="삭제"></a>
+            <a th:href="@{/admin/faq_modify(no=${view.no})}"><input type="button" value="수정"></a>
+            <a th:href="@{/admin/faq_list}"><input type="button" value="목록"></a>
+        </div>
+    </section>
+</article>
+</main>
+<th:block th:include="@{admin/_footer.html}"/>

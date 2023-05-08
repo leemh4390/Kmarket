@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/mypage_style.css}">
+    <script type="text/javascript">
+    	$(function(){
+    		$('.sellerInfo').click(function(e){
+    			e.preventDefault();
+    			//창 사이즈
+    			let width = 698;
+    			let height = 560;
+    			//현재 창의 가운데
+    			var left = (window.screen.width / 2) - (width/2);
+    			var top = (window.screen.height / 4);
+    			
+    			let company = $(this).text();
+    			
+    			window.open("/Kmarket/my/sellerInfo/"+company , "판매자정보", "width = "+width+", height = "+height+", top = "+top+", left = "+left+", resizable=no");
+    		});
+    		$('.orderInfo').click(function(e){
+    			e.preventDefault();
+    			//창 사이즈
+    			let width = 698;
+    			let height = 560;
+    			//현재 창의 가운데
+    			var left = (window.screen.width / 2) - (width/2);
+    			var top = (window.screen.height / 4);
+
+    			let prodNO = $(this).data('value');
+    			console.log(prodNO);
+    			
+    			window.open("/Kmarket/my/orderInfo/"+prodNO, "주문정보", "width = "+width+", height = "+height+", top = "+top+", left = "+left);
+    		});
+    		$('.confirm').click(function(e){
+    			e.preventDefault();
+    			//창 사이즈
+    			let width = 516;
+    			let height = 280;
+    			//현재 창의 가운데
+    			var left = (window.screen.width / 2) - (width/2);
+    			var top = (window.screen.height / 4);
+    			
+    			let ordNO = $(this).data('value');
+    			let complete = $(this).data('complete');
+    			
+    			if(complete == "5"){
+    				alert('이미 수취확인 하셨습니다.');
+    				return false;
+    			}
+    			
+    			window.open("/Kmarket/my/confirm/"+ordNO, "주문정보", "width = "+width+", height = "+height+", top = "+top+", left = "+left);
+    		});
+    		$('.review').click(function(e){
+    			e.preventDefault();
+    			//창 사이즈
+    			let width = 632;
+    			let height = 435;
+    			//현재 창의 가운데
+    			var left = (window.screen.width / 2) - (width/2);
+    			var top = (window.screen.height / 4);
+
+    			let prodName = $(this).text();
+    			let prodNO = $(this).data('value');
+    			
+    			window.open("/Kmarket/my/review?prodName="+prodName+"&prodNo="+prodNO, "주문정보", "width = "+width+", height = "+height+", top = "+top+", left = "+left);
+    		});
+    	});
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="mypage/_header.html  :: mypage_header"></th:block>
+                    <img th:src="@{/img/myPage/my_banner1.jpg}" alt="배너">
+                    <div>
+                        <p>최근주문내역</p>
+                        <a th:href="@{/mypage/order}"></a>
+                        <table class="lastOrder">
+                            <tr>
+                                <th>날짜</th>
+                                <th>상품정보</th>
+                                <th>상태</th>
+                                <th>확인/신청</th>
+                            </tr>
+                            <tr th:if="${#lists.size(order) == 0}">
+                            	<td colspan="4" align="center">최근 구매한 내역이 없습니다.</td>
+                            </tr>
+                            <tr th:each = "ord : ${order}">
+                                <td>[[${ord.rdate}]]</td>
+                                <td>
+                                    <img th:src="@{/image/}+${ord.thumb1}" alt="상품이미지">
+                                    <div>
+                                        상호명 : <a href="#" class="sellerInfo">[[${ord.company}]]</a><br/>
+                                        상품명 : <a href="#">[[${ord.prodName}]]</a><br/>
+                                        수량 : [[${ord.count}]]개 / 주문번호 : <a href="#" class="orderInfo" th:data-value="${ord.prodNO}">[[${ord.ordNO}]]</a><br/>
+                                        [[${#numbers.formatInteger(ord.price, 0, 'COMMA')}]]원
+                                    </div>
+                                </td>
+                                <!-- [결제대기] → [결제완료] → [주문완료] → [배송준비] → [배송완료] → [수취확인] -->
+                                <td th:if="${ord.ordComplete == '0'}">결제대기</td>
+                                <td th:if="${ord.ordComplete == '1'}">결제완료</td>
+                                <td th:if="${ord.ordComplete == '2'}">주문완료</td>
+                                <td th:if="${ord.ordComplete == '3'}">배송준비</td>
+                                <td th:if="${ord.ordComplete == '4'}">배송완료</td>
+                                <td th:if="${ord.ordComplete == '5'}">수취확인</td>
+                                <td>
+                                    <ul>
+                                        <li><a href="#" class="confirm" th:data-value="${ord.ordNO}" th:data-complete="${ord.ordComplete}">수취확인</a></li>
+                                        <li><a href="#" class="review" th:data-value="${ord.prodNO}">[[${ord.prodName}]]</a></li>
+                                        <li><a href="#">반품신청</a></li>
+                                        <li><a href="#">교환신청</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <p>포인트적립내역</p>
+                        <a th:href="@{/mypage/point(arg1=-15)}"></a>
+                        <table class="lastPoint">
+                            <tr>
+                                <th>날짜</th>
+                                <th>구분</th>
+                                <th>주문번호</th>
+                                <th>적립금액</th>
+                                <th>비고</th>
+                                <th>유효기간</th>
+                            </tr>
+                            <tr th:if="${#lists.size(point) == 0}">
+                            	<td colspan="6" align="center">최근 적립된 내역이 없습니다.</td>
+                            </tr>
+                            <tr th:each = "point : ${point}">
+                                <td>[[${point.pointDate}]]</td>
+                                <td>적립</td>
+                                <td>[[${point.ordNo}]]</td>
+                                <td>[[${point.point}]]점</td>
+                                <td>상품 구매확정</td>
+                                <td>[[${point.pointDateEnd}]]</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <p>상품평</p>
+                        <a th:href="@{/mypage/review}"></a>
+                        <table class="lastComment">
+                        	<colgroup> 
+								<col width="10%">
+								<col width="30%">
+								<col width="40%">
+								<col width="15%">
+								<col width="10%">
+							</colgroup> 
+                            <tr>
+                                <th>번호</th>
+                                <th>상품명</th>
+                                <th>내용</th>
+                                <th>평점</th>
+                                <th>작성일</th>
+                            </tr>
+                            <tr th:if="${#lists.size(review) == 0}">
+                            	<td colspan="5" align="center">최근 남긴 상품평이 없습니다.</td>
+                            </tr>
+                            <tr th:each = "review : ${review}">
+                                <td th:text="${reviewStat.size - reviewStat.index}"></td>
+                                <td class="title">[[${review.prodName}]]</td>
+                                <td class="title">[[${review.content}]]</td>
+                                <td><span th:class="star+${review.rating}|"></span></td>
+                                <td>[[${review.rdate}]]</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <p>문의내역</p>
+                        <a th:href="@{/mypage/qna}">
+                        </a>
+                        <table class="lastQna">
+							<colgroup> 
+								<col width="10%">
+								<col width="15%">
+								<col width="15%">
+								<col width="50%">
+								<col width="10%">
+								<col width="10%">
+							</colgroup>   
+                            <tr>
+                                <th>번호</th>
+                                <th>문의채널</th>
+                                <th>문의유형</th>
+                                <th>제목</th>
+                                <th>작성일</th>
+                                <th>상태</th>
+                            </tr>
+                            <tr th:if="${#lists.size(qna) == 0}">
+                            	<td colspan="6" align="center">최근 문의한 내역이 없습니다.</td>
+                            </tr>
+                            <tr th:each = "qna : ${qna}">
+                                <td th:text="${qnaStat.size - qnaStat.index}"></td>
+                                <td th:if="${qna.group == '판매자 게시판'}">판매자 게시판</td>
+                                <td th:unless="${qna.group == '판매자 게시판'}">고객센터</td>
+                                <td>[[${qna.cate}]]</td>
+                                <td class="title"><a th:href="@{/cs/qna/view(group=${qna.group}, no=${qna.no}, pg=1)}">[[${qna.title}]]</a></td>
+                                <td>[[${qna.rdate}]]</td>
+                                <td th:if="${qna.comment == 0}" class="wait">검토중</td>
+                                <td th:unless="${qna.comment == 0}" class="ok">답변완료</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <span></span>
+                        <div class="setting">
+                            <div>
+                                <span></span>
+                                <a th:href="@{/mypage/info}"></a>
+                                <p>
+                                	[[${info.zip}]]<br/>
+                                    [[${info.addr1}]]<br/>
+                                    [[${info.addr2}]]
+                                </p>
+                            </div>
+                            <div>
+                                <span></span>
+                                <a th:href="@{/mypage/info}"></a>
+                                <p>
+                                    [[${info.email}]]<br/>
+                                    (최종수정일 [[${info.rdate}]])
+                                </p>
+                            </div>
+                            <div>
+                                <span></span>
+                                <a th:href="@{/mypage/info}"></a>
+                                <p>
+                                    [[${info.hp}]]<br/>
+                                    (최종수정일 [[${info.rdate}]])
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <th:block th:replace="mypage/_header.html  :: mypage_footer"></th:block>
+    </div>
+</body>
+</html>

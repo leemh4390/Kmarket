@@ -1,0 +1,43 @@
+<th:block th:include="/admin/_header.html"/>
+<article class="qna_view">
+    <nav>
+        <h3>
+            문의하기 보기
+        </h3>
+        <p>
+            HOME > 고객센터 > <Strong> 문의하기 </Strong>
+        </p>
+    </nav>
+    <section>
+        <table>
+            <tr>
+                <td>유형</td>
+                <td>[[${view.c2Name}]]</td>
+            </tr>
+            <tr>
+                <td>제목</td>
+                <td>
+					<p>[[${view.title}]]</p>
+				</td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td name="content">
+                    <span>[[${view.content}]]</span>
+                </td>
+            </tr>
+            <tr>
+                <td>답변</td>
+                <td name="reply">
+                    <span>[[${reply.content}]]</span>
+                <td>
+            </tr>
+        </table>
+        <div class="view_button">
+            <a th:href="@{/admin/qna_delete(no=${view.no})}"><input type="button" value="삭제"></a>
+            <a th:href="@{/admin/qna_list}"><input type="button" value="목록"></a>
+        </div>
+    </section>
+</article>
+</main>
+<th:block th:include="/admin/_footer.html"/>

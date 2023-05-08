@@ -1,0 +1,26 @@
+<th:block th:fragment="company_header">
+	<header style="background: transparent;" class="navi">
+        <div>
+            <a th:href="@{/company/index}"><img class="navi" th:src="@{/img/company/company_header_logo2.png}" alt="로고"></a>
+            <ul>
+                <li><a class="navi" th:href="@{/company/introduce}">회사소개</a></li>
+				<li><a class="navi" th:href="@{/company/notice}">전자공시</a></li>
+				<li><a class="navi" th:href="@{/company/promote}">홍보채널</a></li>
+				<li><a class="navi" th:href="@{/company/manage}">투명경영</a></li>
+            </ul>
+        </div>
+    </header>
+</th:block>
+
+<th:block th:fragment="company_footer">
+	<footer>
+		<div>
+			<img th:src="@{/img/company/footer_logo.png}" alt="푸터로고">
+			<p>
+				대표자 : 홍길동 사업자등록번호 : 123-45-67890 주소 : 부산광역시 강남구 테헤란로 123 통신판매업 신고번호
+				: 제2021-부산강남-12345호<br /> 개인정보보호책임자 : 김춘추 FAX : 02-1234-5678 EMAIL :
+				help@kmarket.com
+			</p>
+		</div>
+	</footer>
+</th:block>

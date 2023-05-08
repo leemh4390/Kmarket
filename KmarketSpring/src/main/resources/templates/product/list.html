@@ -1,0 +1,65 @@
+<th:block th:include="@{product/_header.html}"/>
+<th:block th:include="@{product/_aside.html}"/>
+<style>
+
+	#product  h3  > .productName {
+		font-weight: bold;
+		font-size: 14px;
+	}
+	
+	#product  h3  > .productName:hover {
+		text-decoration: underline;
+	}
+	
+</style>
+<section class="list">
+     <!-- 제목, 페이지 네비게이션 -->
+     <nav>
+         <h1>상품목록</h1>
+         <p>HOME > 
+         	<span>패션·의류·뷰티</span>
+         </p>
+     </nav>
+     <!-- 정렬메뉴-->
+     <ul class="sort">
+         <li><a href="" class="on">판매많은순</a></li>
+         <li><a href="">낮은가격순</a></li>
+         <li><a href="">높은가격순</a></li>
+         <li><a href="">평점높은순</a></li>
+         <li><a href="">후기많은순</a></li>
+         <li><a href="">최근등록순</a></li>
+     </ul>
+
+     <!-- 상품목록 -->
+     <table>
+         <tr th:each="article : ${articles}">
+             <td><a href="#" class="thumb"><img th:src="@{/file/} +${article.thumb1}" alt="상품이미지"></a></td>
+             <td style="width: 450px;">
+                 <h3 class="name"><a class="productName" th:href="@{/product/view(proNo=${article.proNo})}">[[${article.proName}]]</a></h3>
+             </td>
+             <td>
+                 <ul>
+                     <li>
+                     	<span class="dis-price" data-th-text="${#numbers.formatInteger(article.price * (100-article.discount) / 100, 3, 'COMMA') + '원'}">
+                     		[[${#numbers.formatInteger(article.price*(100-article.discount)/100, 3)}]]</span>
+                     </li>
+                     <li th:if="${article.discount} != null">
+                         <del class="org-price" th:text=${article.price}></del>
+                         <span class="discount">[[${article.discount}]]%</span>
+                     </li>
+                     <li>
+                     	<span th:if="${article.delivery} != '0'" data-th-text="${'배송비 ' + #numbers.formatInteger(product.delivery, 3, 'COMMA')}"></span>
+                     	<span th:unless="${article.delivery} != '0'" class="free-delivery">무료배송</span>
+                     </li>
+                 </ul>
+             </td>
+             <td>
+                 <h4 class="seller"><i class="fas fa-home"></i>&nbsp;</h4>
+                 <h5 class="badge power">판매자등급</h5>
+                 <h6 class="rating star1">상품평</h6>
+             </td>
+         </tr>
+     </table>
+ </section>
+</main>
+<th:block th:include="@{product/_footer.html}"/>

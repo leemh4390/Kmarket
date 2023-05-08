@@ -1,0 +1,400 @@
+<th:block th:include="@{product/_header.html}"/>
+<th:block th:include="@{product/_aside.html}"/>
+<script>
+	$(document).ready(function(){
+		
+		$('input[type=checkbox]').prop('checked',true);
+		
+		$('input[name=check]').click(function(){
+			
+			let allCheck = $('input[name=allCheck]');
+			let length = $('input:checkbox[name=check]').length;
+			let lengths = $('input:checkbox[name=check]:checked').length;
+			
+		    if(length == lengths){
+		        allCheck.prop('checked', true);
+		    } else {
+		        allCheck.prop('checked', false);
+		    }			
+			
+		});	
+		
+		$('input[name=allCheck]').click(function(){
+			
+			let allCheck = $('input[name=allCheck]').prop('checked');
+			
+			if(allCheck){
+				$('input[name=check]').prop('checked',true);
+			}else{
+				$('input[name=check]').prop('checked',false);
+			}
+		});
+		
+		let totalCount  	= 0; // 상품수
+		let totalPrice 		= 0; // 총금액
+		let totalDiscount 	= 0; // 할인된 금액
+		let totalDelivery 	= 0; // 총 배송비
+		let totalPoint 		= 0; // 적립포인트
+		let finalTotalPrice = 0; // 결제하는금액
+	
+		 $('input:checkbox[name=check]:checked').each(function(){
+		        totalCount  		+= parseInt($(this).closest('.orderInfo').find('.count').val());
+		        totalPrice  		+= parseInt($(this).closest('.orderInfo').find('.price').val());
+		        totalDiscount  		+= parseInt($(this).closest('.orderInfo').find('.discount').val());
+		        totalDelivery  		+= parseInt($(this).closest('.orderInfo').find('.delivery').val());
+		        totalPoint  		+= parseInt($(this).closest('.orderInfo').find('.point').val());
+		        finalTotalPrice  		+= parseInt($(this).closest('.orderInfo').find('.total').val());
+
+	    });
+		
+	    //상품수
+	    $(".totalCount_td").text(totalCount);
+	    //상품금액
+	    $(".totalPrice_td").text(totalPrice.toLocaleString());
+	    //총 할인금액
+	    $(".totalDisPrice_td").text('- '+totalDiscount.toLocaleString()); 
+	    //적립 포인트
+	    $(".totalPoint_td").text(totalPoint);
+	    //배송비
+	    $(".deliveryPrice_td").text(totalDelivery.toLocaleString());
+	    //전체주문금액
+	    $(".finalTotalPrice_td").text(finalTotalPrice.toLocaleString());
+	    
+		$('input[type=checkbox]').change(function(){
+			
+	        let totalCount  	= 0; // 상품수
+	        let totalPrice 		= 0; // 총금액
+	        let totalDiscount 	= 0; // 할인된 금액
+	        let totalDelivery 	= 0; // 총 배송비
+	        let totalPoint 		= 0; // 적립포인트
+	        let finalTotalPrice = 0; // 결제하는금액
+	        
+	        // point 계산
+    		let point = parseInt($('input[name=memberPoint]').val());
+			let usedPoint = parseInt($('input[name=usedPoint]').val());
+			
+			 $('input:checkbox[name=check]:checked').each(function(){
+		        totalCount  			+= parseInt($(this).closest('.orderInfo').find('.count').val());
+		        totalPrice  			+= parseInt($(this).closest('.orderInfo').find('.price').val());
+		        totalDiscount  			+= parseInt($(this).closest('.orderInfo').find('.discount').val());
+		        totalDelivery  			+= parseInt($(this).closest('.orderInfo').find('.delivery').val());
+		        totalPoint  			+= parseInt($(this).closest('.orderInfo').find('.point').val());
+		        finalTotalPrice  		+= parseInt($(this).closest('.orderInfo').find('.total').val());
+		    });
+			 
+			 if (isNaN(usedPoint)) {
+				  usedPoint = 0; // usedPoint 값이 NaN인 경우 0으로 초기화
+				}
+			 
+		 	
+			let totalAmount = totalDiscount + usedPoint;
+			let finalTotalAmount = finalTotalPrice - usedPoint;
+			
+		    //상품수
+		    $(".totalCount_td").text(totalCount);
+		    //상품금액
+		    $(".totalPrice_td").text(totalPrice.toLocaleString());
+		    //총 할인금액
+		    $(".totalDisPrice_td").text('- '+totalAmount.toLocaleString()); 
+		    //적립 포인트
+		    $(".totalPoint_td").text(totalPoint);
+		    //배송비
+		    $(".deliveryPrice_td").text(totalDelivery.toLocaleString());
+		    //전체주문금액
+		    $(".finalTotalPrice_td").text(finalTotalAmount.toLocaleString());
+		    
+		});
+		
+		
+		$('input[name=btnpoint]').click(function(){
+			
+			let point = parseInt($('input[name=memberPoint]').val());
+			let usedPoint = parseInt($('input[name=usedPoint]').val());
+			let totalDiscount 	= 0; // 할인된 금액
+			let finalTotalPrice = 0;
+			
+			if(usedPoint > 0){
+				
+				if(point >= 2000){
+					 $('input:checkbox[name=check]:checked').each(function(){
+				            totalDiscount += parseInt($(this).closest('.orderInfo').find('.discount').val());
+				            finalTotalPrice += parseInt($(this).closest('.orderInfo').find('.total').val());
+					    });
+					
+					// 사용자가 입력한 포인트와 할인 금액을 더합니다.
+					let totalAmount = totalDiscount + usedPoint;
+					let finalTotalAmount = finalTotalPrice - usedPoint;
+					 
+				    $(".totalDisPrice_td").text('- '+totalAmount.toLocaleString()); 
+				    $(".finalTotalPrice_td").text(finalTotalAmount.toLocaleString()); 
+				}else{
+					alert('포인트는 2천점 이상부터 사용가능합니다.');
+				}
+				
+			}else{
+				alert('포인트를 입력해주세요.');
+			}
+		});
+		
+		$('input[name=order]').click(function(e){
+			e.preventDefault();
+			
+			let ordCount 			= parseInt($('.totalCount_td').text());
+			let totalPrice 			= parseInt($(".totalPrice_td").text().replace(/,/g, ''));
+			let totalDisPrice		= parseInt($(".totalDisPrice_td").text().replace(/[^\d]/g, ""));
+			let totalDeliveryPrice 	= parseInt($(".deliveryPrice_td").text());
+			let finalTotalPrice 	= parseInt($(".finalTotalPrice_td").text().replace(/,/g, ''));
+			let recipName 			= $('input[name=recipName]').val();
+			let recipHp 			= $('input[name=recipHp]').val();
+			let recipZip 			= $('input[name=recipZip]').val();
+			let recipAddr1 			= $('input[name=recipAddr1]').val();
+			let recipAddr2 			= $('input[name=recipAddr2]').val();
+			let ordPayment 			= $('input[name=ordPayment]:checked').val();
+			let no 					= $('input[name=no]').val();
+			
+			let point 				= parseInt($('input[name=memberPoint]').val());
+			let usedPoint			 = parseInt($('input[name=usedPoint]').val());
+			 if (isNaN(usedPoint)) {
+				  usedPoint = 0; // usedPoint 값이 NaN인 경우 0으로 초기화
+				}
+			let savePoint = point - usedPoint;
+			
+			// 삭제 기능 구현..
+			
+		    let arr = [];
+		    
+		    $('input[name="check"]:checked').each(function(){
+		        let proNo = $(this).val();
+		        arr.push(proNo);
+		    });
+			 
+			const jsonData = {
+					'arr' 		 : arr,
+					'ordCount' : ordCount,
+					'ordPrice' : totalPrice,
+					'ordDiscount' : totalDisPrice,
+					'ordDelivery' : totalDeliveryPrice,
+					'savePoint' : savePoint,
+					'usedPoint' : usedPoint,
+					'ordTotPrice' : finalTotalPrice,
+					'recipName' : recipName,
+					'recipHp' : recipHp,
+					'recipZip' : recipZip,
+					'recipAddr1' : recipAddr1,
+					'recipAddr2' : recipAddr2,
+					'ordPayment' : ordPayment,
+					'no' 		 : no,
+			}
+			
+			console.log(jsonData);
+			
+			if(ordPayment != null){
+				
+				$.ajax({
+					url : '/Kmarket/product/order/add',
+					method : 'POST',
+					data: JSON.stringify(jsonData),
+					traditional : true,
+					contentType: 'application/json',
+					success : function(data){
+						alert('주문이 완료되었습니다.');
+					}
+				});
+				
+			}else{
+				alert('결제 방식을 선택해주세요!');
+				return false;
+			}
+		});
+	});
+
+</script>
+<section class="order">
+    <nav>
+        <h1>상품목록</h1>
+        <p>HOME > <span>패션·의류·뷰티</span> > <strong>남성의류</strong></p>
+    </nav>
+	<form action="#">
+		<input type="hidden" name="no" th:value="${no}">
+        <!-- 주문 상품 목록 -->
+		<table border="0">
+		    <tr>
+		        <th><input type="checkbox" name="allCheck" ></th>
+		        <th>상품명</th>
+		        <th>총수량</th>
+		        <th>판매가</th>
+		        <th>할인</th>
+		        <th>포인트</th>
+		        <th>배송비</th>
+		        <th>소계</th>
+		    </tr>
+		    <tr class="empty">
+		        <td colspan="7">장바구니에 상품이 없습니다.</td>
+		    </tr>
+		    <tr th:each="product : ${products}">
+		        <td class="orderInfo">
+		        	<input type="checkbox" name="check" th:value="${product.proNo}" >
+		        	<input type="hidden" name="count" class="count" th:value="${product.count}"> <!-- 수량 -->
+		        	<input type="hidden" name="price" class="price" th:value="${product.price} * ${product.count}" > <!-- 원가 -->
+		        	<input type="hidden" name="discount" class="discount" th:value="${product.price} * ${product.count} - ${product.total}"> <!-- 할인율 -->
+		        	<input type="hidden" name="point" class="point" th:value="${product.point}">
+		        	<input type="hidden" name="delivery" class="delivery" th:value="${product.delivery}">
+		        	<input type="hidden" name="total" class="total" th:value="${product.total}">
+	        	</td>
+		        <td>
+		        	<div>
+		        		<a href="#" style="float: left; margin-right: 10px;"><img th:src="@{/file/} + ${product.thumb1}" alt=""></a>
+			            <article style="padding: 10px;">
+		                    <a href="#" style="font-weight: bold; display: block; margin-bottom: 3px; width: 400px;">[[${product.proName}]]</a>
+		                    <span style="display: block;">[[${product.descript}]]</span>
+			            </article>
+		        	</div>
+		        </td>
+		        <td>[[${product.count}]]</td>
+		        <td data-th-text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></td>
+		        <td>[[${product.discount}]]%</td>
+		        <td>[[${product.point}]]</td>
+		        <td>
+		        	<span th:if="${product.delivery == 0}">무료배송</span>
+		        	<span th:unless="${product.delivery == 0}">[[${product.delivery}]]</span>
+	        	</td>
+		        <td data-th-text="${#numbers.formatInteger(product.total, 3, 'COMMA')}">[[${product.total}]]</td>
+		    </tr>
+		</table>
+		<!-- 최종결제정보 -->
+		<div class="final">
+		    <h2>최종결제정보</h2>
+		    <table border="0">
+		        <tr>
+		            <td>상품수</td>
+		            <td class="totalCount_td"></td>
+	            </tr>
+	            <tr>
+		            <td>상품금액</td>
+		            <td class="totalPrice_td"><span></span></td>
+	            </tr>
+	            <tr>
+		            <td>할인금액</td>
+		            <td class="totalDisPrice_td"></td>
+	            </tr>
+	            <tr>
+		            <td>배송비</td>
+		            <td class="deliveryPrice_td"></td>
+	            </tr>              
+	            <tr>
+		            <td>포인트</td>
+		            <td class="totalPoint_td"></td>
+	            </tr>
+	            <tr>
+		            <td>전체주문금액</td>
+		            <td class="finalTotalPrice_td"></td>
+	            </tr>
+		    </table>
+		    <input type="submit" name="order" id="order" value="주문하기">
+		</div>
+		<!-- 배송 정보 -->
+		<article class="delivary">
+		    <h1>배송정보</h1>
+		    <table border="0">
+		        <tr>
+		            <td>주문자</td>
+		            <td><input type="text" name="recipName" th:value="${member.name}" ></td>
+		        </tr>
+		        <tr>
+		            <td>휴대폰</td>
+		            <td><input type="text" name="recipHp" th:value="${member.hp}" >
+		            <span>- 포함 입력</span></td>
+		        </tr>
+		        <tr>
+		            <td>우편번호</td>
+		            <td><input type="text" name="recipZip" th:value="${member.zip}">
+		            <input type="button" value="검색"></td>
+		        </tr>
+		        <tr>
+		            <td>기본주소</td>
+		            <td><input type="text" name="recipAddr1" th:value="${member.addr1}"></td>
+		        </tr>
+		        <tr>
+		            <td>상세주소</td>
+		            <td><input type="text" name="recipAddr2" th:value="${member.addr2}"></td>
+		        </tr>
+		    </table>
+		</article>
+		<article class="discount">
+		    <h1>할인정보</h1>
+		    <div>
+		        <p>
+		            현재 포인트 : 
+		            <span>[[${member.point}]] </span>점
+		            <input type="hidden" name="memberPoint" th:value="${member.point}">
+		        </p> 
+		        <label>
+		            <input type="text" name="usedPoint" placeholder="0">점
+		            <input type="button" name="btnpoint" value="적용">
+		        </label>
+		        <span>
+		            포인트는 2천점 이상부터 사용이 가능합니다.
+		        </span>
+		    </div>
+		</article>
+		<!-- 결제 방법 -->
+	    <article class="payment">
+	        <h1>결제방법</h1>
+	        <div class="card">
+	            <span>신용카드</span>
+	            <p>
+	                <label>
+	                    <input type="radio" name="ordPayment" value="1">신용카드 결제
+	                </label>
+	                <label>
+	                    <input type="radio" name="ordPayment" value="2">체크카드 결제
+	                </label>
+	            </p>
+	        </div>
+	        <div class="account">
+	            <span>계좌이체</span>
+	            <p>
+	                <label>
+	                    <input type="radio" name="ordPayment" value="3">실시간 계좌이체
+	                </label>
+	                <label>
+	                    <input type="radio" name="ordPayment" value="4">무통장 입금
+	                </label>
+	            </p>
+	        </div>
+	        <div class="etc">
+	            <span>기타</span>
+	            <p>
+	                <label>
+	                    <input type="radio" name="payment" value="type5">휴대폰결제
+	                </label>
+	                <label>
+	                    <input type="radio" name="payment" value="type6">카카오페이
+	                    <img th:src="@{/img/product/ico_kakaopay.gif}" alt="ico_kakaopay">
+	                </label>
+	            </p>
+	        </div>
+	    </article>
+	    <article class="alert">
+	         <ul>
+	             <li>
+	                 <span>
+	                     케이마켓 어쩌구
+	                 </span>
+	             </li>
+	             <li>
+	                 <span>
+	                     어쩌구
+	                 </span>
+	             </li>
+	             <li>
+	                 <span>
+	                     어쩌구
+	                 </span>
+	             </li>
+	         </ul>
+	     </article>
+	</form>
+</section>
+</main>
+<th:block th:include="@{product/_footer.html}"/>
