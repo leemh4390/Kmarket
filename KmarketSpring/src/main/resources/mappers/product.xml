@@ -14,7 +14,9 @@
 	</select>
 	
 	<select id="selectProductArticle" resultType="kr.co.kmarket.vo.ProductVO">
-		SELECT * FROM `km_product` WHERE `proNo` = #{proNo};
+		SELECT * FROM `km_product` AS a 
+		JOIN `km_product_cate2` AS b ON  a.cate1 = b.cate1 AND a.cate2 = b.cate2
+		WHERE `proNo` = #{proNo};
 	</select>
 	
 	<select id="selectOrderProducts" resultType="kr.co.kmarket.vo.OrderVO">

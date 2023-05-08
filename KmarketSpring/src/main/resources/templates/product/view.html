@@ -48,23 +48,27 @@
 					'total': total
 				}
 			
-
-			// 장바구니 추가
-			$.ajax({
-				url : '/Kmarket/product/cart/add',
-				type : 'POST',
-				data : form,
-				success : function(data){
-					let answer = confirm("장바구니에 상품이 등록되었습니다.\n장바구니로 이동하시겠습니까?");
-					
-					if(answer){
-						//장바구니로 이동
-						location.href="/Kmarket/product/cart";
-					}else{
-						return false;
-					}
+				if(uid != null){
+					// 장바구니 추가
+					$.ajax({
+						url : '/Kmarket/product/cart/add',
+						type : 'POST',
+						data : form,
+						success : function(data){
+							let answer = confirm("장바구니에 상품이 등록되었습니다.\n장바구니로 이동하시겠습니까?");
+							
+							if(answer){
+								//장바구니로 이동
+								location.href="/Kmarket/product/cart";
+							}else{
+								return false;
+							}
+						}
+					});
+				}else{
+					alert('로그인 해주세요.');
+					location.href="/Kmarket/member/login";
 				}
-			});
 		});
 		
 		
@@ -101,31 +105,22 @@
 			
 			console.log(jsonData);
 			
-			$.ajax({
-				url : '/Kmarket/product/cart/direct',
-				type : 'post',
-				data : jsonData,
-				dataType : 'json',
-				success : function(data){
-					alert('성공');
-					//location.href="/Kmarket/product/order"
-				}
-			});
+			if(uid != null){
+				$.ajax({
+					url : '/Kmarket/product/cart/direct',
+					type : 'post',
+					data : jsonData,
+					dataType : 'json',
+					success : function(data){
+						alert('성공');
+						location.href="/Kmarket/product/order?ordNo="+data;
+					}
+				});
+			}else{
+				alert('로그인 해주세요.');
+				location.href="/Kmarket/member/login";
+			}
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	});
 
 
@@ -136,7 +131,7 @@
         <nav>
             <h1>상품목록</h1>
             <p>HOME > 
-            	<span>패션·의류·뷰티</span>
+            	<span>[[${article.c2Name}]]</span>
             </p>
         </nav>
 	    <!-- 상품 전체 정보 내용-->
@@ -146,9 +141,10 @@
 	        </div>
 	        <div class="summary">
 	            <nav>
-	                <h1>(주)123]</h1>
+	                <h1>[[${article.company}]]</h1>
 	                <h2>상품번호&nbsp;:&nbsp;<span>[[${article.proNo}]]</span></h2>
 	                <input type="hidden" name="proNo" th:value="${article.proNo}">
+	                <input type="hidden" name="uid" th:value="${uid}" th:if="${uid != null}">
 	            </nav>
 	            <nav>
 	                <h3>[[${article.proName}]]</h3>
@@ -159,7 +155,6 @@
 	                <div class="org_price" th:if="${article.discount} != 0">
 	                    <del>[[${article.price}]]원</del>
 	                    <span>[[${article.discount}]]%</span>
-	                    <input type="hidden" name="uid" th:value="${uid}">
 	                    <input type="hidden" name="discount" th:value="${article.discount}">
 	                    <input type="hidden" name="price" th:value="${article.price}">
 	                    <input type="hidden" name="delivery" th:value="${article.delivery}">

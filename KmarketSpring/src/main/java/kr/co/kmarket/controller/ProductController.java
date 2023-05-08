@@ -57,9 +57,11 @@ public class ProductController {
 		
 		model.addAttribute("roundPrice", intRoundPrice);
 		
-		String uid = authentication.getName();
-		
-		model.addAttribute("uid", uid);
+		if(authentication != null && authentication.isAuthenticated()) {
+			String uid = authentication.getName();
+			
+			model.addAttribute("uid", uid);
+		}
 		
 		return "product/view";
 	}
@@ -127,8 +129,6 @@ public class ProductController {
 	@ResponseBody
 	@PostMapping("product/order/add")
 	public int order(Authentication authentication,@RequestBody OrderVO vo) {
-		
-		
 		
 		String uid = authentication.getName();
 		

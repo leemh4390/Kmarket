@@ -135,7 +135,7 @@ main > aside > .category{
     position: relative;
     background: #333949;
     height: 400px;
-    overflow: hidden;
+    z-index: 1;
 }
 main > aside > .category > li{
     color: white;
