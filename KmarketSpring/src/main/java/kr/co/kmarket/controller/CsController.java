@@ -29,6 +29,40 @@ public class CsController {
 	@Autowired
 	private CsService service;
 	
+	@GetMapping(value = {"cs" , "cs/index"} )
+	public String CsIndex() {
+		return "cs/index";
+	}
 	
+	@GetMapping("cs/notice")
+	public String NoticeArticles(Model model, String pg) {
+		
+		int currentPage = service.getCurrentPage(pg);
+		int start = service.getLimitStart(currentPage);
+		
+		int total = service.selectCountNoticeTotal();
+		int lastPageNum = service.getLastPageNum(total);
+		int pageStartNum = service.getPageStartNum(total, start);
+		int groups[] = service.getPageGroup(currentPage, lastPageNum);
+		
+		List<CsVO> articles = service.selectNoticeArticles(start);
+		
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("lastPageNum", lastPageNum);
+		model.addAttribute("pageStartNum", pageStartNum);
+		model.addAttribute("groups", groups);
+		model.addAttribute("articles", articles);
+		
+		return "cs/notice_list";
+	}
 	
+	@GetMapping("cs/notice/view")
+	public String NoticeArticle(int no, Model model) {
+		
+		CsVO article = service.selectNoticeArticle(no);
+		
+		model.addAttribute("article", article);
+		
+		return "cs/notice_view";
+	}
 }

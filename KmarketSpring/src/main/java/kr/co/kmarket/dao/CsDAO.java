@@ -11,6 +11,11 @@ import kr.co.kmarket.vo.CsVO;
 @Repository
 public interface CsDAO {
 
+	public List<CsVO> selectNoticeArticles(int start);
+	
+	public CsVO selectNoticeArticle(int no);
+	
+	public int selectCountNoticeTotal();
 	
 	
 }

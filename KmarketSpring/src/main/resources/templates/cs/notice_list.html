@@ -16,7 +16,16 @@
                 </div>
             </div>
             <div class="list">
-                <th:block th:replace="cs/_cate.html  :: cs_noticeGroup"></th:block>
+				<article>
+					<p>공지사항</p>
+					<ul>
+						<li><a th:href="@{/cs/notice/list(cate1=10)}">전체</a></li>
+						<li><a th:href="@{/cs/notice/list(cate1=11)}">고객서비스</a></li>
+						<li><a th:href="@{/cs/notice/list(cate1=12)}">안전거래</a></li>
+						<li><a th:href="@{/cs/notice/list(cate1=13)}">위해상품</a></li>
+						<li><a th:href="@{/cs/notice/list(cate1=14)}">이벤트당첨</a></li>
+					</ul>
+				</article>
                 <div>
                 	<th:block th:replace="cs/_cate.html  :: cs_noticeCate"></th:block>
                     <table>
@@ -24,20 +33,25 @@
                     		<th colspan="5" style="padding: 16px">등록된 공지사항이 없습니다.</th>
                     	</tr>
                         <tr th:each="article : ${articles}">
-                            <td><a th:href="@{/cs/notice/view(group=${group}, no=${article.no}, pg=${pg})}">[[${article.title}]]</a></td>
+                            <td><a th:href="@{/cs/notice/view(cate1=${article.cate1} ,no=${article.no})}">[[${article.title}]]</a></td>
                             <td>[[${article.rdate}]]</td>
                         </tr>
                     </table>
                     <div class="page">
-                    	<th:block th:if="${page[0] > 1}">
-                        	<a th:href="@{/cs/notice/list(group=${group}, pg=${page[0]-1})}" class="prev"></a>
-                        </th:block>
-                        <th:block th:each="cnt:${#numbers.sequence(page[0], page[1])}">
-                        	<a th:href="@{/cs/notice/list(group=${group}, pg=${cnt})}" th:class="${cnt} == ${pg} ? 'num current' : 'num off'">[[${cnt}]]</a>
-                        </th:block>
-                        <th:block th:if="${page[1] < page[2]}">
-                        	<a th:href="@{/cs/notice/list(group=${group}, pg=${page[1]+1})}" class="next"></a>
-                        </th:block>
+		        	    <span class="prev" th:if="${groups[0]>1}">
+		                    <a th:href="@{/admin/faq_list(pg=${groups[0]-1})}">< 이전</a>
+		                </span>
+		                
+		                <span class="num">
+		                <th:block th:each="num:${#numbers.sequence(groups[0],groups[1])}">
+		                    <a th:href="@{/admin/cs/qna/list(pg=${num})}" 
+		                    	th:class="${num==currentPage ? 'on':'off'}"+"${num==currentPage?'num current':'num'}">[[${num}]]</a>
+		                </th:block>
+		                </span>
+		                
+		                <span class="next" th:if="${groups[1] < lastPageNum}">
+		                    <a th:href="@{/admin/faq_list(pg=${groups[1]+1})}">다음 ></a>
+		                </span>
                     </div>
                 </div>
             </div>

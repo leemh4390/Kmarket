@@ -1,19 +1,5 @@
 <th:block th:fragment="cs_noticeGroup">
-	<article>
-		<p>공지사항</p>
-		<ul>
-			<li><a th:href="@{/cs/notice/list(group=all, pg=1)}"
-				th:class="${group == 'all'? 'list_current' : 'off'}">전체</a></li>
-			<li><a th:href="@{/cs/notice/list(group=service, pg=1)}"
-				th:class="${group == 'service'? 'list_current' : 'off'}">고객서비스</a></li>
-			<li><a th:href="@{/cs/notice/list(group=safe, pg=1)}"
-				th:class="${group == 'safe'? 'list_current' : 'off'}">안전거래</a></li>
-			<li><a th:href="@{/cs/notice/list(group=danger, pg=1)}"
-				th:class="${group == 'danger'? 'list_current' : 'off'}">위해상품</a></li>
-			<li><a th:href="@{/cs/notice/list(group=event, pg=1)}"
-				th:class="${group == 'event'? 'list_current' : 'off'}">이벤트당첨</a></li>
-		</ul>
-	</article>
+
 </th:block>
 
 <th:block th:fragment="cs_noticeCate">

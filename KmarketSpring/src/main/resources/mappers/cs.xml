@@ -5,6 +5,24 @@
 <!-- namespace = mapper파일의 아이디 값 -->
 <mapper namespace="kr.co.kmarket.dao.CsDAO">
 
-
+	<select id="selectNoticeArticles" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_notice` AS a 
+			JOIN `bd_notice_cate` AS b
+			ON a.cate1 = b.cate1
+			order BY a.`no` desc LIMIT #{start},10;
+	</select>
+	
+	<select id="selectNoticeArticle" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_notice` AS a JOIN `bd_notice_cate` AS b
+		ON a.cate1 = b.cate1 
+		WHERE 
+			a.`no` = #{no};
+	</select>
+	
+	<select id="selectCountNoticeTotal" resultType="int">
+		SELECT COUNT(`no`) AS count FROM `bd_notice`;
+	</select>
+	
+	
 	
 </mapper>
