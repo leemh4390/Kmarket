@@ -12,8 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.kmarket.service.CsService;
+import kr.co.kmarket.vo.Bd_Cate1VO;
+import kr.co.kmarket.vo.Bd_Notice_CateVO;
 import kr.co.kmarket.vo.CsVO;
 
 /*
@@ -34,24 +38,27 @@ public class CsController {
 		return "cs/index";
 	}
 	
-	@GetMapping("cs/notice")
-	public String NoticeArticles(Model model, String pg) {
+	@GetMapping("cs/notice_list")
+	public String NoticeArticles(Model model, String pg, int cate1) {
 		
 		int currentPage = service.getCurrentPage(pg);
 		int start = service.getLimitStart(currentPage);
 		
-		int total = service.selectCountNoticeTotal();
+		int total = service.selectCountNoticeTotal(cate1);
 		int lastPageNum = service.getLastPageNum(total);
 		int pageStartNum = service.getPageStartNum(total, start);
 		int groups[] = service.getPageGroup(currentPage, lastPageNum);
 		
-		List<CsVO> articles = service.selectNoticeArticles(start);
+		List<CsVO> articles = service.selectNoticeArticles(cate1, start);
+		List<Bd_Notice_CateVO> cate1s = service.selectNoticeCate();
 		
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("lastPageNum", lastPageNum);
 		model.addAttribute("pageStartNum", pageStartNum);
 		model.addAttribute("groups", groups);
 		model.addAttribute("articles", articles);
+		model.addAttribute("cate1s", cate1s);
+		model.addAttribute("cate1", cate1);
 		
 		return "cs/notice_list";
 	}
@@ -65,4 +72,18 @@ public class CsController {
 		
 		return "cs/notice_view";
 	}
+	
+	
+	@GetMapping("cs/faq_list")
+	public String FaqArticles(Model model, String pg) {
+		
+		List<CsVO> articles = service.selectFaqArticles();
+		List<Bd_Cate1VO> cate1s = service.selectFaqCate();
+		
+		model.addAttribute("articles", articles);
+		model.addAttribute("cate1s", cate1s);
+		
+		return "cs/faq_list";
+	}
+	
 }

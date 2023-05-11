@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.kmarket.dao.CsDAO;
+import kr.co.kmarket.vo.Bd_Cate1VO;
+import kr.co.kmarket.vo.Bd_Notice_CateVO;
 import kr.co.kmarket.vo.CsVO;
 
 @Service
@@ -14,8 +16,8 @@ public class CsService {
 	@Autowired
 	private CsDAO dao;
 	
-	public List<CsVO> selectNoticeArticles (int start){
-		return dao.selectNoticeArticles(start);
+	public List<CsVO> selectNoticeArticles (int cate1, int start){
+		return dao.selectNoticeArticles(cate1, start);
 	}
 	
 	public CsVO selectNoticeArticle(int no) {
@@ -23,8 +25,20 @@ public class CsService {
 	}
 	
 	
-	public int selectCountNoticeTotal() {
-		return dao.selectCountNoticeTotal();
+	public int selectCountNoticeTotal(int cate1) {
+		return dao.selectCountNoticeTotal(cate1);
+	};
+	
+	public List<Bd_Notice_CateVO> selectNoticeCate(){
+		return dao.selectNoticeCate();
+	};
+	
+	public List<CsVO> selectFaqArticles(){
+		return dao.selectFaqArticles();
+	}
+
+	public List<Bd_Cate1VO> selectFaqCate(){
+		return dao.selectFaqCate();
 	};
 	
 	
@@ -72,12 +86,6 @@ public class CsService {
 		}
 		
 		int[] groups = {groupStart, groupEnd};
-		
-		/*System.out.println("groupCurrent : " + groupCurrent );
-		System.out.println("groupStart : " + groupStart);
-		System.out.println("groupEnd : " + groupEnd);
-		System.out.println("groups[0] : " + groups[0]);
-		System.out.println("groups[1] : " + groups[1]);*/
 		
 		return groups;
 	}

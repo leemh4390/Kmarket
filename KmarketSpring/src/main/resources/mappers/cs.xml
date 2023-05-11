@@ -6,9 +6,16 @@
 <mapper namespace="kr.co.kmarket.dao.CsDAO">
 
 	<select id="selectNoticeArticles" resultType="kr.co.kmarket.vo.CsVO">
-		SELECT * FROM `bd_notice` AS a 
-			JOIN `bd_notice_cate` AS b
-			ON a.cate1 = b.cate1
+		SELECT * FROM `bd_notice` AS a JOIN 
+			`bd_notice_cate` AS b ON a.cate1 = b.cate1
+			<choose>
+				<when test="cate1 != 10">
+					where a.cate1 = #{cate1}
+				</when>
+				<otherwise>
+					<!-- 조건 없음 -->
+				</otherwise>
+			</choose>
 			order BY a.`no` desc LIMIT #{start},10;
 	</select>
 	
@@ -20,7 +27,27 @@
 	</select>
 	
 	<select id="selectCountNoticeTotal" resultType="int">
-		SELECT COUNT(`no`) AS count FROM `bd_notice`;
+		SELECT COUNT(`no`) AS count FROM `bd_notice` 
+		<choose>
+			<when test="cate1 != 10">
+				where `cate1` = #{cate1};
+			</when>
+			<otherwise>
+				<!--  조건 없음 -->
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectNoticeCate" resultType="kr.co.kmarket.vo.Bd_Notice_CateVO">	
+		select * from `bd_notice_cate`;
+	</select>
+	
+	<select id="selectFaqArticles" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_faq`;
+	</select>
+	
+	<select id="selectFaqCate" resultType="kr.co.kmarket.vo.Bd_Cate1VO">
+		select * from `bd_cate1`;
 	</select>
 	
 	
