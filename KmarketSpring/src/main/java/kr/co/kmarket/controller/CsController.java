@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.kmarket.service.CsService;
 import kr.co.kmarket.vo.Bd_Cate1VO;
+import kr.co.kmarket.vo.Bd_Cate2VO;
 import kr.co.kmarket.vo.Bd_Notice_CateVO;
 import kr.co.kmarket.vo.CsVO;
 
@@ -75,13 +76,20 @@ public class CsController {
 	
 	
 	@GetMapping("cs/faq_list")
-	public String FaqArticles(Model model, String pg) {
+	public String FaqArticles(Model model, String pg, int cate1) {
 		
-		List<CsVO> articles = service.selectFaqArticles();
+		List<CsVO> articles = service.selectFaqArticles(cate1);
+		String name = service.selectCateName(cate1);
 		List<Bd_Cate1VO> cate1s = service.selectFaqCate();
+		List<Bd_Cate2VO> cate2s = service.selectFaqCates(cate1);
 		
 		model.addAttribute("articles", articles);
+		model.addAttribute("name", name);
+		model.addAttribute("cate1", cate1);
 		model.addAttribute("cate1s", cate1s);
+		model.addAttribute("cate2s", cate2s);
+		
+		System.out.println("size : " + articles.size());
 		
 		return "cs/faq_list";
 	}

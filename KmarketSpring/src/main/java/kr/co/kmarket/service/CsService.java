@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.kmarket.dao.CsDAO;
 import kr.co.kmarket.vo.Bd_Cate1VO;
+import kr.co.kmarket.vo.Bd_Cate2VO;
 import kr.co.kmarket.vo.Bd_Notice_CateVO;
 import kr.co.kmarket.vo.CsVO;
 
@@ -33,12 +34,20 @@ public class CsService {
 		return dao.selectNoticeCate();
 	};
 	
-	public List<CsVO> selectFaqArticles(){
-		return dao.selectFaqArticles();
+	public List<CsVO> selectFaqArticles(int cate1){
+		return dao.selectFaqArticles(cate1);
 	}
+	
+	public String selectCateName(int cate1) {
+		return dao.selectCateName(cate1);
+	};
 
 	public List<Bd_Cate1VO> selectFaqCate(){
 		return dao.selectFaqCate();
+	};
+	
+	public List<Bd_Cate2VO> selectFaqCates(int cate1){
+		return dao.selectFaqCates(cate1);
 	};
 	
 	

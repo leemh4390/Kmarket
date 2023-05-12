@@ -25,6 +25,7 @@ public class CsVO {
 	}
 	
 	// 추가필드
+	private int count;
 	private String c1Name;
 	private String c2Name;
 	

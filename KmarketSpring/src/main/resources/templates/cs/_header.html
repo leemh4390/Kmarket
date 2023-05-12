@@ -1,30 +1,4 @@
 <th:block th:fragment="cs_header">
-<script>
-$(document).ready(function(){
-	
-	let url = window.location.href;
-	
-	console.log('url : ' + url.lastIndexOf('?'));
-	
-	let cate1 = url.substring(51,53);
-	
-	console.log('cate1 : ' + cate1);
-	
-	
-	if(cate1 == '10'){
-		$('li a[href$="cate1=10"]').addClass('on');
-	}else if(cate1 == '11'){
-		$('li a[href$="cate1=11"]').addClass('on');
-	}else if(cate1 == '12'){
-		$('li a[href$="cate1=12"]').addClass('on');
-	}else if(cate1 == '13'){
-		$('li a[href$="cate1=13"]').addClass('on');
-	}else if(cate1 == '14'){
-		$('li a[href$="cate1=14"]').addClass('on');
-	}
-	
-});
-</script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<header>
 	    <div class="top">

@@ -25,6 +25,10 @@ public class AdminService {
 		dao.insertAdminFaq(vo);
 	}
 	
+	public void updateFaqCount(int cate1, int cate2) {
+		dao.updateFaqCount(cate1, cate2);
+	};
+	
 	// notice 게시글 작성
 	public void insertAdminNotice(NoticeVO vo, String cate1) {
 		

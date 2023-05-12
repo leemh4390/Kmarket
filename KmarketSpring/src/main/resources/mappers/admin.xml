@@ -132,6 +132,17 @@
 					`no` = #{no};
 	</update>
 	
+	<update id="updateFaqCount">
+		UPDATE bd_faq
+			SET count = (
+			    SELECT COUNT(NO) AS count
+			    FROM bd_faq
+			    WHERE `cate1` = #{cate1} AND `cate2` = #{cate2}
+			)
+			WHERE `cate1` = #{cate1} AND `cate2` = #{cate2};
+	</update>
+	
+	
 	<select id="select_Bd_Cate1" resultType="kr.co.kmarket.vo.Bd_Cate1VO">
 		SELECT * FROM `bd_cate1`;
 	</select>

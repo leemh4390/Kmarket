@@ -27,6 +27,8 @@ public interface AdminDAO {
 	// faq 게시글 작성
 	public void insertAdminFaq(CsVO vo);
 	
+	public void updateFaqCount(int cate1, int cate2);
+	
 	// notice 게시글 작성
 	public void insertAdminNotice(NoticeVO vo);
 	

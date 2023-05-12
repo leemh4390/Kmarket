@@ -6,17 +6,43 @@
     <title>케이마켓</title>
     <link rel="stylesheet" th:href="@{/css/cs_style.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  	<script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>    
+  	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <script type="text/javascript">
+ 		$(document).ready(function(){
+ 			
+ 			let url = window.location.href;
+ 			
+ 			let cate1 = url.substring(48,50);
+ 			
+ 			if(cate1 == '10'){
+ 				$('li a[href$="cate1=10"]').addClass('on');
+ 			}else if(cate1 == '11'){
+ 				$('li a[href$="cate1=11"]').addClass('on');
+ 			}else if(cate1 == '12'){
+ 				$('li a[href$="cate1=12"]').addClass('on');
+ 			}else if(cate1 == '13'){
+ 				$('li a[href$="cate1=13"]').addClass('on');
+ 			}else if(cate1 == '14'){
+ 				$('li a[href$="cate1=14"]').addClass('on');
+ 			}
+		});
+ 		
     	$(function(){
-    		//$('ul').children('.lis:nth-child(n+4)').hide();
+    		$('ul').children('.lis:nth-child(n+4)').hide();
     		
-    		//$('.more').click(function(){
-    			//if($(this).text() == '더보기'){
-    				//$(this).parent().children('li:hidden').slideDown(200);
-    				//$(this).text('간단히 보기');
-    			//}else{
-    				//$(this).parent().children('.lis').slice(3,10).slideUp(200);
-    				//$(this).text('더보기');
+    		$('.more').click(function(){
+    			if($(this).text() == '더보기'){
+    				$(this).parent().children('li:hidden').slideDown(200);
+    				$(this).text('간단히 보기');
+    			}else{
+    				$(this).parent().children('.lis').slice(3,10).slideUp(200);
+    				$(this).text('더보기');
+    			}
+    		});
     	});
     </script>
 </head>
@@ -37,18 +63,21 @@
 					</ul>
 				</article>
                 <div>
-                    <p>그룹</p>
+                    <p>[[${name}]]</p>
                     <span>가장 자주 묻는 질문입니다.</span>
-                    	<h4>카테</h4>
+                    <th:block th:each="cate : ${cate2s}">
+	                   	<h4>[[${cate.c2Name}]]</h4>
 	                    <ul class="faq_list">
-	                    	<th:block th:each = "article : ${articles}">
-		                        <li class="lis">
-			                        <a th:href="@{/cs/faq_view}" ><span>Q.</span> [[${article.title}]] [[${count}]]</a>
-		                        </li>
-	                        </th:block>
-                   			<li class="more">더보기</li>
+	                    	<th:block th:each="article:${articles}">
+	                    		<th:block th:if="${article.cate2} eq ${cate.cate2}">
+			                        <li class="lis">
+										<a>[[${article.title}]]</a>
+			                        </li>
+	               				</th:block>
+	               			</th:block>
+	               			<li class="more">더보기</li>
 	                    </ul>
-                    </th:block>
+                   </th:block>
                 </div>
             </div>
         </main>

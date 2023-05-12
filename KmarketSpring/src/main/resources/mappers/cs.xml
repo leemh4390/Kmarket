@@ -43,13 +43,20 @@
 	</select>
 	
 	<select id="selectFaqArticles" resultType="kr.co.kmarket.vo.CsVO">
-		SELECT * FROM `bd_faq`;
+		SELECT * FROM `bd_faq` where `cate1` = #{cate1};
+	</select>
+	
+	<select id="selectCateName" resultType="String">
+		SELECT `c1Name` FROM `bd_cate1` WHERE `cate1` = #{cate1};
 	</select>
 	
 	<select id="selectFaqCate" resultType="kr.co.kmarket.vo.Bd_Cate1VO">
 		select * from `bd_cate1`;
 	</select>
 	
-	
+	<select id="selectFaqCates" resultType="kr.co.kmarket.vo.Bd_Cate2VO">
+		SELECT * FROM `bd_cate1` AS a JOIN `bd_cate2` AS b
+			ON a.cate1 = b.cate1 WHERE a.cate1 = #{cate1};
+	</select>
 	
 </mapper>

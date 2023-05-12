@@ -10,5 +10,4 @@ public class Bd_Cate2VO {
 	private int cate1;
 	private int cate2;
 	private String C2Name;
-
 }
