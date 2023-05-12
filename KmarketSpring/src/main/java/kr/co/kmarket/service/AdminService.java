@@ -25,7 +25,7 @@ public class AdminService {
 		dao.insertAdminFaq(vo);
 	}
 	
-	public void updateFaqCount(int cate1, int cate2) {
+	public void updateFaqCount(String cate1, String cate2) {
 		dao.updateFaqCount(cate1, cate2);
 	};
 	

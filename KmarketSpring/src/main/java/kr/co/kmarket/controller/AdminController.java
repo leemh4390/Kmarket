@@ -235,9 +235,11 @@ public class AdminController {
 	
 	// 관리자 faq 작성하기 기능구현
 	@PostMapping("admin/faq_write")
-	public String faq_write(CsVO vo) {
+	public String faq_write(CsVO vo, String cate1, String cate2) {
 		
 		service.insertAdminFaq(vo);
+		
+		service.updateFaqCount(cate1, cate2);
 		
 		return "redirect:/admin/faq_list";
 	}
