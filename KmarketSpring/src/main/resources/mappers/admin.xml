@@ -5,6 +5,12 @@
 <!-- namespace = mapper파일의 아이디 값 -->
 <mapper namespace="kr.co.kmarket.dao.AdminDAO">
 
+	<select id="selectIndexCount" resultType="kr.co.kmarket.vo.OrderVO">
+		SELECT COUNT(`ordNo`) AS `todayCount`, sum(`ordTotPrice`) AS `totalOrdPrice` FROM `km_product_order` 
+		WHERE 
+			`ordDate` >= CURDATE();
+	</select>
+
 	<insert id="insertAdminFaq">
 		insert into `bd_faq` set 
 								 `cate1`   = #{cate1},

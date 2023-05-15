@@ -44,4 +44,6 @@ public class OrderVO {
 	private String descript;
 	private String thumb1;
 	private int no;
+	private int todayCount;
+	private int totalOrdPrice;
 }

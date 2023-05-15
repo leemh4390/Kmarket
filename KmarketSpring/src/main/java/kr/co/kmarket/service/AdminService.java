@@ -12,6 +12,7 @@ import kr.co.kmarket.vo.Bd_Cate2VO;
 import kr.co.kmarket.vo.Bd_Notice_CateVO;
 import kr.co.kmarket.vo.CsVO;
 import kr.co.kmarket.vo.NoticeVO;
+import kr.co.kmarket.vo.OrderVO;
 import kr.co.kmarket.vo.QnaVO;
 
 @Service
@@ -19,6 +20,11 @@ public class AdminService {
 	
 	@Autowired
 	private AdminDAO dao;
+	
+	// admin index
+	public OrderVO selectIndexCount() {
+		return dao.selectIndexCount();
+	};
 	
 	// faq 게시글 작성
 	public void insertAdminFaq(CsVO vo) {

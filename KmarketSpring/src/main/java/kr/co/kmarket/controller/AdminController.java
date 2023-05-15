@@ -19,6 +19,7 @@ import kr.co.kmarket.vo.Bd_Cate2VO;
 import kr.co.kmarket.vo.Bd_Notice_CateVO;
 import kr.co.kmarket.vo.CsVO;
 import kr.co.kmarket.vo.NoticeVO;
+import kr.co.kmarket.vo.OrderVO;
 import kr.co.kmarket.vo.QnaVO;
 
 /*
@@ -36,7 +37,12 @@ public class AdminController {
 	
 	// 관리자 index
 	@GetMapping("admin")
-	public String index () {
+	public String index (Model model) {
+		
+		OrderVO order = service.selectIndexCount();
+		
+		model.addAttribute("order", order);
+		
 		return "admin/index";
 	}
 	

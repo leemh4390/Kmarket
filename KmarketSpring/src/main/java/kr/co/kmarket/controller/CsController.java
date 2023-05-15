@@ -98,19 +98,28 @@ public class CsController {
 		
 		List<CsVO> articles = service.selectFaqArticles(cate1);
 		String name = service.selectCateName(cate1);
-		List<Bd_Cate1VO> cate1s = service.selectCsCate();
-		List<Bd_Cate2VO> cate2s = service.selectCsCates(cate1);
+		List<Bd_Cate1VO> cate1s = service.selectCsCateExceptAll();
 		List<CsVO> cate = service.selectFaqCate(cate1);
-		
 		
 		model.addAttribute("articles", articles);
 		model.addAttribute("name", name);
 		model.addAttribute("cate", cate);
-		model.addAttribute("cate1", cate1);
 		model.addAttribute("cate1s", cate1s);
-		model.addAttribute("cate2s", cate2s);
 		
 		return "cs/faq_list";
+	}
+	
+	@GetMapping("cs/faq_view")
+	public String FaqView(int no, int cate1, Model model) {
+		
+		CsVO article = service.selectFaqArticle(no);
+		List<Bd_Cate1VO> cate1s = service.selectCsCateExceptAll();
+		
+		model.addAttribute("cate1", cate1);
+		model.addAttribute("article", article);
+		model.addAttribute("cate1s", cate1s);
+		
+		return "cs/faq_view";
 	}
 	
 	@GetMapping("cs/qna_list")

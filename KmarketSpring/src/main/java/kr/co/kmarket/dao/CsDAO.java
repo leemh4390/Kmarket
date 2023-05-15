@@ -39,6 +39,9 @@ public interface CsDAO {
 	// Notice 게시글 보기
 	public CsVO selectNoticeArticle(int no);
 	
+	// Faq 게시글 보기
+	public CsVO selectFaqArticle(int no);
+	
 	// Qna 게시글 보기
 	public CsVO selectQnaArticle(int no);
 	
@@ -63,11 +66,14 @@ public interface CsDAO {
 	// Notice 카테고리 이름
 	public String selectCateName(int cate1);
 	
-	// Faq 카테고리
+	// Cs 1차 카테고리
 	public List<Bd_Cate1VO> selectCsCate();
 	
-	// Faq 카테고리
+	// Cs 2차 카테고리
 	public List<Bd_Cate2VO> selectCsCates(int cate1);
+	
+	// CS all 제외
+	public List<Bd_Cate1VO> selectCsCateExceptAll();
 	
 
 	

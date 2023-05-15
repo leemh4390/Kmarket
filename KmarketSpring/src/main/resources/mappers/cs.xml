@@ -39,11 +39,13 @@
 	
 	<!--  Faq 게시글 갯수 -->
 	<select id="selectFaqCate" resultType="kr.co.kmarket.vo.CsVO">
-		SELECT `cate2`,COUNT(`no`) AS `count`  FROM `bd_faq` 
+		SELECT a.cate1, a.cate2,b.c2Name, COUNT(`no`) AS `count`  FROM `bd_faq`  AS a
+		JOIN `bd_cate2` AS b
+		ON a.cate1 = b.cate1 AND a.cate2 = b.cate2
 			where 
-				`cate1` = #{cate1}
+				a.cate1 = #{cate1}
 			GROUP BY 
-				`cate2`;
+				a.cate2;
 	</select>
 	
 	<!--  Qna 게시글 목록 -->
@@ -66,6 +68,12 @@
 		ON a.cate1 = b.cate1 
 		WHERE 
 			a.`no` = #{no};
+	</select>
+	
+	<!-- Faq 게시글 보기 -->
+	<select id="selectFaqArticle" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_faq` AS a JOIN `bd_cate1` AS b ON a.cate1 = b.cate1
+		 WHERE `no` = #{no};
 	</select>
 	
 	<!-- Qna 게시글 보기 -->
@@ -118,7 +126,6 @@
 			</choose>
 	</select>
 	
-	
 	<!--  -->
 	<select id="selectNoticeCate" resultType="kr.co.kmarket.vo.Bd_Notice_CateVO">	
 		select * from `bd_notice_cate`;
@@ -132,6 +139,11 @@
 	<!--  -->
 	<select id="selectCsCate" resultType="kr.co.kmarket.vo.Bd_Cate1VO">
 		select * from `bd_cate1`;
+	</select>
+	
+	<!--  -->
+	<select id="selectCsCateExceptAll" resultType="kr.co.kmarket.vo.Bd_Cate1VO">
+		select * from `bd_cate1` where `cate1` != 0;
 	</select>
 	
 	<!--  -->

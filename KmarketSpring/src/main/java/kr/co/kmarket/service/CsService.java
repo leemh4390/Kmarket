@@ -54,6 +54,11 @@ public class CsService {
 		return dao.selectNoticeArticle(no);
 	}
 	
+	// Faq 게시글 보기
+	public CsVO selectFaqArticle(int no) {
+		return dao.selectFaqArticle(no);
+	};
+	
 	// Qna 게시글 보기
 	public CsVO selectQnaArticle(int no) {
 		return dao.selectQnaArticle(no);
@@ -94,14 +99,19 @@ public class CsService {
 		return dao.selectCateName(cate1);
 	};
 	
-	// Faq 카테고리
+	// CS 카테고리
 	public List<Bd_Cate1VO> selectCsCate(){
 		return dao.selectCsCate();
 	};
 	
-	// Faq 카테고리
+	// CS 카테고리
 	public List<Bd_Cate2VO> selectCsCates(int cate1){
 		return dao.selectCsCates(cate1);
+	};
+	
+	// CS 카테고리
+	public List<Bd_Cate1VO> selectCsCateExceptAll(){
+		return dao.selectCsCateExceptAll();
 	};
 	
 	

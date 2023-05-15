@@ -11,6 +11,7 @@ import kr.co.kmarket.vo.Bd_Cate2VO;
 import kr.co.kmarket.vo.Bd_Notice_CateVO;
 import kr.co.kmarket.vo.CsVO;
 import kr.co.kmarket.vo.NoticeVO;
+import kr.co.kmarket.vo.OrderVO;
 import kr.co.kmarket.vo.QnaVO;
 
 /*
@@ -23,6 +24,9 @@ import kr.co.kmarket.vo.QnaVO;
 @Mapper
 @Repository
 public interface AdminDAO {
+	
+	// admin index
+	public OrderVO selectIndexCount();
 	
 	// faq 게시글 작성
 	public void insertAdminFaq(CsVO vo);

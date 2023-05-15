@@ -88,8 +88,6 @@ public class ProductController {
 		return "product/cart";
 	}
 	
-
-	
 	@ResponseBody
 	@GetMapping("product/cart/delete")
 	public Map<String, Integer> DeleteCart(@RequestParam("arr") List<Integer> arr, Authentication authentication) {
