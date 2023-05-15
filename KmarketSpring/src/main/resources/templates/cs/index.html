@@ -16,35 +16,35 @@
             <article class="notice">
                 <p class="title">공지사항</p><p class="all"><a th:href="@{cs/notice_list(cate1=10, pg=1)}">전체보기</a></p>
                 <table>
-                    <tr>
-                        <td><a href="#"></a></td>
-                        <td></td>
+                    <tr th:each="noticeList : ${noticeLists}">
+                        <td><a th:href="@{/cs/notice_list?cate1=10}">&#91;[[${noticeList.c1Name}]]&#93;[[${noticeList.title}]]</a></td>
+                        <td>[[${noticeList.rdate}]]</td>
                     </tr>
                 </table>
             </article>
             <article class="faq">
                 <p class="title">자주묻는질문</p>
                 <div class="nav">
-                    <a href="#"> <div class="navi navi1"></div><span>회원</span></a>
-                    <a href="#"><div class="navi navi2"></div><span>쿠폰/이벤트</span></a>
-                    <a href="#"><div class="navi navi3"></div><span>주문/결제</span></a>
-                    <a href="#"><div class="navi navi4"></div><span>배송</span></a>
-                    <a href="#"><div class="navi navi5"></div><span>취소/반품/교환</span></a>
-                    <a href="#"><div class="navi navi6"></div><span>여행/숙박/항공</span></a>
-                    <a href="#"><div class="navi navi7"></div><span>안전거래</span></a>
+                    <a th:href="@{/cs/faq_list?cate1=10}"><div class="navi navi1"></div><span>회원</span></a>
+                    <a th:href="@{/cs/faq_list?cate1=11}"><div class="navi navi2"></div><span>쿠폰/이벤트</span></a>
+                    <a th:href="@{/cs/faq_list?cate1=12}"><div class="navi navi3"></div><span>주문/결제</span></a>
+                    <a th:href="@{/cs/faq_list?cate1=13}"><div class="navi navi4"></div><span>배송</span></a>
+                    <a th:href="@{/cs/faq_list?cate1=14}"><div class="navi navi5"></div><span>취소/반품/교환</span></a>
+                    <a th:href="@{/cs/faq_list?cate1=15}"><div class="navi navi6"></div><span>여행/숙박/항공</span></a>
+                    <a th:href="@{/cs/faq_list?cate1=16}"><div class="navi navi7"></div><span>안전거래</span></a>
                 </div>
             </article>
             <article class="qna">
-                <p class="title">문의하기</p><p class="all"><a href="#">전체보기</a></p>
+                <p class="title">문의하기</p><p class="all"><a th:href="@{/cs/qna_list?cate1=0}">전체보기</a></p>
                 <table>
-                    <tr class="index">
-                        <td><a href="#">&#91;</a></td>
-                        <td></td>
-                        <td></td>
+                    <tr class="index" th:each="qnaList : ${qnaLists}">
+						<td><a th:href="@{/cs/qna_list?cate1=0}">&#91;[[${qnaList.c1Name}]]&#93; [[${qnaList.title}]]</a></td>
+                        <td>[[${qnaList.uidMask}]]</td>
+                        <td>[[${qnaList.rdate}]]</td>
                     </tr>
                 </table>
                 <div>
-                    <a href="#" class="write">문의글 작성 ></a>
+                    <a th:href="@{cs/qna_write?cate1=0}" class="write">문의글 작성 ></a>
                 </div>
             </article>
             <article class="consult">

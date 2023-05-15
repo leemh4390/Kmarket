@@ -1,5 +1,12 @@
 package kr.co.kmarket.service;
 
+/**
+ * 날짜 : 2023/05/01 
+ * 이름 : 이민혁
+ * 내용 : Kmarket 고객센터 기능구현
+ * 
+ * */
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,37 +24,84 @@ public class CsService {
 	@Autowired
 	private CsDAO dao;
 	
+	// Qna 게시글 작성하기
+	public void insertQna(CsVO vo) {
+		dao.insertQna(vo);
+	};
+	
+	// Notice 게시글 목록
 	public List<CsVO> selectNoticeArticles (int cate1, int start){
 		return dao.selectNoticeArticles(cate1, start);
 	}
 	
-	public CsVO selectNoticeArticle(int no) {
-		return dao.selectNoticeArticle(no);
+	// Qna 게시글 목록
+	public List<CsVO> selectQnaArticles(int cate1, int start){
+		return dao.selectQnaArticles(cate1, start);
 	}
 	
-	
-	public int selectCountNoticeTotal(int cate1) {
-		return dao.selectCountNoticeTotal(cate1);
-	};
-	
-	public List<Bd_Notice_CateVO> selectNoticeCate(){
-		return dao.selectNoticeCate();
-	};
-	
+	// Faq 게시글 목록
 	public List<CsVO> selectFaqArticles(int cate1){
 		return dao.selectFaqArticles(cate1);
 	}
 	
+	// Faq 게시글 갯수
+	public List<CsVO> selectFaqCate(int cate1) {
+		return dao.selectFaqCate(cate1);
+	};
+	
+	// Notice 게시글 보기
+	public CsVO selectNoticeArticle(int no) {
+		return dao.selectNoticeArticle(no);
+	}
+	
+	// Qna 게시글 보기
+	public CsVO selectQnaArticle(int no) {
+		return dao.selectQnaArticle(no);
+	};
+	
+	// Qna 게시글 일부 보기
+	public List<CsVO> selectIndexQnaLists() {
+		return dao.selectIndexQnaLists();
+	};
+	
+	// Qna 게시글 일부 보기
+	public List<CsVO> selectIndexNoticeLists() {
+		return dao.selectIndexNoticeLists();
+	};
+	
+	// Qna 답변 보기
+	public CsVO selectQnaRply(int no) {
+		return dao.selectQnaRply(no);
+	}
+	
+	// Notice 게시글 total
+	public int selectCountNoticeTotal(int cate1) {
+		return dao.selectCountNoticeTotal(cate1);
+	};
+	
+	// Qna 게시글 total
+	public int selectCountQnaTotal(int cate1) {
+		return dao.selectCountQnaTotal(cate1);
+	};
+	
+	// Notice 카테고리
+	public List<Bd_Notice_CateVO> selectNoticeCate(){
+		return dao.selectNoticeCate();
+	};
+	
+	// Notice 카테고리 
 	public String selectCateName(int cate1) {
 		return dao.selectCateName(cate1);
 	};
-
-	public List<Bd_Cate1VO> selectFaqCate(){
-		return dao.selectFaqCate();
+	
+	// Faq 카테고리
+	public List<Bd_Cate1VO> selectCsCate(){
+		return dao.selectCsCate();
 	};
 	
-	public List<Bd_Cate2VO> selectFaqCates(int cate1){
-		return dao.selectFaqCates(cate1);
+	// Faq 카테고리
+	public List<Bd_Cate2VO> selectCsCates(int cate1){
+		return dao.selectCsCates(cate1);
 	};
 	
 	

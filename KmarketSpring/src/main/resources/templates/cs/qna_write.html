@@ -7,67 +7,93 @@
     <link rel="stylesheet" th:href="@{/css/cs_style.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script type="text/javascript">
-    	$(function(){
-    		$("select[name=group]").change(function(){
-    			itemChange();
-    		});
     		
-    		function itemChange(){
-    			let item1 = ["카테고리선택", "가입", "탈퇴", "회원정보", "로그인"];
-        		let item2 = ["카테고리선택", "쿠폰/할인혜택", "포인트", "제휴", "이벤트"];
-        		let item3 = ["카테고리선택", "상품", "결제", "구매내역", "영수증/증빙"];
-        		let item4 = ["카테고리선택", "배송상태/기간", "배송정보확인/변경", "해외배송", "당일배송", "해외직구"];
-        		let item5 = ["카테고리선택", "반품신청/철회", "반품정보확인/변경", "교환 AS신청/철회", "교환정보확인/변경", "취소신청/철회", "취소확인/환불정보"];
-        		let item6 = ["카테고리선택", "여행/숙박", "항공"];
-        		let item7 = ["카테고리선택", "서비스 이용규칙 위반", "지식재산권침해", "법령 및 정책위반 상품", "게시물 정책위반", "직거래/외부거래유도", "표시광고", "청소년 위해상품/이미지"];
-        		
-    			let selectItem = $('select[name=group]').val();
-    			let changeItem;
-    			
-    			if(selectItem == "회원"){
-    				changeItem = item1;
-    			}else if(selectItem == "쿠폰/이벤트") {
-    				changeItem = item2;
-    			}else if(selectItem == "주문/결제") {
-    				changeItem = item3;
-    			}else if(selectItem == "배송") {
-    				changeItem = item4;
-    			}else if(selectItem == "취소/반품/교환") {
-    				changeItem = item5;
-    			}else if(selectItem == "여행/숙박/항공") {
-    				changeItem = item6;
-    			}else if(selectItem == "안전거래") {
-    				changeItem = item7;
-    			}
-    			console.log(changeItem, changeItem.length);
-    			$('select[name=cate]').empty();
-    			for(let i=0; i<changeItem.length; i++){
-    				let tag = "<option value='"+changeItem[i]+"'>"+changeItem[i]+"</option>";
-    				$('select[name=cate]').append(tag);
-    			}
-    		}
-    		
-    		$('form').submit(function(){
-    			if($('select[name=group]').val() == '그룹선택'){
-    				alert('그룹을 선택하십시요.');
-    				return false;
-    			}
-    			if($('select[name=cate]').val() == '카테고리선택'){
-    				alert('카테고리를 선택하십시요.');
-    				return false;
-    			}
-    			if($('input[name=title]').val() == ''){
-    				alert('제목을 입력하십시요.');
-    				return false;
-    			}
-    			if($('textarea[name=content]').val() == ''){
-    				alert('내용을 입력하십시요.');
-    				return false;
-    			}
-    			return true;
-    		});
-    		
-    	});
+    $(document).ready(function(){
+    	
+    	let url = window.location.href;
+    	
+    	let cate1 = url.substring(49,51);
+    	
+    	console.log(cate1);
+    	
+    	if(cate1 == '0'){
+    		$('li a[href$="cate1=0"]').addClass('on');
+    	}else if(cate1 == '10'){
+    		$('li a[href$="cate1=10"]').addClass('on');
+    	}else if(cate1 == '11'){
+    		$('li a[href$="cate1=11"]').addClass('on');
+    	}else if(cate1 == '12'){
+    		$('li a[href$="cate1=12"]').addClass('on');
+    	}else if(cate1 == '13'){
+    		$('li a[href$="cate1=13"]').addClass('on');
+    	}else if(cate1 == '14'){
+    		$('li a[href$="cate1=14"]').addClass('on');
+    	}else if(cate1 == '15'){
+    		$('li a[href$="cate1=15"]').addClass('on');
+    	}else if(cate1 == '16'){
+    		$('li a[href$="cate1=16"]').addClass('on');
+    	}
+    	
+    	$('form').submit(function(){
+			if($('#csType').val() == '카테고리선택'){
+				alert('카테고리를 선택하십시요.');
+				return false;
+			}
+			
+			if($('#csType1').val() == '카테고리선택'){
+				alert('카테고리를 선택하십시요.');
+				return false;
+			}
+			
+			if($('input[name=title]').val() == ''){
+				alert('제목을 입력하십시요.');
+				return false;
+			}
+			if($('textarea[name=content]').val() == ''){
+				alert('내용을 입력하십시요.');
+				return false;
+			}
+			return true;
+		});
+		
+		$('#csType').change(function(){
+			
+			let cate1 = $(this).val();
+			
+			console.log('cate1 : ' + cate1);
+			
+			let jsonData = {"cate1": cate1};
+			
+			if(cate1 == '그룹선택'){
+				$('#csType1').empty();
+				let tags  = "<option>2차 선택</option>";
+				$('#csType1').append(tags);
+			}
+			
+			$.ajax({
+				url : "/Kmarket/cs/changeQnaCate",
+				method : "GET",
+				data : jsonData ,
+				dataType : "json",
+				success : function(data){
+					$('#csType1').empty();
+					let tags  = "<option>2차 선택</option>";
+					$('#csType1').append(tags);
+					data.result.forEach(function(data){
+						if(data.cate1 != 0){
+							let tags = "<option value='"+data.cate2+"'>"+data.c2Name+"</option>";
+							$('#csType1').append(tags);
+						}else{
+							$('#csType1').empty();
+							let tags  = "<option>2차 선택</option>";
+							$('#csType1').append(tags);
+						}
+					});
+				}
+			});
+		});
+    });
+    	
     </script>
 </head>
 <body>
@@ -80,26 +106,28 @@
                 </div>
             </div>
             <div class="list">
-                <th:block th:replace="cs/_cate.html  :: cs_qnaGroup"></th:block>
+               	<article>
+					<p>문의하기</p>
+					<ul th:each="cate1 : ${cate1s}">
+						<li><a th:href="@{cs/qna_list(cate1=${cate1.cate1})}">[[${cate1.c1Name}]]</a></li>
+					</ul>
+				</article>
                 <div>
-                    <form th:action="@{/cs/qna/write}" method="post">
-                    <input type="hidden" name="uid" th:value="${#authentication.name}"/>
+            		<p>전체</p>
+       				<span>문의사항 전체 내용입니다.</span>
+                    <form th:action="@{qna_write}" method="post">
+                    <input type="hidden" name="uid" value="test"/>
                         <table class="qna_write">
                             <tr>
                                 <td>문의유형</td>
                                 <td>
-                                    <select name="group" id="csType">
-                                        <option value="0">그룹선택</option>
-                                        <option value="회원">회원</option>
-                                        <option value="쿠폰/이벤트">쿠폰/이벤트</option>
-                                        <option value="주문/결제">주문/결제</option>
-                                        <option value="배송">배송</option>
-                                        <option value="취소/반품/교환">취소/반품/교환</option>
-                                        <option value="여행/숙박/항공">여행/숙박/항공</option>
-	                                    <option value="안전거래">안전거래</option>
+                                    <select name="cate1" id="csType">
+                                        <option>그룹선택</option>
+                                        <option th:each="cate : ${cate1s}" th:value="${cate.cate1}" th:text="${cate.c1Name}" th:selected="${cate.cate1} eq ${cate1}"></option>
                                     </select>
-                                    <select name="cate" id="csType">
+                                    <select name="cate2" id="csType1" style="width: 200px;">
                                         <option value="카테고리선택">카테고리선택</option>
+                                        <option th:each="cate2 : ${cate2s}" th:value="${cate2.cate2}" th:if="${cate2}">[[${cate2.c2Name}]]</option>
                                     </select>
                                 </td>
                             </tr>
@@ -116,8 +144,10 @@
                                 </td>
                             </tr>
                         </table>
-                    <a th:href="@{/cs/qna/list(group=${group}, pg=${pg})}" class="goList">목록보기</a>
-                    <input type="submit" class="writeForm" value="등록하기"/>
+						<div style="text-align: center; margin-top: 50px; margin-bottom: 30px">
+							<a th:href="@{/cs/qna_list(cate1=${cate1})}" class="goList">목록보기</a>
+                    		<input type="submit" class="writeForm" value="등록하기"/>
+						</div>
                     </form>
                 </div>
             </div>

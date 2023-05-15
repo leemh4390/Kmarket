@@ -5,7 +5,42 @@
     <meta charset="UTF-8">
     <title>케이마켓</title>
     <link rel="stylesheet" th:href="@{/css/cs_style.css}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>    
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
+<script>
+
+$(document).ready(function(){
+	
+	let url = window.location.href;
+	
+	let cate1 = url.substring(54,56);
+	console.log("url : " + url);
+	console.log("cate1 : " + cate1);
+	
+	if(cate1 == '0'){
+		$('li a[href$="cate1=0"]').addClass('on');
+	}else if(cate1 == '10'){
+		$('li a[href$="cate1=10"]').addClass('on');
+	}else if(cate1 == '11'){
+		$('li a[href$="cate1=11"]').addClass('on');
+	}else if(cate1 == '12'){
+		$('li a[href$="cate1=12"]').addClass('on');
+	}else if(cate1 == '13'){
+		$('li a[href$="cate1=13"]').addClass('on');
+	}else if(cate1 == '14'){
+		$('li a[href$="cate1=14"]').addClass('on');
+	}else if(cate1 == '15'){
+		$('li a[href$="cate1=15"]').addClass('on');
+	}else if(cate1 == '16'){
+		$('li a[href$="cate1=16"]').addClass('on');
+	}
+});
+
+</script>
 <body>
     <div id="wrap">
         <th:block th:replace="cs/_header.html  :: cs_header"></th:block>
@@ -16,24 +51,33 @@
                 </div>
             </div>
             <div class="list">
-                <th:block th:replace="cs/_cate.html  :: cs_qnaGroup"></th:block>
-                <div>
+				<article>
+					<p>문의하기</p>
+					<ul th:each="cate1 : ${cate1s}">
+						<li><a th:href="@{/cs/qna_list(cate1=${cate1.cate1})}">[[${cate1.c1Name}]]</a></li>
+					</ul>
+				</article>
+                <div style="width: 970px;">
+                	<p>전체</p>
+       				<span>문의사항 전체 내용입니다.</span>
                     <div class="title">
-                        <p>&#91;[[${vo.cate}]]&#93; [[${vo.title}]]</p>
-                        <span>[[${vo.uid}]] [[${vo.rdate}]]</span>
+                        <p>&#91;[[${article.c2Name}]]&#93; [[${article.title}]]</p>
+                        <span>[[${article.uid}]] [[${article.rdate}]]</span>
                     </div>
-                    <div class="content">
+                    <div class="content" style="height: 300px;">
                         <p>
-                        	[[${vo.content}]]
+                        	[[${article.content}]]
                         </p>
                     </div>
-                    <div class="content comment" th:if="${vo.comment > 0}">
-                        <span>☞[답변] [[${vo.title}]]</span>
+                    <div class="content comment" th:if="${article.comment > 0}" style="height: 300px;">
+                        <span>☞[답변] [[${comment.title}]]</span>
                         <p>
-                        	[[${vo.reply}]]
+                        	[[${comment.content}]]
                         </p>
                     </div>
-                    <a th:href="@{/cs/qna/list(group=${group}, pg=${pg})}" class="goList">목록보기</a>
+                    <div style="width: 100%; text-align: center;">
+                    	<a th:href="@{/cs/qna_list(cate1=${cate1})}" class="goList" style="margin-top: 30px; margin-bottom: 50px;">목록보기</a>
+                    </div>
                 </div>
             </div>
         </main>

@@ -132,8 +132,6 @@ public class AdminController {
 		
 		map.put("result", cate2s);
 		
-		//System.out.println(cate1);
-		
 		return map;
 	}
 	

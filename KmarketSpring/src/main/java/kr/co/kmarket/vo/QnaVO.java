@@ -24,6 +24,14 @@ public class QnaVO {
 		return rdate.substring(2, 10);
 	}
 	
+	public String UidMask() {
+		
+		int len = uid.length();
+		len = len - 2;
+		
+		return uid.substring(0, len) + "*";
+	}
+	
 	// 추가필드
 	private String c1Name;
 	private String c2Name;

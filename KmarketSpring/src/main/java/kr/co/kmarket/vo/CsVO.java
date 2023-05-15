@@ -20,13 +20,22 @@ public class CsVO {
 	private String regip;
 	private String rdate;
 	
+	//추가필드
+	private int count;
+	private String uidMask;
+	private String reply;
+	private int status;
+	private int start;
+	private String c1Name;
+	private String c2Name;
+	
 	public String getRdate() {
 		return rdate.substring(2, 10);
 	}
 	
-	// 추가필드
-	private int count;
-	private String c1Name;
-	private String c2Name;
-	
+	public String getUidMask() {
+		int len = uid.length();
+		len = len - 2;
+		return uid.substring(0, len) + "**";
+	}
 }

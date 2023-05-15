@@ -5,7 +5,74 @@
     <meta charset="UTF-8">
     <title>케이마켓</title>
     <link rel="stylesheet" th:href="@{/css/cs_style.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>    
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
+<script>
+
+$(document).ready(function(){
+	
+	let url = window.location.href;
+	
+	let cate1 = url.substring(48,50);
+	
+	console.log(cate1)
+	
+	if(cate1 == '0'){
+		$('li a[href$="cate1=0"]').addClass('on');
+		$('.list > div > p').text('전체');
+		$('.list > div > span').text('문의사항 전체 내용입니다.');
+	}else if(cate1 == '10'){
+		$('li a[href$="cate1=10"]').addClass('on');
+		$('.list > div > p').text('회원');
+		$('.list > div > span').text('회원 문의사항입니다.');
+	}else if(cate1 == '11'){
+		$('li a[href$="cate1=11"]').addClass('on');
+		$('.list > div > p').text('쿠폰/혜택/이벤트');
+		$('.list > div > span').text('쿠폰/혜택/이벤트 문의사항입니다.');
+	}else if(cate1 == '12'){
+		$('li a[href$="cate1=12"]').addClass('on');
+		$('.list > div > p').text('주문/결제');
+		$('.list > div > span').text('주문/결제 문의사항입니다.');
+	}else if(cate1 == '13'){
+		$('li a[href$="cate1=13"]').addClass('on');
+		$('.list > div > p').text('배송');
+		$('.list > div > span').text('배송 문의사항입니다.');
+	}else if(cate1 == '14'){
+		$('li a[href$="cate1=14"]').addClass('on');
+		$('.list > div > p').text('취소/반품/교환');
+		$('.list > div > span').text('취소/반품/교환 문의사항입니다.');
+	}else if(cate1 == '15'){
+		$('li a[href$="cate1=15"]').addClass('on');
+		$('.list > div > p').text('여행/숙박/항공');
+		$('.list > div > span').text('여행/숙박/항공 문의사항입니다.');
+	}else if(cate1 == '16'){
+		$('li a[href$="cate1=16"]').addClass('on');
+		$('.list > div > p').text('안전거래');
+		$('.list > div > span').text('안전거래 문의사항입니다.');
+	}
+	
+	$('.title1').click(function(){
+		
+		let uid 		= $('input[name=uid]').val();
+		let oriWriter  	= $(this).closest('tr').find('input[name=oriWriter]').val();
+		
+		console.log('uid : ' + uid);
+		console.log('oriWriter : ' + oriWriter);
+		
+		if(oriWriter != uid){
+			alert('게시글 작성자만 볼 수 있습니다.');
+			return true;
+		}else{
+			return true;
+		}
+	});
+});
+
+</script>
 <body>
     <div id="wrap">
         <th:block th:replace="cs/_header.html  :: cs_header"></th:block>
@@ -16,32 +83,49 @@
                 </div>
             </div>
             <div class="list">
-                <th:block th:replace="cs/_cate.html  :: cs_qnaGroup"></th:block>
+				<article>
+					<p>문의하기</p>
+					<ul th:each="cate1 : ${cate1s}">
+						<li><a th:href="@{/cs/qna_list(cate1=${cate1.cate1})}">[[${cate1.c1Name}]]</a></li>
+					</ul>
+				</article>
                 <div>
-                    <th:block th:replace="cs/_cate.html  :: cs_qnaCate"></th:block>
+					<p>전체</p>
+       				<span>문의사항 전체 내용입니다.</span>
                     <table>
-                    	<tr th:if="${#lists.size(articles) == 0}">
+                    	<input type="hidden" name="uid" th:if="${uid != null}" th:value="${uid}">
+                    	<input type="hidden" name="uid" th:unless="${uid != null}" th:value="${anonymous}">
+                    	
+                    	<tr style="display: none;">
                     		<th colspan="5" style="padding: 16px">등록된 문의사항이 없습니다.</th>
                     	</tr>
                         <tr th:each="article : ${articles}">
-                            <td><a th:href="@{/cs/qna/view(group=${group}, no=${article.no}, pg=${pg})}">&#91;[[${article.cate}]]&#93; [[${article.title}]]</a></td>
-                            <td class="que ok" th:if="${article.comment > 0}">답변완료</td>
-                            <td class="que wait" th:unless="${article.comment > 0}">검토중</td>
-                            <td class="id">[[${article.uidMask}]]</td>
+                            <td><a th:href="@{/cs/qna_view(no=${article.no}, cate1=${cate1})}" class="title1">[[${article.title}]]</a></td>
+                            <td class="que wait" th:if="${article.status} == 0">검토중</td>
+                            <td class="que ok" th:unless="${article.status} == 0">답변완료</td>
+                            <td class="id">
+                            	[[${article.uidMask}]]
+                            	<input type=hidden name="oriWriter" th:value="${article.uid}">
+                           	</td>
                             <td>[[${article.rdate}]]</td>
                         </tr>
                     </table>
-                    <div class="page" th:if="${page[1] > 0}">
-                    	<th:block th:if="${page[0] > 1}">
-                        	<a th:href="@{/cs/qna/list(group=${group}, pg=${page[0]-1})}" class="prev"></a>
-                        </th:block>
-                        <th:block th:each="cnt:${#numbers.sequence(page[0], page[1])}">
-                        	<a th:href="@{/cs/qna/list(group=${group}, pg=${cnt})}" th:class="${cnt} == ${pg} ? 'num current' : 'num off'">[[${cnt}]]</a>
-                        </th:block>
-                        <th:block th:if="${page[1] < page[2]}">
-                        	<a th:href="@{/cs/qna/list(group=${group}, pg=${page[1]+1})}" class="next"></a>
-                        </th:block>
-                        <a th:href="@{/cs/qna/write(group=${group}, pg=${pg})}" class="write_button">문의하기</a>
+                    <div class="page" style="margin-top: 20px; margin-bottom: 50px;">
+		        	    <span class="prev" th:if="${groups[0]>1}">
+		                    <a th:href="@{/cs/qna_list(pg=${groups[0]-1})}">< 이전</a>
+		                </span>
+		                <span class="num">
+		                	<th:block th:if="${groups[1] != 0}">
+				                <th:block th:each="num:${#numbers.sequence(groups[0],groups[1])}">
+				                    <a th:href="@{/cs/qna_list(cate1=${cate1}, pg=${num})}" 
+				                    	th:class="${num==currentPage ? 'on':'off'}"+"${num==currentPage?'num current':'num'}">[[${num}]]</a>
+				                </th:block>
+			                </th:block>
+		                </span>
+		                <span class="next" th:if="${groups[1] < lastPageNum}">
+		                    <a th:href="@{/cs/qna_list(pg=${groups[1]+1})}">다음 ></a>
+		                </span>
+		                <a th:href="@{/cs/qna_write(cate1=${cate1})}" class="write_button">문의하기</a>
                     </div>
                 </div>
             </div>

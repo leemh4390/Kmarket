@@ -25,14 +25,24 @@ $(document).ready(function(){
 	
 	if(cate1 == '10'){
 		$('li a[href$="cate1=10"]').addClass('on');
+		$('.list > div > p').text('전체');
+		$('.list > div > span').text('문의사항 전체 내용입니다.');
 	}else if(cate1 == '11'){
 		$('li a[href$="cate1=11"]').addClass('on');
+		$('.list > div > p').text('고객서비스');
+		$('.list > div > span').text('고객서비스 전체 내용입니다.');
 	}else if(cate1 == '12'){
 		$('li a[href$="cate1=12"]').addClass('on');
+		$('.list > div > p').text('안전거래');
+		$('.list > div > span').text('안전거래 전체 내용입니다.');
 	}else if(cate1 == '13'){
 		$('li a[href$="cate1=13"]').addClass('on');
+		$('.list > div > p').text('위해상품');
+		$('.list > div > span').text('위해상품 전체 내용입니다.');
 	}else if(cate1 == '14'){
 		$('li a[href$="cate1=14"]').addClass('on');
+		$('.list > div > p').text('이벤트당첨');
+		$('.list > div > span').text('이벤트당첨 전체 내용입니다.');
 	}
 	
 });
@@ -54,6 +64,8 @@ $(document).ready(function(){
 					</ul>
 				</article>
                 <div>
+                	<p>전체</p>
+       				<span>문의사항 전체 내용입니다.</span>
                 	<th:block th:replace="cs/_cate.html  :: cs_noticeCate"></th:block>
                     <table>
                     	<tr th:if="${#lists.size(articles) == 0}">

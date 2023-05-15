@@ -4,7 +4,20 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace = mapper파일의 아이디 값 -->
 <mapper namespace="kr.co.kmarket.dao.CsDAO">
+	<!-- Qna 게시글 작성 -->
+	<insert id="insertQna">
+		INSERT INTO `bd_qna` SET
+			`cate1` 	= #{cate1},
+			`cate2` 	= #{cate2},
+			`title` 	= #{title},
+			`content` 	= #{content},
+			`uid` 		= #{uid},
+			`regip` 	= #{regip},
+			`rdate`		= now();
+	</insert>
 
+
+	<!-- Notice 게시글 목록 -->
 	<select id="selectNoticeArticles" resultType="kr.co.kmarket.vo.CsVO">
 		SELECT * FROM `bd_notice` AS a JOIN 
 			`bd_notice_cate` AS b ON a.cate1 = b.cate1
@@ -19,6 +32,35 @@
 			order BY a.`no` desc LIMIT #{start},10;
 	</select>
 	
+	<!--  Faq 게시글 목록 -->
+	<select id="selectFaqArticles" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_faq` WHERE `cate1` = #{cate1};
+	</select>
+	
+	<!--  Faq 게시글 갯수 -->
+	<select id="selectFaqCate" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT `cate2`,COUNT(`no`) AS `count`  FROM `bd_faq` 
+			where 
+				`cate1` = #{cate1}
+			GROUP BY 
+				`cate2`;
+	</select>
+	
+	<!--  Qna 게시글 목록 -->
+	<select id="selectQnaArticles" resultType="kr.co.kmarket.vo.CsVO">
+		select * from `bd_qna`
+		<choose>
+			<when test="cate1 != 0">
+				where `cate1` = #{cate1} AND `parent` = 0
+			</when>
+			<otherwise>
+				where `parent` = 0
+			</otherwise>
+		</choose>
+		 order BY `no` desc LIMIT #{start},10;
+	</select>
+	
+	<!-- Notice 게시글 보기 -->
 	<select id="selectNoticeArticle" resultType="kr.co.kmarket.vo.CsVO">
 		SELECT * FROM `bd_notice` AS a JOIN `bd_notice_cate` AS b
 		ON a.cate1 = b.cate1 
@@ -26,6 +68,27 @@
 			a.`no` = #{no};
 	</select>
 	
+	<!-- Qna 게시글 보기 -->
+	<select id="selectQnaArticle" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_qna` AS a JOIN `bd_cate2` AS b 
+		ON a.cate1 = b.cate1 AND a.cate2 = b.cate2
+		WHERE `no` = #{no} AND `parent` = 0;
+	</select>
+	
+	<!-- Qna 게시글 일부 목록 보기 -->
+	<select id="selectIndexQnaLists" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_qna` AS a JOIN `bd_cate1` AS b 
+			ON a.cate1 = b.cate1
+		WHERE `parent` = 0 AND `comment` IS null ORDER BY `rdate` DESC LIMIT 5;
+	</select>
+	
+	<!-- Notice 게시글 일부 목록 보기 -->
+	<select id="selectIndexNoticeLists" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_notice` AS a JOIN `bd_notice_cate` AS b
+		ON a.cate1 = b.cate1 order BY `rdate` desc  LIMIT 5;
+	</select>
+	
+	<!-- Notice 게시글 total -->
 	<select id="selectCountNoticeTotal" resultType="int">
 		SELECT COUNT(`no`) AS count FROM `bd_notice` 
 		<choose>
@@ -38,23 +101,41 @@
 		</choose>
 	</select>
 	
+	<select id="selectQnaRply" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_qna` WHERE `parent` = #{no};
+	</select>
+	
+	<!-- Qna 게시글 수 구하기 -->
+	<select id="selectCountQnaTotal" resultType="int">
+		SELECT COUNT(`no`) AS `count` FROM `bd_qna` 
+			<choose>
+				<when test="cate1 != 0">
+					where `cate1` = #{cate1};
+				</when>
+				<otherwise>
+					<!-- 조건 없음 -->
+				</otherwise>
+			</choose>
+	</select>
+	
+	
+	<!--  -->
 	<select id="selectNoticeCate" resultType="kr.co.kmarket.vo.Bd_Notice_CateVO">	
 		select * from `bd_notice_cate`;
 	</select>
 	
-	<select id="selectFaqArticles" resultType="kr.co.kmarket.vo.CsVO">
-		SELECT * FROM `bd_faq` where `cate1` = #{cate1};
-	</select>
-	
+	<!--  -->
 	<select id="selectCateName" resultType="String">
 		SELECT `c1Name` FROM `bd_cate1` WHERE `cate1` = #{cate1};
 	</select>
 	
-	<select id="selectFaqCate" resultType="kr.co.kmarket.vo.Bd_Cate1VO">
+	<!--  -->
+	<select id="selectCsCate" resultType="kr.co.kmarket.vo.Bd_Cate1VO">
 		select * from `bd_cate1`;
 	</select>
 	
-	<select id="selectFaqCates" resultType="kr.co.kmarket.vo.Bd_Cate2VO">
+	<!--  -->
+	<select id="selectCsCates" resultType="kr.co.kmarket.vo.Bd_Cate2VO">
 		SELECT * FROM `bd_cate1` AS a JOIN `bd_cate2` AS b
 			ON a.cate1 = b.cate1 WHERE a.cate1 = #{cate1};
 	</select>
