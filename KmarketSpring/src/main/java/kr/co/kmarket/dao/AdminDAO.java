@@ -13,6 +13,7 @@ import kr.co.kmarket.vo.CsVO;
 import kr.co.kmarket.vo.NoticeVO;
 import kr.co.kmarket.vo.OrderVO;
 import kr.co.kmarket.vo.QnaVO;
+import kr.co.kmarket.vo.VisitVO;
 
 /*
  * 날짜 : 2023/04/29
@@ -27,6 +28,18 @@ public interface AdminDAO {
 	
 	// admin index
 	public OrderVO selectIndexCount();
+	
+	public int selectAdminIndexCount();
+	
+	public int selectAdminIndexPostCount();
+	
+	public VisitVO selectKmarketVisitor();
+	
+	public int selectAdminIndexDepositWaiting();
+	
+	public List<CsVO> selectAdminNoticeLimit5();
+	
+	public List<CsVO> selectAdminFaqLimit5();
 	
 	// faq 게시글 작성
 	public void insertAdminFaq(CsVO vo);
@@ -82,6 +95,16 @@ public interface AdminDAO {
 	
 	// qna 상태 status update
 	public void updateQnaStatus(QnaVO vo);
+	
+	// 방문자수  update
+	public void updateVisitorCount1Hour(int hit);
+	public void updateVisitorCount1DaySave();
+	public void updateVisitorCount1DayInit();
+	public void updateVisitorCountTotal();
+	public void updateVisitorCount1Week();
+	public void updateVisitorCount1WeekInit();
+	public void updateVisitorCount1Month();
+	
 	
 	// faq 게시글 삭제하기
 	public void deleteFaqArticle(@RequestParam("no") int no);

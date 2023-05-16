@@ -14,70 +14,72 @@
                     </td>
                     <td>
                         <strong>주문금액(원)</strong>
-                        <span th:text="${#numbers.formatInteger(order.totalOrdPrice,3,'COMMA')} + 원" >[[${order.totalOrdPrice}]]</span>
+                        <span th:text="${#numbers.formatInteger(order.totalOrdPrice,3,'COMMA')} + 원" th:if="${order.totalOrdPrice > 0}">[[${order.totalOrdPrice}]]</span>
+                        <span th:unless="${order.totalOrdPrice > 0}">0원</span>
                     </td>
                     <td>
                         <strong>회원가입(명)</strong>
-                        <span>1014</span>
+                        <span>[[${registerCount}]]</span>
                     </td>
                     <td>
                         <strong>쇼핑몰방문(명)</strong>
-                        <span>1014</span>
+                        <span th:text="${#numbers.formatInteger(visitor.Tvisitor,3,'COMMA')} + 명" th:if="${visitor.Nvisitor > 0}">[[${visitor.Tvisitor}]]</span>
+                        <span th:unless="${visitor.Nvisitor > 0}">0명</span>
                     </td>
                     <td>
                         <strong>신규게시물(건)</strong>
-                        <span>1014</span>
+                        <span>[[${postCount}]]</span>
                     </td>                            
                 </tr>
                 <tr>
                     <td>
                         <p>
                             <span>PC</span>
-                            <span>60</span>
+                            <span>0</span>
                         </p>
                         <p>
                             <span>Mobile</span>
-                            <span>71</span>
+                            <span>0</span>
                         </p>
                     </td>
                     <td>
                         <p>
                             <span>PC</span>
-                            <span>60</span>
+                            <span>0</span>
                         </p>
                         <p>
                             <span>Mobile</span>
-                            <span>71</span>
+                            <span>0</span>
                         </p>
                     </td>
                     <td>
                         <p>
                             <span>PC</span>
-                            <span>60</span>
+                            <span>0</span>
                         </p>
                         <p>
                             <span>Mobile</span>
-                            <span>71</span>
+                            <span>0</span>
                         </p>
                     </td>
                     <td>
                         <p>
                             <span>PC</span>
-                            <span>60</span>
+                            <span>0</span>
                         </p>
                         <p>
                             <span>Mobile</span>
-                            <span>71</span>
+                            <span>0</span>
                         </p>
                     </td>
                     <td>
                         <p>
                             <span>PC</span>
-                            <span>60</span>
+                            <span>0</span>
                         </p>
                         <p>
                             <span>Mobile</span>
-                            <span>71</span>
+                            <span>0</span>
                         </p>
                     </td>
                 </tr>
@@ -127,15 +129,15 @@
                     <td>
                         <p>
                             <span>어제</span>
-                            <span>4</span>
+                            <span>[[${visitor.Yvisitor}]]</span>
                         </p>
                         <p>
                             <span>주간</span>
-                            <span>10</span>
+                            <span>[[${visitor.Wvisitor}]]</span>
                         </p>
                         <p>
                             <span>월간</span>
-                            <span>30</span>
+                            <span>[[${visitor.Mvisitor}]]</span>
                         </p>
                     </td>
                     <td>
@@ -161,23 +163,23 @@
                 <tr>
                     <td>
                         <strong>입금대기(건)</strong>
-                        <span>100</span>
+                        <span>[[${waiting}]] 건</span>
                     </td>
                     <td>
                         <strong>배송준비(건)</strong>
-                        <span>100</span>
+                        <span>0</span>
                     </td>
                     <td>
                         <strong>취소요청(건)</strong>
-                        <span>100</span>
+                        <span>0</span>
                     </td>
                     <td>
                         <strong>교환요청(건)</strong>
-                        <span>100</span>
+                        <span>0</span>
                     </td>      
                     <td>
                         <strong>반품요청(건)</strong>
-                        <span>100</span>
+                        <span>0</span>
                     </td>                                            
                 </tr>
             </table>
@@ -186,84 +188,24 @@
             <div>
                 <h4>공지사항</h4>
                 <article>
-                    <p>
-                        <span>[공지] 케이마켓 판매자님들은 주기적인 비밀번호 변경을 하세요.케이마켓 판매자님들은 주기적인 비밀번호 변경을 하세요.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[공지] 1주년 기념 신규가입 사은품 안내</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[공지] 1주년 기념 신규가입 사은품 안내</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[공지] 1주년 기념 신규가입 사은품 안내</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[공지] 1주년 기념 신규가입 사은품 안내</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[공지] 1주년 기념 신규가입 사은품 안내</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[공지] 1주년 기념 신규가입 사은품 안내</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[공지] 1주년 기념 신규가입 사은품 안내</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[공지] 1주년 기념 신규가입 사은품 안내</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
+					<th:block th:each="notice : ${notice}">
+                    	<p>
+	                        <span>&#91;[[${notice.c1Name}]]&#93; [[${notice.title}]]</span>
+	                        <span>[[${notice.rdate}]]</span>
+	                    </p>
+					</th:block>
                 </article>
             </div>
 
             <div>
-                <h4>고객문의</h4>
+                <h4>자주 묻는 질문</h4>
                 <article>
-                    <p>
-                        <span>[문의] 상품이 잘못 왔습니다.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[문의] 안녕하세요. 주문자 입니다. 구매한 상품에 문제가 있어서 이렇게 문의글을 남깁니다.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[문의] 상품이 1개 잘못 왔습니다.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[문의] 상품이 1개 잘못 왔습니다.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[문의] 상품이 1개 잘못 왔습니다.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>  
-                    <p>
-                        <span>[문의] 상품이 잘못 왔습니다.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[문의] 상품이 1개 잘못 왔습니다.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[문의] 상품이 1개 잘못 왔습니다.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>
-                    <p>
-                        <span>[문의] 상품이 1개 잘못 왔습니다.</span>
-                        <span>20-07-08 12:23</span>
-                    </p>                                                               
+					<th:block th:each="faq : ${faq}">
+                    	<p>
+	                        <span>&#91;[[${faq.c1Name}]]&#93; [[${faq.title}]]</span>
+	                        <span>[[${faq.rdate}]]</span>
+	                    </p>
+					</th:block>
                 </article>
             </div>
         </div>               

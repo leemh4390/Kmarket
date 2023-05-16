@@ -1,28 +1,71 @@
 <th:block th:include="@{product/_header.html}"/>
-    <script>
-        $(document).ready(function(){
-            $(".slider > ul").bxSlider({
-                easing: "linear",
-            });
-        });
+<script>
+	function visitCount(){
+		
+	 	// 쿠키가 있으면 return;
+		/*let expireDate = new Date();
+		expireDate.setTime(expireDate.getTime() + 24 * 60 * 60 * 1000); // 현재 시간에서 1초를 더합니다.*/
+		
+		let expireDate = new Date();
+		expireDate.setHours(0, 0, 0, 0); // 현재 시간의 시, 분, 초, 밀리초를 0으로 설정합니다.
+		expireDate.setDate(expireDate.getDate() + 1); // 다음 날의 날짜로 설정합니다.
+		
+		expireDate.setDate(expireDate.getDate() + 1); // 다음 날의 날짜로 설정합니다.
+		 
+		let hitCt = eval(cookieVal("pageHit"));
+		
+		hitCt++; // 방문 카운트 +1
+		
+		document.cookie = "pageHit=" + hitCt + ";expires=" + expireDate.toGMTString();
+		
+		//console.log("hitCt : " + hitCt);
+		
+		function cookieVal(cookieName){
+			const thisCookie = document.cookie.split(";");
+			
+			for(let i = 0; i < thisCookie.length; i++ ){
+				if(cookieName == thisCookie[i].split("=")[0]){
+					return thisCookie[i].split("=")[1]
+				}
+			}
+			return 0
+		}
+		 
+		let jsonData = {"hitCt" : hitCt};
+		
+    	$.ajax({
+    		url : "/Kmarket/admin/visitKmarketCount",
+    		method : "GET",
+    		data : jsonData,
+    	});
+	}
 
-        $(function(){
-            var best = $("aside > .best");
-
-            $(window).scroll(function(){
-                var t = $(this).scrollTop();
-                
-                if(t > 620){
-                    best.css({
-                        position: "fixed",
-                        top: "0",
-                    });
-                }else{
-                    best.css({position: "static"});
-                }
-            });
+    $(document).ready(function(){
+    	
+    	visitCount();
+    	
+        $(".slider > ul").bxSlider({
+            easing: "linear",
         });
-    </script>
+    });
+
+    $(function(){
+        var best = $("aside > .best");
+
+        $(window).scroll(function(){
+            var t = $(this).scrollTop();
+            
+            if(t > 620){
+                best.css({
+                    position: "fixed",
+                    top: "0",
+                });
+            }else{
+                best.css({position: "static"});
+            }
+        });
+    });
+</script>
 <main>
     <aside>
         <!-- 카테고리 -->

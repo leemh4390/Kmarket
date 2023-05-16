@@ -14,6 +14,7 @@ import kr.co.kmarket.vo.CsVO;
 import kr.co.kmarket.vo.NoticeVO;
 import kr.co.kmarket.vo.OrderVO;
 import kr.co.kmarket.vo.QnaVO;
+import kr.co.kmarket.vo.VisitVO;
 
 @Service
 public class AdminService {
@@ -24,6 +25,30 @@ public class AdminService {
 	// admin index
 	public OrderVO selectIndexCount() {
 		return dao.selectIndexCount();
+	};
+	
+	public int selectAdminIndexCount() {
+		return dao.selectAdminIndexCount();
+	};
+	
+	public int selectAdminIndexPostCount() {
+		return dao.selectAdminIndexPostCount();
+	};
+	
+	public int selectAdminIndexDepositWaiting() {
+		return dao.selectAdminIndexDepositWaiting();
+	}
+	
+	public VisitVO selectKmarketVisitor() {
+		return dao.selectKmarketVisitor();
+	};
+	
+	public List<CsVO> selectAdminNoticeLimit5(){
+		return dao.selectAdminNoticeLimit5();
+	};
+	
+	public List<CsVO> selectAdminFaqLimit5(){
+		return dao.selectAdminFaqLimit5();
 	};
 	
 	// faq 게시글 작성

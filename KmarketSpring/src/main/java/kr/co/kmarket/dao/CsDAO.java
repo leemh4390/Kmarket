@@ -75,13 +75,4 @@ public interface CsDAO {
 	// CS all 제외
 	public List<Bd_Cate1VO> selectCsCateExceptAll();
 	
-
-	
-	
-	
-	
-	
-	
-	
-	
 }

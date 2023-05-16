@@ -13,30 +13,52 @@
 </head>
 <script>
     $(document).ready(function(){
-
+    	
         $('#gnb > li > a').click(function(){
             $(this).next().slideToggle();
         });
         
-        
-        $('select[name=cate1]').change(function(){
-        	var cate1 = $(this).val();
-        	
-        	let jsonData = {'cate1' : cate1};
-        	
-        	$.ajax({
-        		url : '/Kmarket/selectCate2',
-        		method : 'GET',
-        		data : jsonData ,
-        		dataType : 'json',
-        		success : function(data){
-        			
-        		}
-        	});
-        });
+    	
+    	let currentUrl = window.location.href;
+    	
+    	let url = currentUrl.substring(44);
+    	
+    	//console.log(currentUrl.lastIndexOf("/"));
+    	
+    	let adminUrl = currentUrl.substring(36);
+    	
+    	console.log("adminUrl : " + adminUrl);
+    	
+    	if(url == "list"){
+    		$('#gnb > li:nth-of-type(4) > a').next().slideToggle();
+    		$('#gnb > li:nth-of-type(4) > ol > li:nth-child(1) a').addClass("on");
+    	}else if(url == "register"){
+    		$('#gnb > li:nth-of-type(4) > a').next().slideToggle();
+    		$('#gnb > li:nth-of-type(4) > ol > li:nth-child(2) a').addClass("on");
+    	}
+    	
+    	
+    	if(adminUrl == "faq_list"){
+    		$('#gnb > li:nth-of-type(6) > a').next().slideToggle();
+    		$('#gnb > li:nth-of-type(6) > ol > li:nth-child(1) a').addClass("on");
+    	}else if(adminUrl == "notice_list"){
+    		$('#gnb > li:nth-of-type(6) > a').next().slideToggle();
+    		$('#gnb > li:nth-of-type(6) > ol > li:nth-child(2) a').addClass("on");
+    	}else if(adminUrl == "qna_list"){
+    		$('#gnb > li:nth-of-type(6) > a').next().slideToggle();
+    		$('#gnb > li:nth-of-type(6) > ol > li:nth-child(3) a').addClass("on");
+    	}
+    	
+     
     });
 
 </script>
+<style>
+	#gnb > li > ol  a.on {
+		text-decoration: underline;
+		font-weight: bold;
+	}
+</style>
 <body>
     <div id="wrapper">
         <header>
@@ -81,9 +103,8 @@
             <li>
                 <a href="#"><i class="fas fa-box-open" aria-hidden="true"></i>상품관리</a>
                 <ol>
-                    <li><a href="#">상품현황</a></li>
-                    <li><a href="#">상품등록</a></li>
-                    <li><a href="#">재고관리</a></li>
+                    <li><a th:href="@{/admin/product/list}">상품현황</a></li>
+                    <li><a th:href="@{/admin/product/register}">상품등록</a></li>
                 </ol>
             </li>
             <li>
@@ -98,8 +119,9 @@
             <li>
                 <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>게시판관리</a>
                 <ol>
-                    <li><a href="#">게시판현황</a></li>
-                    <li><a href="#">고객문의</a></li>
+                    <li><a th:href="@{/admin/faq_list}">자주묻는질문</a></li>
+                    <li><a th:href="@{/admin/notice_list}">공지사항</a></li>
+                    <li><a th:href="@{/admin/qna_list}">고객문의</a></li>
                 </ol>
             </li>
         </ul>

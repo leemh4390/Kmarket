@@ -5,10 +5,38 @@
 <!-- namespace = mapper파일의 아이디 값 -->
 <mapper namespace="kr.co.kmarket.dao.AdminDAO">
 
-	<select id="selectIndexCount" resultType="kr.co.kmarket.vo.OrderVO">
-		SELECT COUNT(`ordNo`) AS `todayCount`, sum(`ordTotPrice`) AS `totalOrdPrice` FROM `km_product_order` 
-		WHERE 
-			`ordDate` >= CURDATE();
+    <select id="selectIndexCount" resultType="kr.co.kmarket.vo.OrderVO">
+        SELECT  COUNT(`ordNo`) AS `todayCount`, sum(`ordTotPrice`) AS `totalOrdPrice`
+        FROM `km_product_order`
+        WHERE `ordDate` >= CURDATE() - INTERVAL 1 DAY AND `ordDate` &lt; CURDATE();
+    </select>
+	
+	<select id="selectAdminIndexCount" resultType="int">
+		SELECT COUNT(`uid`) AS `registerCount` FROM `km_member` WHERE `rdate` >= CURDATE();
+	</select>
+	
+	<select id="selectAdminIndexPostCount" resultType="int">
+		SELECT COUNT(`no`) AS count FROM `bd_qna` WHERE `parent` = 0 AND `rdate` >= CURDATE();
+	</select>
+	
+	<select id="selectAdminIndexDepositWaiting" resultType="int">
+		SELECT COUNT(`ordNo`) AS `count` FROM `km_product_order` WHERE `ordPayment` = 4 AND `ordComplete` = 0;
+	</select>
+	
+	<select id="selectKmarketVisitor" resultType="kr.co.kmarket.vo.VisitVO">
+		SELECT * FROM `km_visitor`;
+	</select>
+	
+	<select id="selectAdminNoticeLimit5" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_notice` AS a JOIN `bd_notice_cate` AS b
+		ON a.cate1 = b.cate1
+		ORDER BY `no` DESC LIMIT 5;
+	</select>
+	
+	<select id="selectAdminFaqLimit5" resultType="kr.co.kmarket.vo.CsVO">
+		SELECT * FROM `bd_faq` AS a JOIN `bd_cate1` AS b
+		ON a.cate1 = b.cate1
+		ORDER BY `no` DESC LIMIT 5;
 	</select>
 
 	<insert id="insertAdminFaq">
@@ -146,6 +174,40 @@
 			    WHERE `cate1` = #{cate1} AND `cate2` = #{cate2}
 			)
 			WHERE `cate1` = #{cate1} AND `cate2` = #{cate2};
+	</update>
+	
+	<update id="updateVisitorCount1Hour">
+		UPDATE `km_visitor` SET
+			`Nvisitor` = #{hit}
+			 WHERE `rdate` = CURDATE();
+	</update>
+	
+	<update id="updateVisitorCount1DaySave">
+		UPDATE `km_visitor` SET `Yvisitor` = `Nvisitor`;
+	</update>
+	
+	<update id="updateVisitorCount1DayInit">
+		UPDATE `km_visitor` SET `Nvisitor` = 0;
+	</update>
+	
+	<update id="updateVisitorCount1Week">
+		UPDATE `km_visitor` SET
+			`Wvisitor` = `Wvisitor` + `Nvisitor`;
+	</update>
+	
+	<update id="updateVisitorCount1WeekInit">
+		UPDATE `km_visitor` SET
+			`Wvisitor` = 0;
+	</update>
+	
+	<update id="updateVisitorCount1Month">
+		UPDATE `km_visitor` SET
+		`Mvisitor` = `Mvisitor` + `Wvisitor`;
+	</update>
+	
+	<update id="updateVisitorCountTotal">
+		UPDATE `km_visitor` SET
+			`Tvisitor` = `Tvisitor` + `Nvisitor`;
 	</update>
 	
 	

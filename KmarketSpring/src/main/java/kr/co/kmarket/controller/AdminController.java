@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.kmarket.scheduler.VisitorCountScheduler;
 import kr.co.kmarket.service.AdminService;
 import kr.co.kmarket.vo.Bd_Cate1VO;
 import kr.co.kmarket.vo.Bd_Cate2VO;
@@ -21,6 +22,7 @@ import kr.co.kmarket.vo.CsVO;
 import kr.co.kmarket.vo.NoticeVO;
 import kr.co.kmarket.vo.OrderVO;
 import kr.co.kmarket.vo.QnaVO;
+import kr.co.kmarket.vo.VisitVO;
 
 /*
  * 날짜 : 2023/04/28 
@@ -35,15 +37,36 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	
+	@Autowired
+	private VisitorCountScheduler visitor;
+	
 	// 관리자 index
 	@GetMapping("admin")
 	public String index (Model model) {
 		
 		OrderVO order = service.selectIndexCount();
+		int registerCount = service.selectAdminIndexCount();
+		int AdminIndexPostCount = service.selectAdminIndexPostCount();
+		int selectAdminIndexDepositWaiting = service.selectAdminIndexDepositWaiting();
+		VisitVO selectKmarketVisitor = service.selectKmarketVisitor();
+		List<CsVO> selectAdminNoticeLimit5 = service.selectAdminNoticeLimit5();
+		List<CsVO> selectAdminFaqLimit5 = service.selectAdminFaqLimit5();
 		
 		model.addAttribute("order", order);
+		model.addAttribute("registerCount", registerCount);
+		model.addAttribute("postCount", AdminIndexPostCount);
+		model.addAttribute("visitor", selectKmarketVisitor);
+		model.addAttribute("waiting", selectAdminIndexDepositWaiting);
+		model.addAttribute("notice", selectAdminNoticeLimit5);
+		model.addAttribute("faq", selectAdminFaqLimit5);
 		
 		return "admin/index";
+	}
+	
+	@ResponseBody
+	@GetMapping("admin/visitKmarketCount")
+	public void visitKmarketCount(@RequestParam("hitCt") int hitCt) {
+		visitor.setNowVisitorCount(hitCt);
 	}
 	
 	// 관리자 faq 목록
@@ -402,6 +425,15 @@ public class AdminController {
 		
 		return "redirect:/admin/qna_list";
 	}
+	
+	@ResponseBody
+	@GetMapping("/visitCount")
+	public String visitCount() {
+		
+		
+		
+		return "";
+	};
 	
 
 }
