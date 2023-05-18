@@ -6,7 +6,7 @@
 <mapper namespace="kr.co.kmarket.dao.IndexDAO">
 
     <select id="selectIndexProductByHit" resultType="kr.co.kmarket.vo.ProductVO">
-    	SELECT * FROM `km_product` ORDER BY `hit` DESC LIMIT 5;
+    	SELECT * FROM `km_product` ORDER BY `hit` DESC LIMIT 4;
     </select>
 
 

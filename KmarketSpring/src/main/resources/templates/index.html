@@ -3,15 +3,12 @@
 	function visitCount(){
 		
 	 	// 쿠키가 있으면 return;
-		/*let expireDate = new Date();
-		expireDate.setTime(expireDate.getTime() + 24 * 60 * 60 * 1000); // 현재 시간에서 1초를 더합니다.*/
-		
 		let expireDate = new Date();
+		
 		expireDate.setHours(0, 0, 0, 0); // 현재 시간의 시, 분, 초, 밀리초를 0으로 설정합니다.
-		expireDate.setDate(expireDate.getDate() + 1); // 다음 날의 날짜로 설정합니다.
 		
 		expireDate.setDate(expireDate.getDate() + 1); // 다음 날의 날짜로 설정합니다.
-		 
+		
 		let hitCt = eval(cookieVal("pageHit"));
 		
 		hitCt++; // 방문 카운트 +1
@@ -116,18 +113,18 @@
         <article class="best" id="best">
             <h1><i class="fas fa-crown"></i>베스트상품</h1>
             <ol>
-            <li th:each="bp,i:${bestProduct}" th:if="${i.index} < 5">
-                <a th:href="@{product/view(param1=${bp.prodNo})}">
+            <li th:each="bp,i:${hits}" th:if="${i.index} < 5">
+                <a th:href="@{product/view(param1=${bp.proNo})}">
                 <div class="thumb">
                     <i th:text="${i.index+1}"></i>
-                    <img th:src="@{/image/}+${bp.thumb2}"></img>
+                    <img th:src="@{/file/}+${bp.thumb2}"></img>
                 </div>
-                <h2>[[${bp.prodName}]]</h2>
+                <h2>[[${bp.proName}]]</h2>
                 <div class="org_price" th:style="${bp.discount} == '0'? 'display:none;' : ''">
-                    <del>30,000</del>
+                    <del th:text="${#numbers.formatInteger(bp.price,3,'COMMA')}">[[${bp.price}]]</del>
                     <span>[[${bp.discount}]]%</span>
                 </div>
-                <div class="dis_price"data-th-text="${#numbers.formatInteger(bp.price, 3, 'COMMA') + '원'}">
+                <div class="dis_price"data-th-text="${#numbers.formatInteger(bp.price * (100 - bp.discount) / 100, 3, 'COMMA') + '원'}">
                     <ins>[[${bp.price}]]</ins>
                 </div>
                 </a>
@@ -169,20 +166,21 @@
         <!-- 히트상품 영역 -->
         <section class="hit" id="hit">
             <h3><span>히트상품</span></h3>
-            <article th:each="hp:${hitProduct}">
-                <a th:href="@{product/view(param1=${hp.prodNo})}">
+            <article th:each="hp:${hits}">
+                <a th:href="@{/product/list}">
                 <div class="thumb">
-                    <img th:src="@{/image/}+${hp.thumb2}"></img>
+                    <img th:src="@{/file/}+${hp.thumb2}"></img>
                 </div>
-                <h2>[[${hp.prodName}]]</h2>
+                <h2>[[${hp.proName}]]</h2>
                 <p>[[${hp.descript}]]</p>
                 <div class="org_price" th:style="${hp.discount} == '0'? 'display:none;' : ''">
-                    <del>30,000</del>
+                    <del data-th-text="${#numbers.formatInteger(hp.price, 3, 'COMMA')+'원'}"></del>
                     <span>[[${hp.discount}]]%</span>
                 </div>
-                <div class="dis_price"data-th-text="${#numbers.formatInteger(hp.price, 3, 'COMMA') + '원'}">
-                    <ins>[[${hp.price}]]</ins>
-                    <span class="free">무료배송</span>
+                <div class="dis_price">
+                    <ins data-th-text="${#numbers.formatInteger(hp.price * (100 - hp.discount) / 100, 3, 'COMMA') + '원'}" style="display: block">[[${hp.price}]]</ins>
+                    <span class="free" th:if="${hp.delivery == 0}" style="color: blue">무료배송</span>
+                    <span th:if="${hp.delivery != 0}" th:text="'배송비 : '+ ${#numbers.formatInteger(hp.delivery,3,'COMMA')+'원'}" style="font-weight: bold;">[[${hp.delivery}]]</span>
                 </div>
                 </a>
             </article>
@@ -190,12 +188,12 @@
         <!-- 추천상품 영역 -->
         <section class="recommend" id="recommend">
             <h3><span>추천상품</span></h3>
-            <article th:each="rp:${recommendProduct}">
-            	<a th:href="@{product/view(param1=${rp.prodNo})}">
+            <article th:each="rp:${hits}">
+            	<a th:href="@{product/view(param1=${rp.proNo})}">
                 <div class="thumb">
-                    <img th:src="@{/image/}+${rp.thumb2}"></img>
+                    <img th:src="@{/file/}+${rp.thumb2}"></img>
                 </div>
-                <h2>[[${rp.prodName}]]</h2>
+                <h2>[[${rp.proName}]]</h2>
                 <p>[[${rp.descript}]]</p>
                 <div class="org_price" th:style="${rp.discount} == '0'? 'display:none;' : ''">
                     <del>30,000</del>
@@ -211,12 +209,12 @@
         <!-- 최신상품 영역 -->
         <section class="new" id="new">
             <h3><span>최신상품</span></h3>
-            <article th:each="np:${newProduct}">
-                <a th:href="@{product/view(param1=${np.prodNo})}">
+            <article th:each="np:${hits}">
+                <a th:href="@{product/view(param1=${np.proNo})}">
                 <div class="thumb">
-                    <img th:src="@{/image/}+${np.thumb2}"></img>
+                    <img th:src="@{/file/}+${np.thumb2}"></img>
                 </div>
-                <h2>[[${np.prodName}]]</h2>
+                <h2>[[${np.proName}]]</h2>
                 <p>[[${np.descript}]]</p>
                 <div class="org_price" th:style="${np.discount} == '0'? 'display:none;' : ''">
                     <del>30,000</del>
@@ -232,12 +230,12 @@
         <!-- 할인상품 영역 -->
         <section class="discount" id="discount">
             <h3><span>할인상품</span></h3>
-            <article th:each="dp:${discountProduct}">
-                <a th:href="@{product/view(param1=${dp.prodNo})}">
+            <article th:each="dp:${hits}">
+                <a th:href="@{product/view(param1=${dp.proNo})}">
                 <div class="thumb">
-                    <img th:src="@{/image/}+${dp.thumb2}"></img>
+                    <img th:src="@{/file/}+${dp.thumb2}"></img>
                 </div>
-                <h2>[[${dp.prodName}]]</h2>
+                <h2>[[${dp.proName}]]</h2>
                 <p>[[${dp.descript}]]</p>
                 <div class="org_price" th:style="${dp.discount} == '0'? 'display:none;' : ''">
                     <del>30,000</del>
